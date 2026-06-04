@@ -1,0 +1,30 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "https://nav.tum.de/api/search?q=mw"
+  },
+  "response": {
+    "sections": [
+      {
+        "facet": "buildings",
+        "entries": [
+          {
+            "id": "mw",
+            "type": "joined_building",
+            "name": "Maschinenwesen (MW)",
+            "subtext": "Gebäudekomplex"
+          },
+          {
+            "id": "5506",
+            "type": "building",
+            "name": "Gebäudeteil 6, Institut für Luft- und Raumfahrt",
+            "subtext": "Gebäudeteil"
+          }
+        ],
+        "n_visible": 4,
+        "estimatedTotalHits": 6
+      }
+    ],
+    "time_ms": 8
+  }
+}

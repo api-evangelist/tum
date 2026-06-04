@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/tum/main/json-schema/tum-search-response-schema.json",
+  "title": "NavigaTUM SearchResponse",
+  "description": "Search results returned by the NavigaTUM /api/search endpoint.",
+  "type": "object",
+  "required": ["sections", "time_ms"],
+  "properties": {
+    "sections": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/ResultsSection" }
+    },
+    "time_ms": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Time the search took on the server side, not including network delay."
+    }
+  },
+  "$defs": {
+    "ResultsSection": {
+      "type": "object",
+      "required": ["facet", "entries", "n_visible", "estimatedTotalHits"],
+      "properties": {
+        "facet": { "$ref": "#/$defs/ResultFacet" },
+        "entries": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/ResultEntry" }
+        },
+        "n_visible": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Recommended number of entries to display by default."
+        },
+        "estimatedTotalHits": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "The estimated (not exact) number of hits for the query."
+        }
+      }
+    },
+    "ResultEntry": {
+      "type": "object",
+      "required": ["id", "type", "name", "subtext"],
+      "properties": {
+        "id": { "type": "string", "description": "The id of the location." },
+        "type": { "type": "string", "description": "The type of the location, e.g. building or room." },
+        "name": { "type": "string", "description": "Display name of the result." },
+        "subtext": { "type": "string", "description": "Subtext shown below the search result." },
+        "parsed_id": { "type": ["string", "null"], "description": "Optional matched alternate room id format." }
+      }
+    },
+    "ResultFacet": {
+      "type": "string",
+      "enum": ["sites", "buildings", "rooms", "pois", "addresses"]
+    }
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/tum/main/json-structure/tum-canteen-menu-structure.json",
+  "name": "CanteenMenu",
+  "description": "Structure of an eat-api weekly canteen menu.",
+  "type": "object",
+  "properties": {
+    "number": { "type": "int32" },
+    "year": { "type": "int32" },
+    "days": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "name": "Day",
+        "properties": {
+          "date": { "type": "string" },
+          "dishes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "name": "Dish",
+              "properties": {
+                "name": { "type": "string" },
+                "dish_type": { "type": "string" },
+                "labels": { "type": "array", "items": { "type": "string" } },
+                "prices": {
+                  "type": "object",
+                  "name": "Prices",
+                  "properties": {
+                    "students": { "$ref": "#/$defs/Price" },
+                    "staff": { "$ref": "#/$defs/Price" },
+                    "guests": { "$ref": "#/$defs/Price" }
+                  }
+                }
+              },
+              "required": ["name", "prices", "labels", "dish_type"]
+            }
+          }
+        },
+        "required": ["date", "dishes"]
+      }
+    }
+  },
+  "required": ["number", "year", "days"],
+  "$defs": {
+    "Price": {
+      "type": "object",
+      "name": "Price",
+      "properties": {
+        "base_price": { "type": "double" },
+        "price_per_unit": { "type": "double" },
+        "unit": { "type": ["string", "null"] }
+      }
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "schema": "https://schema.org/",
+    "tum": "https://api-evangelist.github.io/tum/vocab#",
+    "@vocab": "https://api-evangelist.github.io/tum/vocab#",
+
+    "name": "schema:name",
+    "url": "schema:url",
+    "description": "schema:description",
+    "Organization": "schema:CollegeOrUniversity",
+
+    "Location": "schema:Place",
+    "id": "schema:identifier",
+    "type": "schema:additionalType",
+    "subtext": "schema:description",
+    "parsed_id": "tum:parsedId",
+    "facet": "tum:facet",
+    "entries": "tum:entries",
+    "sections": "tum:sections",
+    "n_visible": "tum:nVisible",
+    "estimatedTotalHits": "tum:estimatedTotalHits",
+    "time_ms": "tum:timeMs",
+
+    "Coordinate": "schema:GeoCoordinates",
+    "latitude": "schema:latitude",
+    "longitude": "schema:longitude",
+    "address": "schema:address",
+    "location": "schema:location",
+
+    "Canteen": "schema:FoodEstablishment",
+    "canteen_id": "schema:identifier",
+    "enum_name": "tum:enumName",
+    "open_hours": "schema:openingHoursSpecification",
+    "queue_status": "tum:queueStatus",
+
+    "CanteenMenu": "schema:Menu",
+    "weeks": "tum:weeks",
+    "days": "tum:days",
+    "date": "schema:startDate",
+    "dishes": "schema:hasMenuItem",
+
+    "Dish": "schema:MenuItem",
+    "dish_type": "tum:dishType",
+    "labels": "schema:suitableForDiet",
+
+    "Prices": "tum:prices",
+    "students": "tum:studentPrice",
+    "staff": "tum:staffPrice",
+    "guests": "tum:guestPrice",
+    "base_price": "schema:price",
+    "price_per_unit": "tum:pricePerUnit",
+    "unit": "schema:unitText"
+  },
+  "@type": "Organization",
+  "name": "Technical University of Munich",
+  "url": "https://www.tum.de/en/"
+}

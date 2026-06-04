@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/tum/main/json-structure/tum-search-response-structure.json",
+  "name": "SearchResponse",
+  "description": "Structure of the NavigaTUM /api/search response.",
+  "type": "object",
+  "properties": {
+    "sections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "name": "ResultsSection",
+        "properties": {
+          "facet": { "type": "string" },
+          "n_visible": { "type": "int32" },
+          "estimatedTotalHits": { "type": "int32" },
+          "entries": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "name": "ResultEntry",
+              "properties": {
+                "id": { "type": "string" },
+                "type": { "type": "string" },
+                "name": { "type": "string" },
+                "subtext": { "type": "string" },
+                "parsed_id": { "type": ["string", "null"] }
+              },
+              "required": ["id", "type", "name", "subtext"]
+            }
+          }
+        },
+        "required": ["facet", "entries", "n_visible", "estimatedTotalHits"]
+      }
+    },
+    "time_ms": { "type": "int32" }
+  },
+  "required": ["sections", "time_ms"]
+}

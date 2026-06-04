@@ -1,0 +1,37 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "https://tum-dev.github.io/eat-api/mensa-garching/2024/02.json"
+  },
+  "response": {
+    "number": 2,
+    "year": 2024,
+    "days": [
+      {
+        "date": "2024-01-08",
+        "dishes": [
+          {
+            "name": "Ravioli mit Tomate-Basilikumfüllung, dazu Tomatensahnesauce",
+            "prices": {
+              "students": { "base_price": 0, "price_per_unit": 0.8, "unit": "100g" },
+              "staff": { "base_price": 0, "price_per_unit": 1.0, "unit": "100g" },
+              "guests": { "base_price": 0, "price_per_unit": 1.35, "unit": "100g" }
+            },
+            "labels": ["CEREAL", "CHICKEN_EGGS", "GARLIC", "GLUTEN", "LACTOSE", "MILK", "VEGETARIAN", "WHEAT"],
+            "dish_type": "Pasta"
+          },
+          {
+            "name": "Cevapcici mit Ajvar",
+            "prices": {
+              "students": { "base_price": 1.0, "price_per_unit": 0.8, "unit": "100g" },
+              "staff": { "base_price": 1.0, "price_per_unit": 1.0, "unit": "100g" },
+              "guests": { "base_price": 1.0, "price_per_unit": 1.35, "unit": "100g" }
+            },
+            "labels": ["BEEF", "PORK"],
+            "dish_type": "Tagesgericht"
+          }
+        ]
+      }
+    ]
+  }
+}

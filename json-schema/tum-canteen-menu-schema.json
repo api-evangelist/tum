@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/tum/main/json-schema/tum-canteen-menu-schema.json",
+  "title": "eat-api CanteenMenu",
+  "description": "A weekly canteen menu returned by the eat-api static JSON API.",
+  "type": "object",
+  "required": ["number", "year", "days"],
+  "properties": {
+    "version": { "type": "string", "description": "Schema/version identifier of the API." },
+    "canteen_id": { "type": "string", "description": "Identifier of the canteen, e.g. mensa-garching." },
+    "number": { "type": "integer", "description": "ISO week number." },
+    "year": { "type": "integer", "description": "Calendar year." },
+    "weeks": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/Week" }
+    },
+    "days": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/Day" }
+    }
+  },
+  "$defs": {
+    "Week": {
+      "type": "object",
+      "required": ["number", "year", "days"],
+      "properties": {
+        "number": { "type": "integer" },
+        "year": { "type": "integer" },
+        "days": { "type": "array", "items": { "$ref": "#/$defs/Day" } }
+      }
+    },
+    "Day": {
+      "type": "object",
+      "required": ["date", "dishes"],
+      "properties": {
+        "date": { "type": "string", "format": "date" },
+        "dishes": { "type": "array", "items": { "$ref": "#/$defs/Dish" } }
+      }
+    },
+    "Dish": {
+      "type": "object",
+      "required": ["name", "prices", "labels", "dish_type"],
+      "properties": {
+        "name": { "type": "string" },
+        "prices": { "$ref": "#/$defs/Prices" },
+        "labels": { "type": "array", "items": { "type": "string" } },
+        "dish_type": { "type": "string" }
+      }
+    },
+    "Prices": {
+      "type": "object",
+      "properties": {
+        "students": { "$ref": "#/$defs/Price" },
+        "staff": { "$ref": "#/$defs/Price" },
+        "guests": { "$ref": "#/$defs/Price" }
+      }
+    },
+    "Price": {
+      "type": "object",
+      "properties": {
+        "base_price": { "type": "number" },
+        "price_per_unit": { "type": "number" },
+        "unit": { "type": ["string", "null"] }
+      }
+    }
+  }
+}

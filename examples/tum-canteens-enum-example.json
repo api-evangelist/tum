@@ -1,0 +1,26 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "https://tum-dev.github.io/eat-api/enums/canteens.json"
+  },
+  "response": [
+    {
+      "enum_name": "MENSA_ARCISSTR",
+      "name": "Mensa Arcisstraße",
+      "location": {
+        "address": "Arcisstraße 17, München",
+        "latitude": 48.14742,
+        "longitude": 11.56722
+      },
+      "canteen_id": "mensa-arcisstr",
+      "queue_status": null,
+      "open_hours": {
+        "mon": { "start": "11:00", "end": "14:00" },
+        "tue": { "start": "11:00", "end": "14:00" },
+        "wed": { "start": "11:00", "end": "14:00" },
+        "thu": { "start": "11:00", "end": "14:00" },
+        "fri": { "start": "11:00", "end": "14:00" }
+      }
+    }
+  ]
+}

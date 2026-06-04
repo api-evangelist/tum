@@ -1,0 +1,50 @@
+vocabulary:
+  name: TUM-Dev Public API Vocabulary
+  description: >-
+    Controlled vocabulary of the key terms and objects exposed by the public,
+    unauthenticated TUM-Dev APIs (NavigaTUM location search and eat-api canteen
+    menus). Terms are drawn directly from the real OpenAPI specifications.
+  version: '1.0'
+  terms:
+    - term: Location
+      definition: >-
+        A resolvable place at TUM - a site, building, room, point of interest,
+        or address - addressable by id via the NavigaTUM API.
+      tags: [navigatum, maps, places]
+    - term: ResultEntry
+      definition: A single search hit returned by NavigaTUM with id, type, name, and subtext.
+      tags: [navigatum, search]
+    - term: ResultsSection
+      definition: >-
+        A grouping of NavigaTUM search results by facet (sites, buildings,
+        rooms, pois, addresses) with visibility and total-hit counts.
+      tags: [navigatum, search, facet]
+    - term: Facet
+      definition: >-
+        The category a NavigaTUM result belongs to; one of sites, buildings,
+        rooms, pois, or addresses.
+      tags: [navigatum, search]
+    - term: Coordinate
+      definition: A geographic latitude/longitude point describing a TUM location.
+      tags: [navigatum, geo]
+    - term: Canteen
+      definition: >-
+        A student food place (Mensa or StuBistro) in or around Munich, with an
+        enum_name, canteen_id, location, and weekly opening hours.
+      tags: [eat-api, food, mensa]
+    - term: CanteenMenu
+      definition: A weekly menu for a canteen, keyed by ISO week number and year.
+      tags: [eat-api, food, menu]
+    - term: Dish
+      definition: A single menu item with a name, dish_type, dietary labels, and prices.
+      tags: [eat-api, food, dish]
+    - term: Prices
+      definition: >-
+        Pricing for a dish broken out for students, staff, and guests, each with
+        a base_price and price_per_unit.
+      tags: [eat-api, pricing]
+    - term: Label
+      definition: >-
+        A dietary or allergen marker on a dish (e.g. VEGETARIAN, GLUTEN, PORK),
+        with an enum_name, text, and abbreviation.
+      tags: [eat-api, allergen, diet]

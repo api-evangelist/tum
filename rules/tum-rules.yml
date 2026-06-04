@@ -1,0 +1,44 @@
+extends: []
+formats:
+  - oas3
+documentationUrl: https://github.com/api-evangelist/tum
+description: >-
+  Spectral ruleset encoding patterns observed across the TUM-Dev public APIs
+  (NavigaTUM and eat-api). Derived from the real OpenAPI specifications.
+rules:
+  tum-info-contact:
+    description: API info object should declare a contact (TUM-Dev specs provide one).
+    severity: warn
+    given: $.info
+    then:
+      field: contact
+      function: truthy
+  tum-info-license:
+    description: API should declare a license (TUM-Dev projects are open source / GPL).
+    severity: warn
+    given: $.info
+    then:
+      field: license
+      function: truthy
+  tum-operation-tags:
+    description: Every operation should carry at least one tag for grouping.
+    severity: warn
+    given: $.paths[*][get,post,put,delete,patch]
+    then:
+      field: tags
+      function: truthy
+  tum-server-https:
+    description: Servers must use HTTPS, as all TUM-Dev public endpoints do.
+    severity: error
+    given: $.servers[*].url
+    then:
+      function: pattern
+      functionOptions:
+        match: "^https://"
+  tum-schemas-typed:
+    description: Component schemas should declare a type.
+    severity: warn
+    given: $.components.schemas[*]
+    then:
+      field: type
+      function: truthy

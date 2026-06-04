@@ -46,6 +46,14 @@ apis:
         url: https://github.com/TUM-Dev/NavigaTUM
       - type: Website
         url: https://nav.tum.de/
+      - type: OpenAPI
+        url: openapi/tum-navigatum.yaml
+      - type: x-json-schema
+        url: json-schema/tum-search-response-schema.json
+      - type: x-json-structure
+        url: json-structure/tum-search-response-structure.json
+      - type: x-example
+        url: examples/tum-search-example.json
   - aid: tum:eat-api
     name: eat-api (Mensa / Canteen API)
     description: >-
@@ -63,6 +71,14 @@ apis:
         url: https://github.com/TUM-Dev/eat-api
       - type: Website
         url: https://tum-dev.github.io/eat-api/
+      - type: OpenAPI
+        url: openapi/tum-eat-api.yaml
+      - type: x-json-schema
+        url: json-schema/tum-canteen-menu-schema.json
+      - type: x-json-structure
+        url: json-structure/tum-canteen-menu-structure.json
+      - type: x-example
+        url: examples/tum-canteen-menu-example.json
   - aid: tum:campus-backend
     name: TUM Campus App Backend (gRPC)
     description: >-
@@ -96,6 +112,12 @@ common:
     url: finops/tum-finops.yml
   - type: Review
     url: review.yml
+  - type: x-vocabulary
+    url: vocabulary/tum-vocabulary.yml
+  - type: x-rules
+    url: rules/tum-rules.yml
+  - type: x-json-ld
+    url: json-ld/tum-context.jsonld
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
