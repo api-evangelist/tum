@@ -1,0 +1,101 @@
+---
+aid: tum
+name: Technical University of Munich
+description: >-
+  The Technical University of Munich (TUM) is a public research university in
+  Munich, Germany, ranked #47 in the QS World University Rankings 2025. TUM does
+  not operate a single centralized, commercial developer portal; instead its
+  most visible public API footprint is community- and student-driven through the
+  TUM-Dev open-source organization on GitHub, which builds and operates the
+  Campus App ecosystem. Confirmed public, unauthenticated APIs include NavigaTUM
+  (a Rust/MeiliSearch service to search rooms, buildings, and places, documented
+  with an OpenAPI 3.0 spec) and eat-api (a static JSON API for Munich student
+  canteen menus and prices). The institution's central research information
+  system, TUMFIS, runs on Elsevier Pure but exposes no documented public API.
+type: Index
+position: Consumer
+access: 3rd-Party
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+url: https://raw.githubusercontent.com/api-evangelist/tum/refs/heads/main/apis.yml
+tags:
+  - Education
+  - Higher Education
+  - University
+  - Germany
+  - Open Source
+  - Campus
+  - Open Data
+created: '2026-06-03'
+modified: '2026-06-03'
+specificationVersion: '0.19'
+apis:
+  - aid: tum:navigatum
+    name: NavigaTUM API
+    description: >-
+      Public API to search for and resolve rooms, buildings, and other places
+      across TUM campuses. Written in Rust with a MeiliSearch backend and
+      documented via an OpenAPI 3.0 specification. The /api/search endpoint is
+      live and returns JSON without authentication.
+    humanURL: https://github.com/TUM-Dev/NavigaTUM
+    baseURL: https://nav.tum.de/api
+    tags: [ Search, Maps, Buildings, Rooms, Campus, OpenAPI ]
+    properties:
+      - type: Documentation
+        url: https://github.com/TUM-Dev/NavigaTUM/blob/main/server/README.md
+      - type: GitHub
+        url: https://github.com/TUM-Dev/NavigaTUM
+      - type: Website
+        url: https://nav.tum.de/
+  - aid: tum:eat-api
+    name: eat-api (Mensa / Canteen API)
+    description: >-
+      Simple static JSON API for student food places (Mensa/StuBistro) in and
+      around Munich, providing daily dish names and prices per canteen, year,
+      and ISO week. Served as static JSON files via GitHub Pages and consumed by
+      the TUM Campus App.
+    humanURL: https://github.com/TUM-Dev/eat-api
+    baseURL: https://tum-dev.github.io/eat-api
+    tags: [ Food, Mensa, Canteen, Static API, JSON ]
+    properties:
+      - type: Documentation
+        url: https://github.com/TUM-Dev/eat-api
+      - type: GitHub
+        url: https://github.com/TUM-Dev/eat-api
+      - type: Website
+        url: https://tum-dev.github.io/eat-api/
+  - aid: tum:campus-backend
+    name: TUM Campus App Backend (gRPC)
+    description: >-
+      Backend for the TUM Campus App, written in Go and exposing a gRPC API
+      interface used by the official cross-platform (Flutter/Dart) campus
+      clients. Source is public; the production endpoint is used by the apps
+      rather than offered as an openly documented third-party API.
+    humanURL: https://github.com/TUM-Dev/Campus-Backend
+    tags: [ Campus, gRPC, Mobile Backend, Go ]
+    properties:
+      - type: Documentation
+        url: https://github.com/TUM-Dev/Campus-Backend
+      - type: GitHub
+        url: https://github.com/TUM-Dev/Campus-Backend
+common:
+  - type: Website
+    url: https://www.tum.de/en/
+  - type: GitHub
+    url: https://github.com/TUM-Dev
+  - type: DeveloperPortal
+    url: https://www.tum.dev/
+  - type: LinkedIn
+    url: https://www.linkedin.com/school/technische-universitat-munchen/
+  - type: SourceCode
+    url: https://github.com/TUM-Dev
+  - type: Plans
+    url: plans/tum-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/tum-rate-limits.yml
+  - type: FinOps
+    url: finops/tum-finops.yml
+  - type: Review
+    url: review.yml
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

@@ -1,0 +1,53 @@
+---
+name: Technical University of Munich
+description: Technical University of Munich public developer/API footprint review for APIs.json cataloging.
+url: https://raw.githubusercontent.com/api-evangelist/tum/refs/heads/main/review.yml
+created: '2026-06-03'
+modified: '2026-06-03'
+reviews:
+  - date: '2026-06-03'
+    rating: 3
+    summary: >-
+      TUM has no single central commercial developer portal. Its public API
+      footprint is real but community/student-driven via the TUM-Dev GitHub
+      organization. I verified NavigaTUM's live /api/search endpoint returns
+      JSON without auth, and eat-api serves live static canteen JSON. The
+      Campus-Backend (gRPC) is open source but operated for the apps rather than
+      documented for third parties. TUMFIS runs on Elsevier Pure but exposes no
+      documented public API. No endpoints were fabricated; the /api/get/{id}
+      direct probe returned 404 (path requires a valid resolvable id), so only
+      confirmed-working URLs are rated as live.
+    endpoints:
+      - url: https://nav.tum.de/api/search?q=mi
+        status: 200
+        note: NavigaTUM search API live, returns JSON results for buildings/rooms.
+      - url: https://nav.tum.de/
+        status: 200
+        note: NavigaTUM website live.
+      - url: https://tum-dev.github.io/eat-api/mensa-garching/2024/20.json
+        status: 200
+        note: eat-api static canteen JSON live with dish names and prices.
+      - url: https://tum-dev.github.io/eat-api/
+        status: 200
+        note: eat-api documentation/index page live.
+      - url: https://github.com/TUM-Dev
+        status: 200
+        note: TUM-Dev open-source org hosting NavigaTUM, eat-api, Campus-Backend.
+      - url: https://github.com/TUM-Dev/NavigaTUM
+        status: 200
+        note: NavigaTUM repo with OpenAPI 3.0 spec and server README.
+      - url: https://github.com/TUM-Dev/eat-api
+        status: 200
+        note: eat-api repo with usage documentation.
+      - url: https://www.tum.dev/
+        status: 200
+        note: TUM-Dev university group landing page.
+      - url: https://www.tum.de/en/
+        status: 200
+        note: Official institutional website.
+      - url: https://portal.fis.tum.de/
+        status: 200
+        note: TUMFIS research information system (Elsevier Pure); no public API documented.
+      - url: https://nav.tum.de/api/get/root
+        status: 404
+        note: Direct get path 404 without a valid resolvable entity id; not cataloged as a live endpoint.
