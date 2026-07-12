@@ -94,6 +94,10 @@ apis:
       - type: GitHub
         url: https://github.com/TUM-Dev/Campus-Backend
 common:
+  - type: VulnerabilityDisclosure
+    url: security/tum-vulnerability-disclosure.yml
+  - type: DomainSecurity
+    url: security/tum-domain-security.yml
   - type: Website
     url: https://www.tum.de/en/
   - type: GitHub
