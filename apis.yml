@@ -94,6 +94,8 @@ apis:
       - type: GitHub
         url: https://github.com/TUM-Dev/Campus-Backend
 common:
+  - type: AgenticAccess
+    url: agentic-access/tum-agentic-access.yml
   - type: VulnerabilityDisclosure
     url: security/tum-vulnerability-disclosure.yml
   - type: DomainSecurity
