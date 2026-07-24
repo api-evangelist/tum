@@ -1,0 +1,45 @@
+openapi: 3.0.1
+info:
+  title: eat-api calendar Status API
+  version: '2.1'
+  description: Simple static API for some (student) food places in Munich.
+servers:
+- url: https://tum-dev.github.io/eat-api/{language}
+  variables:
+    language:
+      description: For localization the base path may have to be extended by the language.
+      default: ''
+      enum:
+      - ''
+      - en/
+tags:
+- name: Status
+paths:
+  /api/status:
+    get:
+      summary: API healthcheck
+      description: 'If this endpoint does not return 200, the API is experiencing a catastrophic outage.
+
+        **Should never happen.**'
+      operationId: health_status_handler
+      responses:
+        '200':
+          description: API is **healthy**
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: 'healthy
+
+                source_code: https://github.com/TUM-Dev/navigatum/tree/{hash}'
+        '503':
+          description: API is **NOT healthy**
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: 'unhealthy
+
+                source_code: https://github.com/TUM-Dev/navigatum/tree/{hash}'
+      tags:
+      - Status

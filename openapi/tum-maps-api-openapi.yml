@@ -1,0 +1,1189 @@
+openapi: 3.0.1
+info:
+  title: eat-api calendar maps API
+  version: '2.1'
+  description: Simple static API for some (student) food places in Munich.
+servers:
+- url: https://tum-dev.github.io/eat-api/{language}
+  variables:
+    language:
+      description: For localization the base path may have to be extended by the language.
+      default: ''
+      enum:
+      - ''
+      - en/
+tags:
+- name: maps
+  description: API to access for map-data
+paths:
+  /api/maps/route:
+    get:
+      tags:
+      - maps
+      summary: Routing requests
+      description: "**API IS EXPERIMENTAL AND ACTIVELY SUBJECT TO CHANGE**\n\nThe user specifies using provided origin (`from`) and destination (`to`) locations and a transport mode (`route_costing`) to tune their routing between the two locations.\nThe costing is fine-tuned by the server side accordingly.\n\nInternally, this endpoint relies on\n- [Valhalla](https://github.com/valhalla/valhalla) for routing for route calculation\n- our database to resolve ids.\n\n  You will need to look the ids up via [`/api/search`](#tag/locations/operation/search_handler) beforehand.\n  **Note:** [`/api/search`](#tag/locations/operation/search_handler) does support both university internal routing and external addressing.\n\n**In the future (i.e. public transit routing currently is not implemented)**, it will als rely on either\n- [OpenTripPlanner2](https://www.opentripplanner.org/) or\n- [Motis](https://github.com/motis-project/motis)"
+      operationId: route_handler
+      parameters:
+      - name: lang
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - de
+          - en
+      - name: from
+        in: query
+        description: Start of the route
+        required: true
+        schema:
+          oneOf:
+          - $ref: '#/components/schemas/Coordinate'
+            description: 'Either an
+
+              - external address which was looked up or
+
+              - the users current location'
+          - type: string
+            description: Our (uni internal) key for location identification
+      - name: to
+        in: query
+        description: Destination of the route
+        required: true
+        schema:
+          oneOf:
+          - $ref: '#/components/schemas/Coordinate'
+            description: 'Either an
+
+              - external address which was looked up or
+
+              - the users current location'
+          - type: string
+            description: Our (uni internal) key for location identification
+      - name: route_costing
+        in: query
+        description: 'Transport mode the user wants to use
+
+
+          If not specified, the default is based on how far the destinations are apart and requested time.'
+        required: false
+        schema:
+          oneOf:
+          - type: 'null'
+          - type: string
+            description: Transport mode the user wants to use
+            enum:
+            - pedestrian
+            - bicycle
+            - motorcycle
+            - car
+            - public_transit
+      - name: pedestrian_type
+        in: query
+        description: Does the user have specific walking restrictions?
+        required: false
+        schema:
+          type: string
+          description: Does the user have specific walking needs?
+          enum:
+          - standard
+          - blind
+          - wheelchair
+      - name: ptw_type
+        in: query
+        description: Does the user prefer mopeds or motorcycles for powered two-wheeled (ptw)?
+        required: false
+        schema:
+          type: string
+          description: Does the user have a moped or motorcycle
+          enum:
+          - motorcycle
+          - moped
+      - name: bicycle_type
+        in: query
+        description: Which kind of bicycle do you ride?
+        required: false
+        schema:
+          type: string
+          description: Which kind of bicycle do you ride?
+          enum:
+          - road
+          - hybrid
+          - cross
+          - mountain
+      - name: page_cursor
+        in: query
+        description: 'Cursor position for pagination
+
+          Only avaliable for some costings'
+        required: false
+        schema:
+          type: string
+          nullable: true
+      - name: time
+        in: query
+        description: 'Time for the route (ISO 8601 format)
+
+          Used with `arrive_by` to determine if this is departure or arrival time'
+        required: false
+        schema:
+          type: string
+          format: date-time
+          nullable: true
+      - name: arrive_by
+        in: query
+        description: Whether the time parameter represents arrival time (true) or departure time (false/not set)
+        required: false
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: '**Routing solution**'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoutingResponse'
+        '404':
+          description: '**Not found.** The requested location does not exist'
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: Not found
+components:
+  schemas:
+    ValhallaRoutingResponse:
+      type: object
+      required:
+      - legs
+      - summary
+      properties:
+        legs:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValhallaLegResponse'
+          description: 'A trip contains one (or more) legs.
+
+
+            A leg is created when routing stops, which currently only happens at the ends (`from`, `to`).'
+          maxItems: 1
+          minItems: 1
+        summary:
+          $ref: '#/components/schemas/SummaryResponse'
+          description: Trip summary
+    RentalResponse:
+      type: object
+      required:
+      - system_id
+      properties:
+        form_factor:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/RentalFormFactorResponse'
+        from_station_name:
+          type: string
+          description: "Name of the station where the vehicle is picked up (empty for free\n floating vehicles)"
+          nullable: true
+        rental_uri_android:
+          type: string
+          description: "Rental URI for Android (deep link to the specific station or\n vehicle)"
+          nullable: true
+        rental_uri_ios:
+          type: string
+          description: Rental URI for iOS (deep link to the specific station or vehicle)
+          nullable: true
+        rental_uri_web:
+          type: string
+          description: Rental URI for web (deep link to the specific station or vehicle)
+          nullable: true
+        station_name:
+          type: string
+          description: Name of the station
+          nullable: true
+        system_id:
+          type: string
+          description: Vehicle share system ID
+        system_name:
+          type: string
+          description: Vehicle share system name
+          nullable: true
+        to_station_name:
+          type: string
+          description: "Name of the station where the vehicle is returned (empty for free\n floating vehicles)"
+          nullable: true
+        url:
+          type: string
+          description: URL of the vehicle share system
+          nullable: true
+    Coordinate:
+      type: object
+      required:
+      - lat
+      - lon
+      properties:
+        lat:
+          type: number
+          format: double
+          description: Latitude
+          example: 48.26244490906312
+        lon:
+          type: number
+          format: double
+          description: Longitude
+          example: 48.26244490906312
+    StepInstructionResponse:
+      type: object
+      required:
+      - area
+      - distance
+      - exit
+      - from_level
+      - polyline
+      - relative_direction
+      - stay_on
+      - street_name
+      - to_level
+      properties:
+        access_restriction:
+          type: string
+          description: 'Experimental. Indicates whether access to this part of the route is
+
+            restricted.
+
+            See: <https://wiki.openstreetmap.org/wiki/Conditional_restrictions>'
+          nullable: true
+        area:
+          type: boolean
+          description: 'Not implemented!
+
+            This step is on an open area, such as a plaza or train platform,
+
+            and thus the directions should say something like "cross"'
+        distance:
+          type: number
+          format: double
+        elevation_down:
+          type: integer
+          format: int64
+          description: decline in meters across this path segment
+          nullable: true
+        elevation_up:
+          type: integer
+          format: int64
+          description: incline in meters across this path segment
+          nullable: true
+        exit:
+          type: string
+          description: 'Not implemented!
+
+            When exiting a highway or traffic circle, the exit name/number.'
+        from_level:
+          type: number
+          format: double
+        osm_way:
+          type: integer
+          format: int64
+          description: OpenStreetMap way index
+          nullable: true
+        polyline:
+          type: string
+          description: Polyline geometry (precision 6) of the leg.
+        relative_direction:
+          $ref: '#/components/schemas/DirectionResponse'
+        stay_on:
+          type: boolean
+          description: "Indicates whether or not a street changes direction at an\n intersection."
+        street_name:
+          type: string
+          description: The name of the street.
+        to_level:
+          type: number
+          format: double
+        toll:
+          type: boolean
+          description: "Indicates that a fee must be paid by general traffic to use a road,\n road bridge or road tunnel."
+          nullable: true
+    AlertResponse:
+      type: object
+      required:
+      - description_text
+      - header_text
+      properties:
+        cause:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/AlertCauseResponse'
+        cause_detail:
+          type: string
+          description: "Description of the cause of the alert that allows for\n agency-specific language; more specific than the Cause."
+          nullable: true
+        description_text:
+          type: string
+          description: "Description for the alert.\nThis plain-text string will be formatted as the body of the alert\n (or shown on an explicit \"expand\" request by the user).\n The information in the description should add to the information of\n the header."
+        effect:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/AlertEffectResponse'
+        effect_detail:
+          type: string
+          description: "Description of the effect of the alert that allows for\n agency-specific language; more specific than the Effect."
+          nullable: true
+        header_text:
+          type: string
+          description: "Header for the alert. This plain-text string will be highlighted,\n for example in boldface."
+        image_alternative_text:
+          type: string
+          description: "Text describing the appearance of the linked image in the image\n field (e.g., in case the image can't be displayed or the\n user can't see the image for accessibility reasons). See the\n HTML spec for alt image text."
+          nullable: true
+        image_media_type:
+          type: string
+          description: "IANA media type as to specify the type of image to be displayed. The\n type must start with \"image/\""
+          nullable: true
+        image_url:
+          type: string
+          description: String containing an URL linking to an image.
+          nullable: true
+        severity_level:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/AlertSeverityLevelResponse'
+        url:
+          type: string
+          description: The URL which provides additional information about the alert.
+          nullable: true
+    VertexTypeResponse:
+      type: string
+      enum:
+      - normal
+      - bikeshare
+      - transit
+    RoutingResponse:
+      oneOf:
+      - allOf:
+        - $ref: '#/components/schemas/ValhallaRoutingResponse'
+        - type: object
+          required:
+          - router
+          properties:
+            router:
+              type: string
+              enum:
+              - valhalla
+      - allOf:
+        - $ref: '#/components/schemas/MotisRoutingResponse'
+        - type: object
+          required:
+          - router
+          properties:
+            router:
+              type: string
+              enum:
+              - motis
+    SummaryResponse:
+      type: object
+      required:
+      - time_seconds
+      - length_meters
+      - has_toll
+      - has_highway
+      - has_ferry
+      - min_lat
+      - min_lon
+      - max_lat
+      - max_lon
+      properties:
+        has_ferry:
+          type: boolean
+          description: if the path uses one or more ferry segments
+        has_highway:
+          type: boolean
+          description: If the path uses one or more highway segments
+        has_toll:
+          type: boolean
+          description: If the path uses one or more toll segments
+        length_meters:
+          type: number
+          format: double
+          description: Distance traveled in meters
+          example: 103.01
+        max_lat:
+          type: number
+          format: double
+          description: Maximum latitude of the sections bounding box
+          example: 48.26244490906312
+        max_lon:
+          type: number
+          format: double
+          description: Maximum longitude of the sections bounding box
+          example: 48.26244490906312
+        min_lat:
+          type: number
+          format: double
+          description: Minimum latitude of the sections bounding box
+          example: 48.26244490906312
+        min_lon:
+          type: number
+          format: double
+          description: Minimum longitude of the sections bounding box
+          example: 48.26244490906312
+        time_seconds:
+          type: number
+          format: double
+          description: Estimated elapsed time in seconds
+          example: 201.025
+    TravelModeResponse:
+      type: string
+      enum:
+      - drive
+      - pedestrian
+      - bicycle
+      - public_transit
+    AlertCauseResponse:
+      type: string
+      enum:
+      - unknown_cause
+      - other_cause
+      - technical_problem
+      - strike
+      - demonstration
+      - accident
+      - holiday
+      - weather
+      - maintenance
+      - construction
+      - police_activity
+      - medical_emergency
+    AlertSeverityLevelResponse:
+      type: string
+      enum:
+      - unknown
+      - info
+      - warning
+      - severe
+    TransitStopTypeResponse:
+      type: string
+      enum:
+      - stop
+      - station
+    TransitInfoResponse:
+      type: object
+      required:
+      - onestop_id
+      - short_name
+      - long_name
+      - headsign
+      - color
+      - text_color
+      - description
+      - operator_onestop_id
+      - operator_name
+      - operator_url
+      - transit_stops
+      properties:
+        color:
+          type: integer
+          format: int32
+          description: 'The numeric color value associated with a transit route
+
+
+            The value for yellow would be `16567306`'
+          examples:
+          - 16567306
+        description:
+          type: string
+          description: The description of the transit route
+          examples:
+          - 'Trains operate from Ditmars Boulevard, Queens, to Stillwell Avenue, Brooklyn, at all times
+
+            N trains in Manhattan operate along Broadway and across the Manhattan Bridge to and from Brooklyn.
+
+            Trains in Brooklyn operate along 4th Avenue, then through Borough Park to Gravesend.
+
+            Trains typically operate local in Queens, and either express or local in Manhattan and Brooklyn,
+
+            depending on the time. Late night trains operate via Whitehall Street, Manhattan.
+
+            Late night service is local'
+        headsign:
+          type: string
+          description: The sign on a public transport vehicle that identifies the route destination to passengers
+          examples:
+          - ASTORIA - DITMARS BLVD
+        long_name:
+          type: string
+          description: Long name describing the transit route
+          examples:
+          - Broadway Express
+        onestop_id:
+          type: string
+          description: 'Global transit route identifier
+
+
+            **Tipp:** you use these as feed-ids in transitland.
+
+            Example: <https://www.transit.land/feeds/f-9q9-bart>'
+          examples:
+          - f-9q9-bart
+          - f-zeus~schwäbisch~gmünd~gbfs
+        operator_name:
+          type: string
+          description: 'Operator/agency name
+
+
+            Short name is used over long name'
+          examples:
+          - BART
+          - King County Marine Division
+          - Münchner Verkehrs- und Tarifverbund (MVV)
+        operator_onestop_id:
+          type: string
+          description: 'Global operator/agency identifier
+
+
+            **Tipp:** you use these as feed-ids in transitland.
+
+            Example: <https://www.transit.land/feeds/o-u281z9-mvv>'
+          examples:
+          - o-u281z9-mvv
+        operator_url:
+          type: string
+          description: Operator/agency URL
+          examples:
+          - http://web.mta.info/
+          - http://www.mvv-muenchen.de/
+        short_name:
+          type: string
+          description: Short name describing the transit route
+          examples:
+          - N
+        text_color:
+          type: string
+          description: 'The numeric text color value associated with a transit route
+
+
+            The value for black would be `0`'
+          examples:
+          - 0
+        transit_stops:
+          type: array
+          items:
+            $ref: '#/components/schemas/TransitStopResponse'
+          description: A list of the stops/stations associated with a specific transit route
+    RentalFormFactorResponse:
+      type: string
+      enum:
+      - bicycle
+      - cargo_bicycle
+      - car
+      - moped
+      - scooter_standing
+      - scooter_seated
+      - other
+    TransitStopResponse:
+      type: object
+      required:
+      - type
+      - name
+      - arrival_date_time
+      - departure_date_time
+      - is_parent_stop
+      - assumed_schedule
+      - lat
+      - lon
+      properties:
+        arrival_date_time:
+          type: string
+          format: date-time
+          description: Arrival date and time
+        assumed_schedule:
+          type: boolean
+          description: '`true` if the times are based on an assumed schedule because the actual schedule is not known'
+        departure_date_time:
+          type: string
+          format: date-time
+          description: Departure date and time
+        is_parent_stop:
+          type: boolean
+          description: '`true` if this stop is a marked as a parent stop'
+        lat:
+          type: number
+          format: double
+          description: Latitude of the transit stop in degrees
+          example: 48.26244490906312
+        lon:
+          type: number
+          format: double
+          description: Longitude of the transit stop in degrees
+          example: 48.26244490906312
+        name:
+          type: string
+          description: Name of the stop or station
+          examples:
+          - 14 St - Union Sq
+        type:
+          $ref: '#/components/schemas/TransitStopTypeResponse'
+    DirectionResponse:
+      type: string
+      enum:
+      - depart
+      - hard_left
+      - left
+      - slightly_left
+      - continue
+      - slightly_right
+      - right
+      - hard_right
+      - circle_clockwise
+      - circle_counterclockwise
+      - stairs
+      - elevator
+      - uturn_left
+      - uturn_right
+    ModeResponse:
+      type: string
+      enum:
+      - walk
+      - bike
+      - rental
+      - car
+      - car_parking
+      - car_dropoff
+      - odm
+      - flex
+      - transit
+      - tram
+      - subway
+      - ferry
+      - airplane
+      - metro
+      - bus
+      - coach
+      - rail
+      - highspeed_rail
+      - long_distance
+      - night_rail
+      - regional_fast_rail
+      - regional_rail
+      - cable_car
+      - funicular
+      - areal_lift
+      - other
+    MotisLegResponse:
+      type: object
+      required:
+      - duration
+      - end_time
+      - from
+      - to
+      - leg_geometry
+      - mode
+      - real_time
+      - scheduled
+      - route_color
+      - route_text_color
+      - scheduled_end_time
+      - scheduled_start_time
+      - start_time
+      properties:
+        agency_id:
+          type: string
+          description: Identifies a transit brand which is often synonymous with a transit agency.
+          nullable: true
+        agency_name:
+          type: string
+          description: Full name of the transit agency
+          nullable: true
+        agency_url:
+          type: string
+          description: URL of the transit agency
+          nullable: true
+        alerts:
+          type: array
+          items:
+            $ref: '#/components/schemas/AlertResponse'
+          description: Alerts for this stop.
+        cancelled:
+          type: boolean
+          description: Whether this trip is cancelled
+          nullable: true
+        distance:
+          type: number
+          format: double
+          description: Distance in meters
+          nullable: true
+        duration:
+          type: integer
+          format: int64
+          description: "Leg duration in seconds\n\nIf leg is footpath:\n  The footpath duration is derived from the default footpath\n  duration using the query parameters `transferTimeFactor` and\n  `additionalTransferTime` as follows:\n  `leg.duration = defaultDuration * transferTimeFactor +\n additionalTransferTime.`  In case the defaultDuration is\n needed, it can be calculated by  `defaultDuration =\n (leg.duration - additionalTransferTime) / transferTimeFactor`.\n  Note that the default values are `transferTimeFactor = 1` and\n  `additionalTransferTime = 0` in case they are not explicitly\n  provided in the query."
+        end_time:
+          type: string
+          format: date-time
+          description: leg arrival time
+        from:
+          $ref: '#/components/schemas/PlaceResponse'
+        headsign:
+          type: string
+          description: 'For transit legs, the headsign of the bus or train being used.
+
+            For non-transit legs, null'
+          nullable: true
+        interline_with_previous_leg:
+          type: boolean
+          description: "For transit legs, if the rider should stay on the vehicle as it\n changes route names."
+          nullable: true
+        intermediate_stops:
+          type: array
+          items:
+            $ref: '#/components/schemas/PlaceResponse'
+          description: "For transit legs, intermediate stops between the Place where the leg\n originates and the Place where the leg ends. For non-transit\n legs, null."
+        leg_geometry:
+          type: string
+          description: Polyline geometry (precision 6) of the leg.
+        mode:
+          $ref: '#/components/schemas/ModeResponse'
+        real_time:
+          type: boolean
+          description: Whether there is real-time data about this leg
+        rental:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/RentalResponse'
+        route_color:
+          type: string
+          description: 'Route color designation that matches public facing material.
+
+
+            Implementations should default to white (FFFFFF) when omitted or left empty.
+
+            The color difference between `route_color` and `route_text_color` should provide sufficient contrast when viewed on a black and white screen.'
+        route_short_name:
+          type: string
+          description: 'Short name of a route.
+
+
+            Often a short, abstract identifier (e.g., "32", "100X", "Green") that riders use to identify a route'
+          nullable: true
+        route_text_color:
+          type: string
+          description: 'Legible color to use for text drawn against a background of `route_color`.
+
+
+            Implementations should default to black (000000) when omitted or left empty.
+
+            The color difference between `route_color` and `route_text_color` should provide sufficient contrast when viewed on a black and white screen.'
+        route_type:
+          type: integer
+          format: int64
+          description: 'Indicates the type of transportation used on a route.
+
+
+            According to <https://gtfs.org/reference/static/#routestxt> `route_type` Valid options are:
+
+
+            -  0: Tram, Streetcar, Light rail. Any light rail or street level system within a metropolitan area.
+
+            -  1: Subway, Metro. Any underground rail system within a metropolitan area.
+
+            -  2: Rail. Used for intercity or long-distance travel.
+
+            -  3: Bus. Used for short- and long-distance bus routes.
+
+            -  4: Ferry. Used for short- and long-distance boat service.
+
+            -  5: Cable tram. Used for street-level rail cars where the cable runs beneath the vehicle (e.g., cable car in San Francisco).
+
+            -  6: Aerial lift, suspended cable car (e.g., gondola lift, aerial tramway). Cable transport where cabins, cars, gondolas or open chairs are suspended by means of one or more cables.
+
+            -  7: Funicular. Any rail system designed for steep inclines.
+
+            - 11: Trolleybus. Electric buses that draw power from overhead wires using poles.
+
+            - 12: Monorail. Railway in which the track consists of a single rail or a beam.'
+          nullable: true
+        scheduled:
+          type: boolean
+          description: "Whether this leg was originally scheduled to run or is an additional\n service.\n Scheduled times will equal realtime times in this case."
+        scheduled_end_time:
+          type: string
+          format: date-time
+          description: scheduled leg arrival time
+        scheduled_start_time:
+          type: string
+          format: date-time
+          description: scheduled leg departure time
+        source:
+          type: string
+          description: Filename and line number where this trip is from
+          nullable: true
+        start_time:
+          type: string
+          format: date-time
+          description: leg departure time
+        steps:
+          type: array
+          items:
+            $ref: '#/components/schemas/StepInstructionResponse'
+          description: 'A series of turn by turn instructions
+
+            used for walking, biking and driving.'
+        to:
+          $ref: '#/components/schemas/PlaceResponse'
+        trip_id:
+          type: string
+          description: Identifies a trip
+          nullable: true
+    PlaceResponse:
+      type: object
+      required:
+      - lat
+      - level
+      - lon
+      - name
+      properties:
+        alerts:
+          type: array
+          items:
+            $ref: '#/components/schemas/AlertResponse'
+          description: Alerts for this stop.
+        arrival:
+          type: string
+          format: date-time
+          description: arrival time
+          nullable: true
+        cancelled:
+          type: boolean
+          description: Whether this stop is cancelled due to the realtime situation
+          nullable: true
+        departure:
+          type: string
+          format: date-time
+          description: departure time
+          nullable: true
+        description:
+          type: string
+          description: description of the location that provides more detailed information
+          nullable: true
+        lat:
+          type: number
+          format: double
+        level:
+          type: number
+          format: double
+        lon:
+          type: number
+          format: double
+        name:
+          type: string
+          description: name of the transit stop / `PoI` / address
+        scheduled_arrival:
+          type: string
+          format: date-time
+          description: scheduled arrival time
+          nullable: true
+        scheduled_departure:
+          type: string
+          format: date-time
+          description: scheduled departure time
+          nullable: true
+        scheduled_track:
+          type: string
+          description: scheduled track from the static schedule timetable dataset
+          nullable: true
+        stop_id:
+          type: string
+          description: "The ID of the stop. This is often something that users don't care\n about."
+          nullable: true
+        track:
+          type: string
+          description: "The current track/platform information, updated with real-time\n updates if available. Can be missing if neither real-time\n updates nor the schedule timetable contains track information."
+          nullable: true
+        vertex_type:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/VertexTypeResponse'
+    ValhallaLegResponse:
+      type: object
+      required:
+      - summary
+      - maneuvers
+      - shape
+      properties:
+        maneuvers:
+          type: array
+          items:
+            $ref: '#/components/schemas/ManeuverResponse'
+        shape:
+          type: array
+          items:
+            $ref: '#/components/schemas/Coordinate'
+        summary:
+          $ref: '#/components/schemas/SummaryResponse'
+    ManeuverResponse:
+      type: object
+      required:
+      - type
+      - instruction
+      - time_seconds
+      - length_meters
+      - begin_shape_index
+      - end_shape_index
+      - travel_mode
+      properties:
+        arrive_instruction:
+          type: string
+          description: 'Written arrive time instruction
+
+
+            Typically used with a transit maneuver'
+          examples:
+          - 'Arrive: 8:10 AM at 34 St - Herald Sq'
+          nullable: true
+        begin_shape_index:
+          type: integer
+          description: Index into the list of shape points for the start of the maneuver
+          example: 0
+          minimum: 0
+        begin_street_names:
+          type: array
+          items:
+            type: string
+            examples:
+            - - Josef Fischaber Straße
+          description: 'When present, these are the street names at the beginning (transition point) of the
+
+            nonobvious maneuver (if they are different from the names that are consistent along the
+
+            entire nonobvious maneuver)'
+          nullable: true
+        depart_instruction:
+          type: string
+          description: 'Written depart time instruction
+
+
+            Typically used with a transit maneuver'
+          examples:
+          - 'Depart: 8:04 AM from 8 St - NYU'
+          nullable: true
+        end_shape_index:
+          type: integer
+          description: Index into the list of shape points for the end of the maneuver
+          example: 3
+          minimum: 0
+        ferry:
+          type: boolean
+          description: '`true` if a ferry is encountered on this maneuver'
+          nullable: true
+        gate:
+          type: boolean
+          description: '`true` if a gate is encountered on this maneuver'
+          nullable: true
+        highway:
+          type: boolean
+          description: '`true` if a highway is encountered on this maneuver'
+          nullable: true
+        instruction:
+          type: string
+        length_meters:
+          type: number
+          format: double
+          description: Maneuver length in meters
+          example: 103.01
+        rough:
+          type: boolean
+          description: '`true` if the maneuver is unpaved or rough pavement, or has any portions that have rough
+
+            pavement'
+          nullable: true
+        roundabout_exit_count:
+          type: integer
+          format: int64
+          description: The spoke to exit roundabout after entering
+          example: 2
+          nullable: true
+        street_names:
+          type: array
+          items:
+            type: string
+            examples:
+            - - Münchnerstraße
+          description: List of street names that are consistent along the entire nonobvious maneuver
+          nullable: true
+        time_seconds:
+          type: number
+          format: double
+          description: Estimated time along the maneuver in seconds
+          example: 201.025
+        toll:
+          type: boolean
+          description: '`true` if a toll booth is encountered on this maneuver'
+          nullable: true
+        transit_info:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/TransitInfoResponse'
+            description: Contains the attributes that describe a specific transit route
+        travel_mode:
+          $ref: '#/components/schemas/TravelModeResponse'
+          description: Travel mode
+        type:
+          $ref: '#/components/schemas/ManeuverTypeResponse'
+        verbal_arrive_instruction:
+          type: string
+          description: 'Text suitable for use as a verbal arrive time instruction
+
+
+            Typically used with a transit maneuver'
+          examples:
+          - Arrive at 8:10 AM at 34 St - Herald Sq
+          nullable: true
+        verbal_depart_instruction:
+          type: string
+          description: 'Text suitable for use as a verbal depart time instruction
+
+
+            Typically used with a transit maneuver'
+          examples:
+          - Depart at 8:04 AM from 8 St - NYU
+          nullable: true
+        verbal_multi_cue:
+          type: boolean
+          description: '`true` if `verbal_pre_transition_instruction` has been appended with
+
+            the verbal instruction of the next maneuver'
+          nullable: true
+        verbal_post_transition_instruction:
+          type: string
+          description: Text suitable for use as a verbal message immediately after the maneuver transition
+          examples:
+          - Continue on U.S. 2 22 for 3.9 miles
+          nullable: true
+        verbal_pre_transition_instruction:
+          type: string
+          description: Text suitable for use as a verbal message immediately prior to the maneuver transition
+          examples:
+          - Turn right onto North Prince Street, U.S. 2 22
+          nullable: true
+        verbal_transition_alert_instruction:
+          type: string
+          description: 'Text suitable for use as a verbal alert in a navigation application
+
+
+            The transition alert instruction will prepare the user for the forthcoming transition'
+          examples:
+          - Turn right onto North Prince Street
+          nullable: true
+    ManeuverTypeResponse:
+      type: string
+      enum:
+      - none
+      - start
+      - start_right
+      - start_left
+      - destination
+      - destination_right
+      - destination_left
+      - becomes
+      - continue
+      - slight_right
+      - right
+      - sharp_right
+      - uturn_right
+      - uturn_left
+      - sharp_left
+      - left
+      - slight_left
+      - ramp_straight
+      - ramp_right
+      - ramp_left
+      - exit_right
+      - exit_left
+      - stay_straight
+      - stay_right
+      - stay_left
+      - merge
+      - roundabout_enter
+      - roundabout_exit
+      - ferry_enter
+      - ferry_exit
+      - transit
+      - transit_transfer
+      - transit_remain_on
+      - transit_connection_start
+      - transit_connection_transfer
+      - transit_connection_destination
+      - post_transit_connection_destination
+      - merge_right
+      - merge_left
+      - elevator_enter
+      - steps_enter
+      - escalator_enter
+      - building_enter
+      - building_exit
+    ItineraryResponse:
+      type: object
+      required:
+      - duration
+      - end_time
+      - legs
+      - start_time
+      - transfer_count
+      properties:
+        duration:
+          type: integer
+          format: int64
+          description: journey duration in seconds
+        end_time:
+          type: string
+          format: date-time
+          description: journey arrival time
+        legs:
+          type: array
+          items:
+            $ref: '#/components/schemas/MotisLegResponse'
+          description: Journey legs
+        start_time:
+          type: string
+          format: date-time
+          description: journey departure time
+        transfer_count:
+          type: integer
+          format: int64
+          description: The number of transfers this trip has.
+    AlertEffectResponse:
+      type: string
+      enum:
+      - no_service
+      - reduced_service
+      - significant_delays
+      - detour
+      - additional_service
+      - modified_service
+      - other_effect
+      - unknown_effect
+      - stop_moved
+      - no_effect
+      - accessibility_issue
+    MotisRoutingResponse:
+      type: object
+      required:
+      - direct
+      - itineraries
+      - next_page_cursor
+      - previous_page_cursor
+      properties:
+        direct:
+          type: array
+          items:
+            $ref: '#/components/schemas/ItineraryResponse'
+          description: "Direct trips by `WALK`, `BIKE`, `CAR`, etc. without time-dependency.\n\n The starting time (`arriveBy=false`) / arrival time\n (`arriveBy=true`) is always the queried `time` parameter (set to\n \"now\" if not set). But all `direct` connections are meant\n to be independent of absolute times."
+        itineraries:
+          type: array
+          items:
+            $ref: '#/components/schemas/ItineraryResponse'
+          description: list of itineraries
+        next_page_cursor:
+          type: string
+          description: "Use the cursor to get the next page of results.\n\nInsert the cursor\n into the request and post it to get the next page.\n The next page is a set of itineraries departing AFTER the last\n itinerary in this result."
+        previous_page_cursor:
+          type: string
+          description: "Use the cursor to get the previous page of results. Insert the\n cursor into the request and post it to get the previous page.\n The previous page is a set of itineraries departing BEFORE the first\n itinerary in the result for a depart after search. When using the\n default sort order the previous set of itineraries is inserted\n before the current result."

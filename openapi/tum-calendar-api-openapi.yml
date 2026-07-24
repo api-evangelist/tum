@@ -1,0 +1,270 @@
+openapi: 3.0.1
+info:
+  title: eat-api calendar API
+  version: '2.1'
+  description: Simple static API for some (student) food places in Munich.
+servers:
+- url: https://tum-dev.github.io/eat-api/{language}
+  variables:
+    language:
+      description: For localization the base path may have to be extended by the language.
+      default: ''
+      enum:
+      - ''
+      - en/
+tags:
+- name: calendar
+  description: APIs to access calendar-data
+paths:
+  /api/calendar:
+    post:
+      tags:
+      - calendar
+      summary: Retrieve Calendar Entries
+      description: 'Retrieves calendar entries for specific `ids` within the requested time span.
+
+        The time span is defined by the `start_after` and `end_before` query parameters.
+
+        Ensure to provide valid date-time formats for these parameters.
+
+
+        If successful, returns additional entries in the requested time span.'
+      operationId: calendar_handler
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Arguments'
+        required: true
+      responses:
+        '200':
+          description: '**Entries of the calendar** in the requested time span'
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  $ref: '#/components/schemas/LocationEventsResponse'
+                propertyNames:
+                  type: string
+        '400':
+          description: '**Bad Request.** Not all fields in the body are present as defined above'
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: Too many ids to query. We suspect that users don't need this. If you need this limit increased, please send us a message
+        '404':
+          description: '**Not found.** The requested location does not have a calendar'
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: Not found
+        '503':
+          description: '**Not Ready.** please retry later'
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: Waiting for first sync with TUMonline
+components:
+  schemas:
+    Arguments:
+      type: object
+      required:
+      - ids
+      - start_after
+      - end_before
+      properties:
+        end_before:
+          type: string
+          format: date-time
+          description: The last allowed time the calendar would like to display
+          examples:
+          - '2039-01-19T03:14:07+01:00'
+          - 2042-01-07T00:00:00 UTC
+        ids:
+          type: array
+          items:
+            type: string
+          description: 'ids you want the calendars for
+
+
+            Limit of max. 10 ids is arbitraryly chosen, if you need this limit increased, please contact us'
+          example:
+          - 5605.EG.011
+          - 5510.02.001
+          - 5606.EG.036
+          - '5304'
+          maxItems: 10
+          minItems: 1
+        start_after:
+          type: string
+          format: date-time
+          description: The first allowed time the calendar would like to display
+          examples:
+          - '2039-01-19T03:14:07+01:00'
+          - 2042-01-07T00:00:00 UTC
+    EventTypeResponse:
+      type: string
+      enum:
+      - lecture
+      - exercise
+      - exam
+      - barred
+      - other
+    LocationEventsResponse:
+      type: object
+      required:
+      - events
+      - location
+      properties:
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/EventResponse'
+        location:
+          $ref: '#/components/schemas/CalendarLocationResponse'
+    CalendarLocationResponse:
+      type: object
+      required:
+      - key
+      - name
+      - last_calendar_scrape_at
+      - type_common_name
+      - type
+      properties:
+        calendar_url:
+          type: string
+          description: Link to the calendar of the room
+          examples:
+          - https://campus.tum.de/tumonline/tvKalender.wSicht?cOrg=19691&cRes=12543&cReadonly=J
+          - https://campus.tum.de/tumonline/tvKalender.wSicht?cOrg=19691&cRes=12559&cReadonly=J
+          nullable: true
+        key:
+          type: string
+          description: 'Structured, globaly unique room code
+
+
+            Included to enable multi-room calendars.
+
+            Format: BUILDING.LEVEL.NUMBER'
+          examples:
+          - 5602.EG.001
+          - 5121.EG.003
+        last_calendar_scrape_at:
+          type: string
+          format: date-time
+          description: last time the calendar was scraped for this room
+          examples:
+          - '2039-01-19T03:14:07+01:00'
+          - 2042-01-07T00:00:00 UTC
+        name:
+          type: string
+          description: name of the entry in a human-readable form
+          examples:
+          - 5602.EG.001 (MI HS 1, Friedrich L. Bauer Hörsaal)
+          - 5121.EG.003 (Computerraum)
+        type:
+          type: string
+          description: 'type of the entry
+
+
+            TODO document as a n enum with the following choices:
+
+            - `room`
+
+            - `building`
+
+            - `joined_building`
+
+            - `area`
+
+            - `site`
+
+            - `campus`
+
+            - `poi`'
+          examples:
+          - room
+          - building
+          - joined_building
+          - area
+          - site
+          - campus
+          - poi
+        type_common_name:
+          type: string
+          description: Type of the entry in a human-readable form
+          examples:
+          - Serverraum
+          - Büro
+    EventResponse:
+      type: object
+      required:
+      - id
+      - room_code
+      - start_at
+      - end_at
+      - title_de
+      - title_en
+      - entry_type
+      - detailed_entry_type
+      properties:
+        detailed_entry_type:
+          type: string
+          description: For some Entrys, we do have more information (what kind of a `lecture` is it? What kind of an other `entry` is it?)
+          examples:
+          - Abhaltung
+        end_at:
+          type: string
+          format: date-time
+          description: end of the entry
+          examples:
+          - 2019-01-01 00:00:00
+        entry_type:
+          $ref: '#/components/schemas/EventTypeResponse'
+          description: 'What this calendar entry means.
+
+
+            Each of these should be displayed in a different color'
+        id:
+          type: integer
+          format: int32
+          description: ID of the calendar entry used in `TUMonline` internally
+          examples:
+          - 6424
+        room_code:
+          type: string
+          description: 'Structured, globaly unique room code
+
+
+            Included to enable multi-room calendars.
+
+            Format: BUILDING.LEVEL.NUMBER'
+          examples:
+          - 5602.EG.001
+          - 5121.EG.003
+        start_at:
+          type: string
+          format: date-time
+          description: start of the entry
+          examples:
+          - 2018-01-01 00:00:00
+        stp_type:
+          type: string
+          description: Lecture-type
+          examples:
+          - Vorlesung mit Zentralübung
+          nullable: true
+        title_de:
+          type: string
+          description: German title of the Entry
+          examples:
+          - Quantenteleportation
+        title_en:
+          type: string
+          description: English title of the Entry
+          examples:
+          - Quantum teleportation

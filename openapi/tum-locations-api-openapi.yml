@@ -1,0 +1,1311 @@
+openapi: 3.0.1
+info:
+  title: eat-api calendar locations API
+  version: '2.1'
+  description: Simple static API for some (student) food places in Munich.
+servers:
+- url: https://tum-dev.github.io/eat-api/{language}
+  variables:
+    language:
+      description: For localization the base path may have to be extended by the language.
+      default: ''
+      enum:
+      - ''
+      - en/
+tags:
+- name: locations
+  description: API to access/search for location information
+paths:
+  /api/locations/{id}:
+    get:
+      tags:
+      - locations
+      summary: Get entry-details
+      description: 'This returns the full data available for the entry (room/building).
+
+
+        This is more data, that should be supplied once a user clicks on an entry.
+
+        Preloading this is not an issue on our end, but keep in mind bandwith constraints on your side.
+
+        The data can be up to 50kB (using gzip) or 200kB unzipped.
+
+        More about this data format is described in the NavigaTUM-data documentation'
+      operationId: get_handler
+      parameters:
+      - name: id
+        in: path
+        description: ID of the location
+        required: true
+        schema:
+          type: string
+      - name: lang
+        in: query
+        description: The language you want your preview to be in. If either this or the query parameter is set to en, this will be delivered.
+        required: false
+        schema:
+          type: string
+          enum:
+          - de
+          - en
+      responses:
+        '200':
+          description: '**Details** about the **location**'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationDetailsResponse'
+        '400':
+          description: '**Bad request.** Make sure that requested item ID is not empty and not longer than 255 characters'
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: Invalid ID
+        '404':
+          description: '**Not found.** Make sure that requested item exists'
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: Not found
+  /api/locations/{id}/nearby:
+    get:
+      tags:
+      - locations
+      summary: Get the nearby items
+      description: Shows nearby POIs like public transport stations
+      operationId: nearby_handler
+      parameters:
+      - name: id
+        in: path
+        description: ID of a location
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Things **nearby to the location**
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NearbyLocationsResponse'
+        '400':
+          description: '**Bad request.** Make sure that requested item ID is not empty and not longer than 255 characters'
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: Invalid ID
+        '404':
+          description: '**Not found.** Make sure that requested item exists'
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: Not found
+  /api/locations/{id}/preview:
+    get:
+      tags:
+      - locations
+      summary: Get a entry-preview
+      description: 'This returns a 1200x630px preview for the location (room/building/..).
+
+
+        This is usefully for implementing custom `OpenGraph` images for detail previews.'
+      operationId: maps_handler
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: lang
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - de
+          - en
+      - name: format
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - open_graph
+          - square
+      responses:
+        '200':
+          description: '**Preview image**'
+          content:
+            image/png: {}
+        '400':
+          description: '**Bad request.** Make sure that requested item ID is not empty and not longer than 255 characters'
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: Invalid ID
+        '404':
+          description: '**Not found.** Make sure that requested item exists'
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: Not found
+  /api/locations/{id}/qr-code:
+    get:
+      tags:
+      - locations
+      summary: Get a QR code for a location
+      description: 'This returns a QR code image (PNG) that links to the location''s detail page.
+
+        The QR code uses TUM blue (#0065bd) as foreground color with white background and rounded corners.'
+      operationId: qr_code_handler
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: '**QR code image**'
+          content:
+            image/png: {}
+        '400':
+          description: '**Bad request.** Make sure that requested item ID is not empty and not longer than 255 characters'
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: Invalid ID
+        '500':
+          description: '**Internal server error**'
+          content:
+            text/plain:
+              schema:
+                type: string
+  /api/search:
+    get:
+      tags:
+      - locations
+      summary: Search entries
+      description: 'This endpoint is designed to support search-as-you-type results.
+
+
+        Instead of simply returning a list, the search results are returned in a way to provide a richer experience by splitting them up into sections. You might not necessarily need to implement all types of sections, or all sections features (if you just want to show a list). The order of sections is a suggested order to display them, but you may change this as you like.
+
+
+        Some fields support highlighting the query terms and it uses \x19 and \x17 to mark the beginning/end of a highlighted sequence.
+
+        (See [Wikipedia](https://en.wikipedia.org/wiki/C0_and_C1_control_codes#Modified_C0_control_code_sets)).
+
+        Some text-renderers will ignore them, but in case you do not want to use them, you might want to remove them from the responses via empty `pre_highlight` and `post_highlight` query parameters.'
+      operationId: search_handler
+      parameters:
+      - name: q
+        in: query
+        description: 'string you want to search for.
+
+
+          The amounts returned can be controlled using the `limit_*` parameters.
+
+          Use `in`, `usage`, `type`, and `near` query parameters for filtering.'
+        required: true
+        schema:
+          type: string
+      - name: in
+        in: query
+        description: 'Filter by parent (building, campus, etc.).
+
+
+          Can be repeated for multiple values (e.g. `&in=garching&in=5304`).'
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - name: usage
+        in: query
+        description: 'Filter by usage type (e.g. `wc`, `büro`).
+
+
+          Can be repeated for multiple values.'
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - name: type
+        in: query
+        description: 'Filter by facet.
+
+
+          Can be repeated for multiple values. Unknown values cause a `400`.'
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/FacetFilter'
+      - name: near
+        in: query
+        description: Sort results by distance to a coordinate (`lat,lon`).
+        required: false
+        schema:
+          type: string
+      - name: search_addresses
+        in: query
+        description: 'Include adresses in the saerch
+
+
+          Be aware that Nominatim (which we use to do this search) is really slow (~100ms).
+
+          Only activate this when you really need it.'
+        required: false
+        schema:
+          type: boolean
+      - name: limit_sites
+        in: query
+        description: 'Maximum number of sites (campus / site / area) to return.
+
+
+          Clamped to `0`..`1000`.
+
+          If this is a problem for you, please open an issue.'
+        required: false
+        schema:
+          type: integer
+          minimum: 0
+      - name: limit_buildings
+        in: query
+        description: 'Maximum number of buildings to return.
+
+
+          Clamped to `0`..`1000`.
+
+          If this is a problem for you, please open an issue.'
+        required: false
+        schema:
+          type: integer
+          minimum: 0
+      - name: limit_rooms
+        in: query
+        description: 'Maximum number of rooms to return.
+
+
+          Clamped to `0`..`1000`.
+
+          If this is an problem for you, please open an issue.'
+        required: false
+        schema:
+          type: integer
+          minimum: 0
+      - name: limit_pois
+        in: query
+        description: 'Maximum number of POIs (points of interest) to return.
+
+
+          Clamped to `0`..`1000`.
+
+          If this is a problem for you, please open an issue.'
+        required: false
+        schema:
+          type: integer
+          minimum: 0
+      - name: limit_all
+        in: query
+        description: 'Maximum number of results to return.
+
+
+          Clamped to `1`..`1000`.
+
+          If this is an problem for you, please open an issue.'
+        required: false
+        schema:
+          type: integer
+          minimum: 0
+      - name: pre_highlight
+        in: query
+        description: 'string to include in front of highlighted sequences.
+
+
+          If this and `post_highlight` are empty, highlighting is disabled.
+
+          For background on the default values, please see [Wikipedia](https://en.wikipedia.org/wiki/C0_and_C1_control_codes#Modified_C0_control_code_sets)).'
+        required: false
+        schema:
+          type: string
+      - name: post_highlight
+        in: query
+        description: 'string to include after the highlighted sequences.
+
+
+          If this and `pre_highlight` are empty, highlighting is disabled.
+
+          For background on the default values, please see [Wikipedia](https://en.wikipedia.org/wiki/C0_and_C1_control_codes#Modified_C0_control_code_sets)).'
+        required: false
+        schema:
+          type: string
+      - name: cropping
+        in: query
+        description: 'How to handle cropping of long building names in `parsed_id`.
+
+
+          - `crop` (default): crop long names (> 25 chars) with an ellipsis.
+
+          - `full`: never crop; always show full building names.'
+        required: false
+        schema:
+          type: string
+          description: Controls whether long building names inside `parsed_id` are cropped.
+          enum:
+          - crop
+          - full
+      - name: parsed_id
+        in: query
+        description: 'How to format `parsed_id` for rooms.
+
+
+          - `prefixed` (default): add common building prefixes (e.g. `MW 1801`).
+
+          - `roomfinder`: return room codes in Roomfinder format (`archname@building_id`).'
+        required: false
+        schema:
+          type: string
+          description: Controls how `parsed_id` is built for room results.
+          enum:
+          - prefixed
+          - roomfinder
+      responses:
+        '200':
+          description: Search entries
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResponse'
+        '400':
+          description: '**Bad Request.** Not all fields in the body are present as defined above'
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: 'Query deserialize error: invalid digit found in string'
+        '404':
+          description: '**Not found.** `q` is empty. Since searching for nothing is nonsensical, we dont support this.'
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: Not found
+        '414':
+          description: '**URI Too Long.** The uri you are trying to request is unreasonably long. Search querys dont have thousands of chars..'
+          content:
+            text/plain:
+              schema:
+                type: string
+components:
+  schemas:
+    OverlayMapsResponse:
+      type: object
+      required:
+      - available
+      properties:
+        available:
+          type: array
+          items:
+            $ref: '#/components/schemas/OverlayMapEntryResponse'
+        default:
+          type: integer
+          format: int32
+          description: 'The floor-id of the map, that should be shown as a default.
+
+            null means:
+
+            - We suggest, you don''t show a map by default.
+
+            - This is only the case for buildings or other such entities and not for rooms, if we know where they are and a map exists'
+          example: 0
+          nullable: true
+    BuildingsOverviewItemResponse:
+      type: object
+      required:
+      - id
+      - name
+      - subtext
+      properties:
+        id:
+          type: string
+          description: The id of the entry
+        name:
+          type: string
+          description: Human display name
+        subtext:
+          type: string
+          description: What should be displayed below this Building
+        thumb:
+          type: string
+          description: The thumbnail for the building
+          nullable: true
+    ExtraComputedPropResponse:
+      type: object
+      required:
+      - body
+      properties:
+        body:
+          type: string
+          examples:
+          - 'for exams: 102 in tight, 71 in wide, 49 in corona'
+        footer:
+          type: string
+          examples:
+          - data based on a Survey of chimneysweeps
+          nullable: true
+        header:
+          type: string
+          examples:
+          - Genauere Angaben
+          nullable: true
+    MapsResponse:
+      type: object
+      required:
+      - default
+      properties:
+        default:
+          $ref: '#/components/schemas/DefaultMapsResponse'
+          description: type of the Map that should be shown by default
+        overlays:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/OverlayMapsResponse'
+            description: '`None` would mean no overlay maps are displayed by default.
+
+              For rooms, you should add a warning that no floor map is available for this room'
+        roomfinder:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/RoomfinderMapResponse'
+    BuildingsOverviewResponse:
+      type: object
+      required:
+      - entries
+      - n_visible
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/BuildingsOverviewItemResponse'
+        n_visible:
+          type: integer
+          format: int32
+          minimum: 0
+    CoordinateResponse:
+      type: object
+      required:
+      - lat
+      - lon
+      - source
+      properties:
+        accuracy:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/CoordinateAccuracyResponse'
+            description: 'How accurate the coordinate is.
+
+              Only present, if it is limited to a degree (e.g. we only know the building)'
+        lat:
+          type: number
+          format: double
+          description: Latitude
+          example: 48.26244490906312
+        lon:
+          type: number
+          format: double
+          description: Longitude
+          example: 48.26244490906312
+        source:
+          $ref: '#/components/schemas/CoordinateSourceResponse'
+          description: Source of the Coordinates
+    DefaultMapsResponse:
+      type: string
+      enum:
+      - interactive
+      - roomfinder
+    RankingFactorsResponse:
+      type: object
+      required:
+      - rank_combined
+      - rank_type
+      - rank_usage
+      properties:
+        rank_boost:
+          type: integer
+          format: int32
+          minimum: 0
+          nullable: true
+        rank_combined:
+          type: integer
+          format: int32
+          minimum: 0
+        rank_custom:
+          type: integer
+          format: int32
+          minimum: 0
+          nullable: true
+        rank_type:
+          type: integer
+          format: int32
+          minimum: 0
+        rank_usage:
+          type: integer
+          format: int32
+          minimum: 0
+    ResultFacet:
+      type: string
+      enum:
+      - sites
+      - buildings
+      - rooms
+      - pois
+      - addresses
+    FloorType:
+      type: string
+      enum:
+      - roof
+      - upper
+      - semi_upper
+      - ground
+      - semi_basement
+      - basement
+    FeaturedOverviewItemResponse:
+      type: object
+      required:
+      - id
+      - name
+      - subtext
+      - image_url
+      properties:
+        id:
+          type: string
+          description: The id of the entry
+        image_url:
+          type: string
+          description: The thumbnail for the building
+        name:
+          type: string
+          description: Human display name
+        subtext:
+          type: string
+          description: What should be displayed below this Building
+    NearbyLocationsResponse:
+      type: object
+      required:
+      - public_transport
+      properties:
+        public_transport:
+          type: array
+          items:
+            $ref: '#/components/schemas/TransportationResponse'
+          maxItems: 50
+    TransportationResponse:
+      type: object
+      required:
+      - id
+      - name
+      - lat
+      - lon
+      - distance_meters
+      properties:
+        distance_meters:
+          type: number
+          format: double
+          exclusiveMaximum: 1000
+          exclusiveMinimum: 0
+        id:
+          type: string
+          description: The globally unique and somewhat stable id of the station from the transport agency
+          example: de:09184:2073:0:1
+        lat:
+          type: number
+          format: double
+          description: Latitude
+          example: 48.26244490906312
+        lon:
+          type: number
+          format: double
+          description: Longitude
+          example: 48.26244490906312
+        name:
+          type: string
+          description: How the station was named by the operator
+          example: Garching, Boltzmannstraße
+        parent_id:
+          type: string
+          description: The globally unique and somewhat stable id of the station from the transport agency
+          example: de:09184:2073
+          nullable: true
+        parent_name:
+          type: string
+          description: How the station was named by the operator
+          example: Boltzmannstraße
+          nullable: true
+    SectionsResponse:
+      type: object
+      properties:
+        buildings_overview:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/BuildingsOverviewResponse'
+        featured_overview:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/FeaturedOverviewResponse'
+        rooms_overview:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/RoomsOverviewResponse'
+    RoomsOverviewUsageChildResponse:
+      type: object
+      required:
+      - id
+      - name
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+    RoomfinderMapEntryResponse:
+      type: object
+      required:
+      - name
+      - id
+      - scale
+      - height
+      - width
+      - x
+      - y
+      - source
+      - file
+      properties:
+        file:
+          type: string
+          description: Where the map is stored
+        height:
+          type: integer
+          format: int32
+          description: Map image y dimensions
+        id:
+          type: string
+          description: machine-readable name of the map
+        name:
+          type: string
+          description: human-readable name of the map
+        scale:
+          type: string
+          description: Scale of the map. 2000 means 1:2000
+        source:
+          type: string
+          description: Where the map was imported from
+        width:
+          type: integer
+          format: int32
+          description: Map image y dimensions
+        x:
+          type: integer
+          format: int32
+          description: x Position on map image
+        y:
+          type: integer
+          format: int32
+          description: y Position on map image
+    ResultsSection:
+      type: object
+      required:
+      - facet
+      - entries
+      - n_visible
+      - estimatedTotalHits
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResultEntry'
+        estimatedTotalHits:
+          type: integer
+          description: The estimated (not exact) number of hits for that query
+          example: 6
+          minimum: 0
+        facet:
+          $ref: '#/components/schemas/ResultFacet'
+          description: These indicate the type of item this represents
+        n_visible:
+          type: integer
+          description: 'A recommendation how many of the entries should be displayed by default.
+
+
+            The number is usually from `0`..`5`.
+
+            More results might be displayed when clicking "expand".'
+          example: 4
+          minimum: 0
+    LocationDetailsResponse:
+      type: object
+      required:
+      - id
+      - type
+      - type_common_name
+      - name
+      - aliases
+      - parents
+      - parent_names
+      - props
+      - ranking_factors
+      - sources
+      - coords
+      - maps
+      properties:
+        aliases:
+          type: array
+          items:
+            type: string
+            examples:
+            - - 26503@5406
+          description: 'A list of alternative ids for this entry.
+
+
+            Not to be confused with
+
+            - `id` which is the unique identifier or
+
+            - `visual-id` which is an alternative identifier for the entry (only displayed in the URL).'
+        coords:
+          $ref: '#/components/schemas/CoordinateResponse'
+          description: Coordinate of the location
+        id:
+          type: string
+          description: The id, that was requested
+          examples:
+          - 5606.EG.036
+        imgs:
+          type: array
+          items:
+            $ref: '#/components/schemas/ImageInfoResponse'
+          description: 'The information you need to request Images from the `/cdn/{size}/{id}_{counter}.webp` endpoint
+
+
+            TODO: Sometimes missing, sometimes not.. so weird..'
+          nullable: true
+        maps:
+          $ref: '#/components/schemas/MapsResponse'
+          description: Print or overlay maps for said location
+        name:
+          type: string
+          description: The name of the entry in a human-readable form
+          examples:
+          - 5606.EG.036 (Büro Fachschaft Mathe Physik Informatik Chemie / MPIC)
+        parent_names:
+          type: array
+          items:
+            type: string
+            examples:
+            - - Standorte
+              - Garching Forschungszentrum
+              - Fakultät Mathematik & Informatik (FMI oder MI)
+              - Finger 06 (BT06)
+          description: 'The ids of the parents.
+
+
+            They are ordered as they would appear in a Breadcrumb menu.
+
+            See `parents` for their actual ids.'
+          minItems: 1
+        parents:
+          type: array
+          items:
+            type: string
+            examples:
+            - - root
+              - garching
+              - mi
+              - '5602'
+          description: 'The ids of the parents.
+
+
+            They are ordered as they would appear in a Breadcrumb menu.
+
+            See `parent_names` for their human names.'
+          minItems: 1
+        props:
+          $ref: '#/components/schemas/PropsResponse'
+          description: Data for the info-card table
+        ranking_factors:
+          $ref: '#/components/schemas/RankingFactorsResponse'
+        redirect_url:
+          type: string
+          description: 'The url, this item should be displayed at.
+
+
+            Present on both redirects and normal entries, to allow for the common /view/:id path'
+          examples:
+          - /room/5606.EG.036
+        sections:
+          $ref: '#/components/schemas/SectionsResponse'
+          description: 'Information for different sections on the page like the
+
+            - buildings overview,
+
+            - rooms overview and
+
+            - featured view'
+        sources:
+          $ref: '#/components/schemas/SourcesResponse'
+          description: Where we got our data from, should be displayed at the bottom of any page containing this data
+        type:
+          $ref: '#/components/schemas/LocationTypeResponse'
+          description: The type of the entry
+        type_common_name:
+          type: string
+          description: The type of the entry in a human-readable form
+          examples:
+          - Büro
+    ImageInfoResponse:
+      type: object
+      description: The information you need to request Images from the `/cdn/{size}/{id}_{counter}.webp` endpoint
+      required:
+      - name
+      - author
+      - license
+      properties:
+        author:
+          $ref: '#/components/schemas/URLRefResponse'
+        license:
+          $ref: '#/components/schemas/PossibleURLRefResponse'
+        name:
+          type: string
+          description: 'The name of the image file.
+
+            consists of {`building_id`}_{`image_id}.webp`, where `image_id` is a counter starting at 0'
+          examples:
+          - mi_0.webp
+    CoordinateSourceResponse:
+      type: string
+      enum:
+      - navigatum
+      - roomfinder
+      - inferred
+    FacetFilter:
+      type: string
+      description: 'Allowlisted values for the `?type=` query parameter.
+
+
+        Modeled as an enum so `serde` rejects unknown values with a 400 instead of
+
+        silently dropping them, and so the `OpenAPI` schema advertises the exact set
+
+        of accepted values.'
+      enum:
+      - site
+      - building
+      - room
+      - poi
+    ResultEntry:
+      type: object
+      required:
+      - id
+      - type
+      - name
+      - subtext
+      properties:
+        id:
+          type: string
+          description: The id of the location
+          example: 5510.03.002
+        name:
+          type: string
+          description: 'Subtext to show below the search result.
+
+
+            Usually contains the context of where this rooms is located in.
+
+            Currently not highlighted.'
+          example: "5510.03.002 (\x19MW\x17 2001, Empore)"
+        parsed_id:
+          type: string
+          description: 'This is an optional feature, that is only supported for some rooms.
+
+
+            It might be displayed instead or before the name, to show that a different room id format has matched, that was probably used.
+
+            See the image below for an example.
+
+            It will be cropped to a maximum length to not take too much space in UIs.
+
+            Supports highlighting.'
+          nullable: true
+        subtext:
+          type: string
+          description: 'Subtext to show below the search result.
+
+
+            Usually contains the context of where this rooms is located in.
+
+            Currently not highlighted.'
+          example: Maschinenwesen (MW)
+        subtext_bold:
+          type: string
+          description: 'Subtext to show below the search (by default in bold and after the non-bold subtext).
+
+
+            Usually contains the arch-id of the room, which is another common room id format, and supports highlighting.'
+          example: 3002@5510
+          nullable: true
+        type:
+          type: string
+          description: the type of the site/building
+          example: room
+    FloorResponse:
+      type: object
+      required:
+      - id
+      - short_name
+      - name
+      - tumonline
+      - type
+      properties:
+        id:
+          type: integer
+          format: int32
+          description: 'Virtual ID for sorting
+
+
+            `0` represents the ground floor.
+
+            Numbers above/below represent where they are relative to the ground floor
+
+
+            **WARNING**:
+
+            This ID is not guaranteed to be stable.
+
+            Not across buildings, nor within a building.'
+          examples:
+          - -1
+          - 0
+          - 1
+          - 2
+          - 3
+        name:
+          type: string
+          description: Longer name of the floor
+          examples:
+          - 1st basement floor
+          - Ground floor
+          - 1st mezzanine, above ground floor
+        short_name:
+          type: string
+          description: Short name of the floor
+          examples:
+          - '-1'
+          - '0'
+          - Z1
+        tumonline:
+          type: string
+          description: How `TUMonline` names the floor
+          examples:
+          - U1
+          - EG
+          - Z1
+        type:
+          $ref: '#/components/schemas/FloorType'
+          description: Type of floor
+    PossibleURLRefResponse:
+      type: object
+      description: A link with a localized link text and url
+      required:
+      - text
+      properties:
+        text:
+          type: string
+        url:
+          type: string
+          nullable: true
+    URLRefResponse:
+      type: object
+      description: A link with a localized link text and url
+      required:
+      - text
+      properties:
+        text:
+          type: string
+        url:
+          type: string
+          nullable: true
+    ComputedPropResponse:
+      type: object
+      required:
+      - name
+      - text
+      properties:
+        extra:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/ExtraComputedPropResponse'
+        name:
+          type: string
+          examples:
+          - Raumkennung
+        text:
+          type: string
+          examples:
+          - 5602.EG.001
+    RoomsOverviewResponse:
+      type: object
+      required:
+      - usages
+      properties:
+        usages:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoomsOverviewUsageResponse'
+    PropsResponse:
+      type: object
+      description: Data for the info-card table
+      required:
+      - computed
+      properties:
+        calendar_url:
+          type: string
+          description: Link to the calendar of the room
+          examples:
+          - https://campus.tum.de/tumonline/tvKalender.wSicht?cOrg=19691&cRes=12543&cReadonly=J
+          - https://campus.tum.de/tumonline/tvKalender.wSicht?cOrg=19691&cRes=12559&cReadonly=J
+          nullable: true
+        comment:
+          type: string
+          description: 'A comment to show to an entry.
+
+
+            It is used in the rare cases, where some aspect about the room/.. or its translation are misleading.'
+        computed:
+          type: array
+          items:
+            $ref: '#/components/schemas/ComputedPropResponse'
+        floors:
+          type: array
+          items:
+            $ref: '#/components/schemas/FloorResponse'
+          description: 'A sorted (lowest floor first) list of floors
+
+
+            For buildings, this may contain multiple floors while rooms usually only have one floor.'
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/PossibleURLRefResponse'
+        operator:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/OperatorResponse'
+            description: The operator of the room
+    OperatorResponse:
+      type: object
+      description: Operator of a location
+      required:
+      - id
+      - url
+      - code
+      - name
+      properties:
+        code:
+          type: string
+          description: designation code of the operator
+          examples:
+          - TUS7000
+        id:
+          type: integer
+          format: int32
+          description: ID of the operator
+          examples:
+          - 51901
+          minimum: 0
+        name:
+          type: string
+          description: "The full name of the operator (localized). Null for organisations that\n are no longer active (e.g. id=38698), but where the operator has not been\nupdated in `TUMonline`."
+          examples:
+          - TUM School of Social Sciences and Technology
+        url:
+          type: string
+          description: Link to the operator
+          examples:
+          - https://campus.tum.de/tumonline/webnav.navigate_to?corg=51901
+    SourcesResponse:
+      type: object
+      description: Where we got our data from, should be displayed at the bottom of any page containing this data
+      required:
+      - base
+      properties:
+        base:
+          type: array
+          items:
+            $ref: '#/components/schemas/SourceResponse'
+          description: What is the basis of the data we have
+        patched:
+          type: boolean
+          description: 'Was this entry patched by us? (e.g. to fix a typo in the name/...)
+
+            If so, we should not display the source, as it is not the original source.'
+          nullable: true
+    CoordinateAccuracyResponse:
+      type: string
+      enum:
+      - building
+    LocationTypeResponse:
+      type: string
+      enum:
+      - room
+      - building
+      - joined_building
+      - area
+      - site
+      - campus
+      - poi
+      - other
+    SearchResponse:
+      type: object
+      description: Returned search results by this
+      required:
+      - sections
+      - time_ms
+      properties:
+        sections:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResultsSection'
+        time_ms:
+          type: integer
+          format: int32
+          description: 'Time the search took in the server side, not including network delay
+
+
+            Maximum as timeout.
+
+            other timeouts (browser, your client) may be smaller.
+
+            Expected average is `10`..`50` for uncached, regular requests.'
+          example: 8
+          minimum: 0
+    OverlayMapEntryResponse:
+      type: object
+      required:
+      - id
+      - floor
+      - name
+      - file
+      - coordinates
+      properties:
+        coordinates:
+          type: array
+          items:
+            type: array
+            items: false
+            prefixItems:
+            - type: number
+              format: double
+            - type: number
+              format: double
+          description: Coordinates are four `[lon, lat]` pairs, for the top left, top right, bottom right, bottom left image corners.
+          example:
+          - - 11.666739
+            - 48.263478
+          - - 11.669666
+            - 48.263125
+          - - 11.669222
+            - 48.261585
+          - - 11.666331
+            - 48.261929
+          maxItems: 4
+          minItems: 4
+        file:
+          type: string
+          description: filename of the map
+          example: webp/rf95.webp
+        floor:
+          type: string
+          description: 'Floor of the Map.
+
+
+            Should be used for display to the user in selectors.
+
+            Matches the floor part of the `TUMonline` roomcode.'
+          example: EG
+        id:
+          type: integer
+          format: int32
+          description: 'Machine-readable floor-id of the map.
+
+
+            Should start with 0 for the ground level (defined by the main entrance) and increase or decrease.
+
+            It is not guaranteed that numbers are consecutive or that `1` corresponds to level `01`, because buildings sometimes have more complicated layouts. They are however always in the correct (physical) order.'
+          example: 0
+        name:
+          type: string
+          description: human-readable name of the map
+          example: MI Gebäude (EG)
+    RoomfinderMapResponse:
+      type: object
+      required:
+      - default
+      - available
+      properties:
+        available:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoomfinderMapEntryResponse'
+        default:
+          type: string
+          description: The id of the map, that should be shown as a default
+          examples:
+          - rf142
+    FeaturedOverviewResponse:
+      type: object
+      required:
+      - entries
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/FeaturedOverviewItemResponse'
+    SourceResponse:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+          description: Name of the provider
+          example: NavigaTUM
+        url:
+          type: string
+          description: Url of the provider
+          example: https://nav.tum.de
+          nullable: true
+    RoomsOverviewUsageResponse:
+      type: object
+      required:
+      - name
+      - count
+      - children
+      properties:
+        children:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoomsOverviewUsageChildResponse'
+        count:
+          type: integer
+          format: int32
+          minimum: 0
+        name:
+          type: string

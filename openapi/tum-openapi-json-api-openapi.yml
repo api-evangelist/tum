@@ -1,0 +1,29 @@
+openapi: 3.0.1
+info:
+  title: eat-api calendar Openapi.json API
+  version: '2.1'
+  description: Simple static API for some (student) food places in Munich.
+servers:
+- url: https://tum-dev.github.io/eat-api/{language}
+  variables:
+    language:
+      description: For localization the base path may have to be extended by the language.
+      default: ''
+      enum:
+      - ''
+      - en/
+tags:
+- name: Openapi.json
+paths:
+  /api/openapi.json:
+    get:
+      summary: Openapi service definition
+      description: Usefull for consuming in external openapi tooling
+      operationId: openapi_doc
+      responses:
+        '200':
+          description: The openapi definition
+          content:
+            application/json: {}
+      tags:
+      - Openapi.json
