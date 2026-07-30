@@ -13,9 +13,21 @@ description: >-
   canteen menus and prices). The institution's central research information
   system, TUMFIS, runs on Elsevier Pure but exposes no documented public API.
 type: Index
+accessModel:
+  pricing: free
+  onboarding: unknown
+  trial: false
+  try_now: false
+  public: false
+  label: Free
+  confidence: medium
+  source:
+  - plans
+  generated: '2026-07-22'
+  method: derived
 position: Consumer
 access: 3rd-Party
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/tum.png
 url: https://raw.githubusercontent.com/api-evangelist/tum/refs/heads/main/apis.yml
 tags:
   - Education
@@ -29,70 +41,296 @@ created: '2026-06-03'
 modified: '2026-06-03'
 specificationVersion: '0.19'
 apis:
-  - aid: tum:navigatum
-    name: NavigaTUM API
-    description: >-
-      Public API to search for and resolve rooms, buildings, and other places
-      across TUM campuses. Written in Rust with a MeiliSearch backend and
-      documented via an OpenAPI 3.0 specification. The /api/search endpoint is
-      live and returns JSON without authentication.
-    humanURL: https://github.com/TUM-Dev/NavigaTUM
-    baseURL: https://nav.tum.de/api
-    tags: [ Search, Maps, Buildings, Rooms, Campus, OpenAPI ]
-    properties:
-      - type: Documentation
-        url: https://github.com/TUM-Dev/NavigaTUM/blob/main/server/README.md
-      - type: GitHub
-        url: https://github.com/TUM-Dev/NavigaTUM
-      - type: Website
-        url: https://nav.tum.de/
-      - type: OpenAPI
-        url: openapi/tum-navigatum.yaml
-      - type: x-json-schema
-        url: json-schema/tum-search-response-schema.json
-      - type: x-json-structure
-        url: json-structure/tum-search-response-structure.json
-      - type: x-example
-        url: examples/tum-search-example.json
-  - aid: tum:eat-api
-    name: eat-api (Mensa / Canteen API)
-    description: >-
-      Simple static JSON API for student food places (Mensa/StuBistro) in and
-      around Munich, providing daily dish names and prices per canteen, year,
-      and ISO week. Served as static JSON files via GitHub Pages and consumed by
-      the TUM Campus App.
-    humanURL: https://github.com/TUM-Dev/eat-api
-    baseURL: https://tum-dev.github.io/eat-api
-    tags: [ Food, Mensa, Canteen, Static API, JSON ]
-    properties:
-      - type: Documentation
-        url: https://github.com/TUM-Dev/eat-api
-      - type: GitHub
-        url: https://github.com/TUM-Dev/eat-api
-      - type: Website
-        url: https://tum-dev.github.io/eat-api/
-      - type: OpenAPI
-        url: openapi/tum-eat-api.yaml
-      - type: x-json-schema
-        url: json-schema/tum-canteen-menu-schema.json
-      - type: x-json-structure
-        url: json-structure/tum-canteen-menu-structure.json
-      - type: x-example
-        url: examples/tum-canteen-menu-example.json
-  - aid: tum:campus-backend
-    name: TUM Campus App Backend (gRPC)
-    description: >-
-      Backend for the TUM Campus App, written in Go and exposing a gRPC API
-      interface used by the official cross-platform (Flutter/Dart) campus
-      clients. Source is public; the production endpoint is used by the apps
-      rather than offered as an openly documented third-party API.
-    humanURL: https://github.com/TUM-Dev/Campus-Backend
-    tags: [ Campus, gRPC, Mobile Backend, Go ]
-    properties:
-      - type: Documentation
-        url: https://github.com/TUM-Dev/Campus-Backend
-      - type: GitHub
-        url: https://github.com/TUM-Dev/Campus-Backend
+- aid: tum:campus-backend
+  name: TUM Campus App Backend (gRPC)
+  description: >-
+    Backend for the TUM Campus App, written in Go and exposing a gRPC API interface used by the official
+    cross-platform (Flutter/Dart) campus clients. Source is public; the production endpoint is used by
+    the apps rather than offered as an openly documented third-party API.
+  humanURL: https://github.com/TUM-Dev/Campus-Backend
+  tags:
+  - Campus
+  - gRPC
+  - Mobile Backend
+  - Go
+  properties:
+  - type: Documentation
+    url: https://github.com/TUM-Dev/Campus-Backend
+  - type: GitHub
+    url: https://github.com/TUM-Dev/Campus-Backend
+- aid: tum:tum-calendar-api
+  name: Technical University of Munich calendar API
+  description: APIs to access calendar-data
+  humanURL: https://github.com/TUM-Dev/NavigaTUM
+  baseURL: https://nav.tum.de/api
+  tags:
+  - calendar
+  properties:
+  - type: OpenAPI
+    url: openapi/tum-calendar-api-openapi.yml
+  - type: Documentation
+    url: https://github.com/TUM-Dev/NavigaTUM/blob/main/server/README.md
+  - type: GitHub
+    url: https://github.com/TUM-Dev/NavigaTUM
+  - type: Website
+    url: https://nav.tum.de/
+  - type: x-json-schema
+    url: json-schema/tum-search-response-schema.json
+  - type: x-json-structure
+    url: json-structure/tum-search-response-structure.json
+  - type: x-example
+    url: examples/tum-search-example.json
+  - type: Documentation
+    url: https://github.com/TUM-Dev/eat-api
+  - type: GitHub
+    url: https://github.com/TUM-Dev/eat-api
+  - type: Website
+    url: https://tum-dev.github.io/eat-api/
+  - type: x-json-schema
+    url: json-schema/tum-canteen-menu-schema.json
+  - type: x-json-structure
+    url: json-structure/tum-canteen-menu-structure.json
+  - type: x-example
+    url: examples/tum-canteen-menu-example.json
+- aid: tum:tum-feedback-api
+  name: Technical University of Munich feedback API
+  description: APIs to give feedback
+  humanURL: https://github.com/TUM-Dev/NavigaTUM
+  baseURL: https://nav.tum.de/api
+  tags:
+  - feedback
+  properties:
+  - type: OpenAPI
+    url: openapi/tum-feedback-api-openapi.yml
+  - type: Documentation
+    url: https://github.com/TUM-Dev/NavigaTUM/blob/main/server/README.md
+  - type: GitHub
+    url: https://github.com/TUM-Dev/NavigaTUM
+  - type: Website
+    url: https://nav.tum.de/
+  - type: x-json-schema
+    url: json-schema/tum-search-response-schema.json
+  - type: x-json-structure
+    url: json-structure/tum-search-response-structure.json
+  - type: x-example
+    url: examples/tum-search-example.json
+  - type: Documentation
+    url: https://github.com/TUM-Dev/eat-api
+  - type: GitHub
+    url: https://github.com/TUM-Dev/eat-api
+  - type: Website
+    url: https://tum-dev.github.io/eat-api/
+  - type: x-json-schema
+    url: json-schema/tum-canteen-menu-schema.json
+  - type: x-json-structure
+    url: json-structure/tum-canteen-menu-structure.json
+  - type: x-example
+    url: examples/tum-canteen-menu-example.json
+- aid: tum:tum-locations-api
+  name: Technical University of Munich locations API
+  description: API to access/search for location information
+  humanURL: https://github.com/TUM-Dev/NavigaTUM
+  baseURL: https://nav.tum.de/api
+  tags:
+  - locations
+  properties:
+  - type: OpenAPI
+    url: openapi/tum-locations-api-openapi.yml
+  - type: Documentation
+    url: https://github.com/TUM-Dev/NavigaTUM/blob/main/server/README.md
+  - type: GitHub
+    url: https://github.com/TUM-Dev/NavigaTUM
+  - type: Website
+    url: https://nav.tum.de/
+  - type: x-json-schema
+    url: json-schema/tum-search-response-schema.json
+  - type: x-json-structure
+    url: json-structure/tum-search-response-structure.json
+  - type: x-example
+    url: examples/tum-search-example.json
+  - type: Documentation
+    url: https://github.com/TUM-Dev/eat-api
+  - type: GitHub
+    url: https://github.com/TUM-Dev/eat-api
+  - type: Website
+    url: https://tum-dev.github.io/eat-api/
+  - type: x-json-schema
+    url: json-schema/tum-canteen-menu-schema.json
+  - type: x-json-structure
+    url: json-structure/tum-canteen-menu-structure.json
+  - type: x-example
+    url: examples/tum-canteen-menu-example.json
+- aid: tum:tum-maps-api
+  name: Technical University of Munich maps API
+  description: API to access for map-data
+  humanURL: https://github.com/TUM-Dev/NavigaTUM
+  baseURL: https://nav.tum.de/api
+  tags:
+  - maps
+  properties:
+  - type: OpenAPI
+    url: openapi/tum-maps-api-openapi.yml
+  - type: Documentation
+    url: https://github.com/TUM-Dev/NavigaTUM/blob/main/server/README.md
+  - type: GitHub
+    url: https://github.com/TUM-Dev/NavigaTUM
+  - type: Website
+    url: https://nav.tum.de/
+  - type: x-json-schema
+    url: json-schema/tum-search-response-schema.json
+  - type: x-json-structure
+    url: json-structure/tum-search-response-structure.json
+  - type: x-example
+    url: examples/tum-search-example.json
+  - type: Documentation
+    url: https://github.com/TUM-Dev/eat-api
+  - type: GitHub
+    url: https://github.com/TUM-Dev/eat-api
+  - type: Website
+    url: https://tum-dev.github.io/eat-api/
+  - type: x-json-schema
+    url: json-schema/tum-canteen-menu-schema.json
+  - type: x-json-structure
+    url: json-structure/tum-canteen-menu-structure.json
+  - type: x-example
+    url: examples/tum-canteen-menu-example.json
+- aid: tum:tum-menu-api
+  name: Technical University of Munich menu API
+  description: Get information about dish plans
+  humanURL: https://github.com/TUM-Dev/NavigaTUM
+  baseURL: https://nav.tum.de/api
+  tags:
+  - menu
+  properties:
+  - type: OpenAPI
+    url: openapi/tum-menu-api-openapi.yml
+  - type: Documentation
+    url: https://github.com/TUM-Dev/NavigaTUM/blob/main/server/README.md
+  - type: GitHub
+    url: https://github.com/TUM-Dev/NavigaTUM
+  - type: Website
+    url: https://nav.tum.de/
+  - type: x-json-schema
+    url: json-schema/tum-search-response-schema.json
+  - type: x-json-structure
+    url: json-structure/tum-search-response-structure.json
+  - type: x-example
+    url: examples/tum-search-example.json
+  - type: Documentation
+    url: https://github.com/TUM-Dev/eat-api
+  - type: GitHub
+    url: https://github.com/TUM-Dev/eat-api
+  - type: Website
+    url: https://tum-dev.github.io/eat-api/
+  - type: x-json-schema
+    url: json-schema/tum-canteen-menu-schema.json
+  - type: x-json-structure
+    url: json-structure/tum-canteen-menu-structure.json
+  - type: x-example
+    url: examples/tum-canteen-menu-example.json
+- aid: tum:tum-openapi-json-api
+  name: Technical University of Munich Openapi.json API
+  description: >-
+    The Openapi.json API from Technical University of Munich — 1 operation(s) for openapi.json.
+  humanURL: https://github.com/TUM-Dev/NavigaTUM
+  baseURL: https://nav.tum.de/api
+  tags:
+  - Openapi.json
+  properties:
+  - type: OpenAPI
+    url: openapi/tum-openapi-json-api-openapi.yml
+  - type: Documentation
+    url: https://github.com/TUM-Dev/NavigaTUM/blob/main/server/README.md
+  - type: GitHub
+    url: https://github.com/TUM-Dev/NavigaTUM
+  - type: Website
+    url: https://nav.tum.de/
+  - type: x-json-schema
+    url: json-schema/tum-search-response-schema.json
+  - type: x-json-structure
+    url: json-structure/tum-search-response-structure.json
+  - type: x-example
+    url: examples/tum-search-example.json
+  - type: Documentation
+    url: https://github.com/TUM-Dev/eat-api
+  - type: GitHub
+    url: https://github.com/TUM-Dev/eat-api
+  - type: Website
+    url: https://tum-dev.github.io/eat-api/
+  - type: x-json-schema
+    url: json-schema/tum-canteen-menu-schema.json
+  - type: x-json-structure
+    url: json-structure/tum-canteen-menu-structure.json
+  - type: x-example
+    url: examples/tum-canteen-menu-example.json
+- aid: tum:tum-static-api
+  name: Technical University of Munich static API
+  description: Static information regarding canteens, labels and languages
+  humanURL: https://github.com/TUM-Dev/NavigaTUM
+  baseURL: https://nav.tum.de/api
+  tags:
+  - static
+  properties:
+  - type: OpenAPI
+    url: openapi/tum-static-api-openapi.yml
+  - type: Documentation
+    url: https://github.com/TUM-Dev/NavigaTUM/blob/main/server/README.md
+  - type: GitHub
+    url: https://github.com/TUM-Dev/NavigaTUM
+  - type: Website
+    url: https://nav.tum.de/
+  - type: x-json-schema
+    url: json-schema/tum-search-response-schema.json
+  - type: x-json-structure
+    url: json-structure/tum-search-response-structure.json
+  - type: x-example
+    url: examples/tum-search-example.json
+  - type: Documentation
+    url: https://github.com/TUM-Dev/eat-api
+  - type: GitHub
+    url: https://github.com/TUM-Dev/eat-api
+  - type: Website
+    url: https://tum-dev.github.io/eat-api/
+  - type: x-json-schema
+    url: json-schema/tum-canteen-menu-schema.json
+  - type: x-json-structure
+    url: json-structure/tum-canteen-menu-structure.json
+  - type: x-example
+    url: examples/tum-canteen-menu-example.json
+- aid: tum:tum-status-api
+  name: Technical University of Munich Status API
+  description: The Status API from Technical University of Munich — 1 operation(s) for status.
+  humanURL: https://github.com/TUM-Dev/NavigaTUM
+  baseURL: https://nav.tum.de/api
+  tags:
+  - Status
+  properties:
+  - type: OpenAPI
+    url: openapi/tum-status-api-openapi.yml
+  - type: Documentation
+    url: https://github.com/TUM-Dev/NavigaTUM/blob/main/server/README.md
+  - type: GitHub
+    url: https://github.com/TUM-Dev/NavigaTUM
+  - type: Website
+    url: https://nav.tum.de/
+  - type: x-json-schema
+    url: json-schema/tum-search-response-schema.json
+  - type: x-json-structure
+    url: json-structure/tum-search-response-structure.json
+  - type: x-example
+    url: examples/tum-search-example.json
+  - type: Documentation
+    url: https://github.com/TUM-Dev/eat-api
+  - type: GitHub
+    url: https://github.com/TUM-Dev/eat-api
+  - type: Website
+    url: https://tum-dev.github.io/eat-api/
+  - type: x-json-schema
+    url: json-schema/tum-canteen-menu-schema.json
+  - type: x-json-structure
+    url: json-structure/tum-canteen-menu-structure.json
+  - type: x-example
+    url: examples/tum-canteen-menu-example.json
 common:
   - type: AgenticAccess
     url: agentic-access/tum-agentic-access.yml
