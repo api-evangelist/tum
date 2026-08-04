@@ -1,0 +1,28 @@
+{
+  "provider": "tum",
+  "sources": [
+    "tum-calendar-api-openapi.yml",
+    "tum-feedback-api-openapi.yml",
+    "tum-locations-api-openapi.yml",
+    "tum-maps-api-openapi.yml",
+    "tum-menu-api-openapi.yml",
+    "tum-openapi-json-api-openapi.yml",
+    "tum-static-api-openapi.yml",
+    "tum-status-api-openapi.yml"
+  ],
+  "outputs": [
+    "tum-calendar-api-openapi.yml",
+    "tum-feedback-api-openapi.yml",
+    "tum-locations-api-openapi.yml",
+    "tum-maps-api-openapi.yml",
+    "tum-menu-api-openapi.yml",
+    "tum-openapi-json-api-openapi.yml",
+    "tum-static-api-openapi.yml",
+    "tum-status-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
