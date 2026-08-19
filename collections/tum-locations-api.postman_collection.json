@@ -1,0 +1,1545 @@
+{
+  "item": [
+    {
+      "id": "4746fcf5-c4bc-42d1-a6f3-67941faa9b02",
+      "name": "locations",
+      "description": {
+        "content": "API to access/search for location information",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "e51301cc-f106-4dcf-b941-60539289285d",
+          "name": "Get entry-details",
+          "request": {
+            "name": "Get entry-details",
+            "description": {
+              "content": "This returns the full data available for the entry (room/building).\n\nThis is more data, that should be supplied once a user clicks on an entry.\nPreloading this is not an issue on our end, but keep in mind bandwith constraints on your side.\nThe data can be up to 50kB (using gzip) or 200kB unzipped.\nMore about this data format is described in the NavigaTUM-data documentation",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "locations",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "lang",
+                  "value": "<string>",
+                  "description": "The language you want your preview to be in. If either this or the query parameter is set to en, this will be delivered."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) ID of the location"
+                },
+                {
+                  "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                  "type": "any",
+                  "value": "{{language}}",
+                  "key": "language"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "20c617ce-c584-4259-a85d-696a1475449c",
+              "name": "**Details** about the **location**",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "locations",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "lang",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) ID of the location"
+                    },
+                    {
+                      "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                      "type": "any",
+                      "value": "{{language}}",
+                      "key": "language"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"type\": \"campus\",\n  \"type_common_name\": \"string\",\n  \"name\": \"string\",\n  \"aliases\": [\n    \"string\",\n    \"string\"\n  ],\n  \"parents\": [\n    \"string\"\n  ],\n  \"parent_names\": [\n    \"string\"\n  ],\n  \"props\": {\n    \"computed\": [\n      {\n        \"name\": \"string\",\n        \"text\": \"string\",\n        \"extra\": null\n      },\n      {\n        \"name\": \"string\",\n        \"text\": \"string\",\n        \"extra\": null\n      }\n    ],\n    \"calendar_url\": \"string\",\n    \"comment\": \"string\",\n    \"floors\": [\n      {\n        \"id\": 6985,\n        \"short_name\": \"string\",\n        \"name\": \"string\",\n        \"tumonline\": \"string\",\n        \"type\": \"ground\"\n      },\n      {\n        \"id\": 6644,\n        \"short_name\": \"string\",\n        \"name\": \"string\",\n        \"tumonline\": \"string\",\n        \"type\": \"semi_basement\"\n      }\n    ],\n    \"links\": [\n      {\n        \"text\": \"string\",\n        \"url\": \"string\"\n      },\n      {\n        \"text\": \"string\",\n        \"url\": \"string\"\n      }\n    ],\n    \"operator\": null\n  },\n  \"ranking_factors\": {\n    \"rank_combined\": 7093,\n    \"rank_type\": 5132,\n    \"rank_usage\": 8676,\n    \"rank_boost\": 3026,\n    \"rank_custom\": 3696\n  },\n  \"sources\": {\n    \"base\": [\n      {\n        \"name\": \"NavigaTUM\",\n        \"url\": \"https://nav.tum.de\"\n      },\n      {\n        \"name\": \"NavigaTUM\",\n        \"url\": \"https://nav.tum.de\"\n      }\n    ],\n    \"patched\": false\n  },\n  \"coords\": {\n    \"lat\": 48.26244490906312,\n    \"lon\": 48.26244490906312,\n    \"source\": \"navigatum\",\n    \"accuracy\": null\n  },\n  \"maps\": {\n    \"default\": \"interactive\",\n    \"overlays\": null,\n    \"roomfinder\": null\n  },\n  \"imgs\": [\n    {\n      \"name\": \"string\",\n      \"author\": {\n        \"text\": \"string\",\n        \"url\": \"string\"\n      },\n      \"license\": {\n        \"text\": \"string\",\n        \"url\": \"string\"\n      }\n    },\n    {\n      \"name\": \"string\",\n      \"author\": {\n        \"text\": \"string\",\n        \"url\": \"string\"\n      },\n      \"license\": {\n        \"text\": \"string\",\n        \"url\": \"string\"\n      }\n    }\n  ],\n  \"redirect_url\": \"string\",\n  \"sections\": {\n    \"buildings_overview\": null,\n    \"featured_overview\": null,\n    \"rooms_overview\": null\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "11ab60f3-6604-47e0-a6db-01b2e832ae19",
+              "name": "**Bad request.** Make sure that requested item ID is not empty and not longer than 255 characters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "locations",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "lang",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) ID of the location"
+                    },
+                    {
+                      "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                      "type": "any",
+                      "value": "{{language}}",
+                      "key": "language"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "Invalid ID",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "6905b2ee-dde9-4189-98f5-bfcb65363d83",
+              "name": "**Not found.** Make sure that requested item exists",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "locations",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "lang",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) ID of the location"
+                    },
+                    {
+                      "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                      "type": "any",
+                      "value": "{{language}}",
+                      "key": "language"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "Not found",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "42b11f2a-8231-4a1a-b101-cf8d38404eeb",
+          "name": "Get the nearby items",
+          "request": {
+            "name": "Get the nearby items",
+            "description": {
+              "content": "Shows nearby POIs like public transport stations",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "locations",
+                ":id",
+                "nearby"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) ID of a location"
+                },
+                {
+                  "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                  "type": "any",
+                  "value": "{{language}}",
+                  "key": "language"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7143426d-9546-4509-ab7a-591764f7d263",
+              "name": "Things **nearby to the location**",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "locations",
+                    ":id",
+                    "nearby"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) ID of a location"
+                    },
+                    {
+                      "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                      "type": "any",
+                      "value": "{{language}}",
+                      "key": "language"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"public_transport\": [\n    {\n      \"id\": \"de:09184:2073:0:1\",\n      \"name\": \"Garching, Boltzmannstraße\",\n      \"lat\": 48.26244490906312,\n      \"lon\": 48.26244490906312,\n      \"distance_meters\": 849.9250888697862,\n      \"parent_id\": \"de:09184:2073\",\n      \"parent_name\": \"Boltzmannstraße\"\n    },\n    {\n      \"id\": \"de:09184:2073:0:1\",\n      \"name\": \"Garching, Boltzmannstraße\",\n      \"lat\": 48.26244490906312,\n      \"lon\": 48.26244490906312,\n      \"distance_meters\": 555.926137020115,\n      \"parent_id\": \"de:09184:2073\",\n      \"parent_name\": \"Boltzmannstraße\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9da4c7f6-8623-406c-984b-85285fa81719",
+              "name": "**Bad request.** Make sure that requested item ID is not empty and not longer than 255 characters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "locations",
+                    ":id",
+                    "nearby"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) ID of a location"
+                    },
+                    {
+                      "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                      "type": "any",
+                      "value": "{{language}}",
+                      "key": "language"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "Invalid ID",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "f44333c8-e063-44ac-a247-e24953f51146",
+              "name": "**Not found.** Make sure that requested item exists",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "locations",
+                    ":id",
+                    "nearby"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) ID of a location"
+                    },
+                    {
+                      "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                      "type": "any",
+                      "value": "{{language}}",
+                      "key": "language"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "Not found",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5e716f34-678a-4ecf-a87f-92d8e0cfdd86",
+          "name": "Get a entry-preview",
+          "request": {
+            "name": "Get a entry-preview",
+            "description": {
+              "content": "This returns a 1200x630px preview for the location (room/building/..).\n\nThis is usefully for implementing custom `OpenGraph` images for detail previews.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "locations",
+                ":id",
+                "preview"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "lang",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "format",
+                  "value": "<string>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                  "type": "any",
+                  "value": "{{language}}",
+                  "key": "language"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "image/png"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "de0fd259-1117-4603-a7fc-eaaa6fd9a0ec",
+              "name": "**Preview image**",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "locations",
+                    ":id",
+                    "preview"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "lang",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "format",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                      "type": "any",
+                      "value": "{{language}}",
+                      "key": "language"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "image/png"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "image/png"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "5f8ce503-2b1e-4f56-bf82-88b7b0ab7b98",
+              "name": "**Bad request.** Make sure that requested item ID is not empty and not longer than 255 characters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "locations",
+                    ":id",
+                    "preview"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "lang",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "format",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                      "type": "any",
+                      "value": "{{language}}",
+                      "key": "language"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "Invalid ID",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "c6706a88-cc35-45ff-aa4f-001cc34d1509",
+              "name": "**Not found.** Make sure that requested item exists",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "locations",
+                    ":id",
+                    "preview"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "lang",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "format",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                      "type": "any",
+                      "value": "{{language}}",
+                      "key": "language"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "Not found",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "512be2c9-96f2-4305-8991-77ad0c455694",
+          "name": "Get a QR code for a location",
+          "request": {
+            "name": "Get a QR code for a location",
+            "description": {
+              "content": "This returns a QR code image (PNG) that links to the location's detail page.\nThe QR code uses TUM blue (#0065bd) as foreground color with white background and rounded corners.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "locations",
+                ":id",
+                "qr-code"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                  "type": "any",
+                  "value": "{{language}}",
+                  "key": "language"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "image/png"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d8057110-3f03-4498-a15a-01bf4a2a77b4",
+              "name": "**QR code image**",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "locations",
+                    ":id",
+                    "qr-code"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                      "type": "any",
+                      "value": "{{language}}",
+                      "key": "language"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "image/png"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "image/png"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "efa3d748-5e07-4bf8-95d8-9c8f9866b48d",
+              "name": "**Bad request.** Make sure that requested item ID is not empty and not longer than 255 characters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "locations",
+                    ":id",
+                    "qr-code"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                      "type": "any",
+                      "value": "{{language}}",
+                      "key": "language"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "Invalid ID",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "ff9608aa-b797-4b92-a2a5-90c452578e16",
+              "name": "**Internal server error**",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "locations",
+                    ":id",
+                    "qr-code"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                      "type": "any",
+                      "value": "{{language}}",
+                      "key": "language"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "string",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "28aecaa1-86d0-4bc2-903e-c434a3dfec28",
+          "name": "Search entries",
+          "request": {
+            "name": "Search entries",
+            "description": {
+              "content": "This endpoint is designed to support search-as-you-type results.\n\nInstead of simply returning a list, the search results are returned in a way to provide a richer experience by splitting them up into sections. You might not necessarily need to implement all types of sections, or all sections features (if you just want to show a list). The order of sections is a suggested order to display them, but you may change this as you like.\n\nSome fields support highlighting the query terms and it uses \\x19 and \\x17 to mark the beginning/end of a highlighted sequence.\n(See [Wikipedia](https://en.wikipedia.org/wiki/C0_and_C1_control_codes#Modified_C0_control_code_sets)).\nSome text-renderers will ignore them, but in case you do not want to use them, you might want to remove them from the responses via empty `pre_highlight` and `post_highlight` query parameters.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "search"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "q",
+                  "value": "<string>",
+                  "description": "(Required) string you want to search for.\n\nThe amounts returned can be controlled using the `limit_*` parameters.\nUse `in`, `usage`, `type`, and `near` query parameters for filtering."
+                },
+                {
+                  "disabled": false,
+                  "key": "in",
+                  "value": "<string>",
+                  "description": "Filter by parent (building, campus, etc.).\n\nCan be repeated for multiple values (e.g. `&in=garching&in=5304`)."
+                },
+                {
+                  "disabled": false,
+                  "key": "in",
+                  "value": "<string>",
+                  "description": "Filter by parent (building, campus, etc.).\n\nCan be repeated for multiple values (e.g. `&in=garching&in=5304`)."
+                },
+                {
+                  "disabled": false,
+                  "key": "usage",
+                  "value": "<string>",
+                  "description": "Filter by usage type (e.g. `wc`, `büro`).\n\nCan be repeated for multiple values."
+                },
+                {
+                  "disabled": false,
+                  "key": "usage",
+                  "value": "<string>",
+                  "description": "Filter by usage type (e.g. `wc`, `büro`).\n\nCan be repeated for multiple values."
+                },
+                {
+                  "disabled": false,
+                  "key": "type",
+                  "value": "<string>",
+                  "description": "Filter by facet.\n\nCan be repeated for multiple values. Unknown values cause a `400`."
+                },
+                {
+                  "disabled": false,
+                  "key": "type",
+                  "value": "<string>",
+                  "description": "Filter by facet.\n\nCan be repeated for multiple values. Unknown values cause a `400`."
+                },
+                {
+                  "disabled": false,
+                  "key": "near",
+                  "value": "<string>",
+                  "description": "Sort results by distance to a coordinate (`lat,lon`)."
+                },
+                {
+                  "disabled": false,
+                  "key": "search_addresses",
+                  "value": "<boolean>",
+                  "description": "Include adresses in the saerch\n\nBe aware that Nominatim (which we use to do this search) is really slow (~100ms).\nOnly activate this when you really need it."
+                },
+                {
+                  "disabled": false,
+                  "key": "limit_sites",
+                  "value": "<integer>",
+                  "description": "Maximum number of sites (campus / site / area) to return.\n\nClamped to `0`..`1000`.\nIf this is a problem for you, please open an issue."
+                },
+                {
+                  "disabled": false,
+                  "key": "limit_buildings",
+                  "value": "<integer>",
+                  "description": "Maximum number of buildings to return.\n\nClamped to `0`..`1000`.\nIf this is a problem for you, please open an issue."
+                },
+                {
+                  "disabled": false,
+                  "key": "limit_rooms",
+                  "value": "<integer>",
+                  "description": "Maximum number of rooms to return.\n\nClamped to `0`..`1000`.\nIf this is an problem for you, please open an issue."
+                },
+                {
+                  "disabled": false,
+                  "key": "limit_pois",
+                  "value": "<integer>",
+                  "description": "Maximum number of POIs (points of interest) to return.\n\nClamped to `0`..`1000`.\nIf this is a problem for you, please open an issue."
+                },
+                {
+                  "disabled": false,
+                  "key": "limit_all",
+                  "value": "<integer>",
+                  "description": "Maximum number of results to return.\n\nClamped to `1`..`1000`.\nIf this is an problem for you, please open an issue."
+                },
+                {
+                  "disabled": false,
+                  "key": "pre_highlight",
+                  "value": "<string>",
+                  "description": "string to include in front of highlighted sequences.\n\nIf this and `post_highlight` are empty, highlighting is disabled.\nFor background on the default values, please see [Wikipedia](https://en.wikipedia.org/wiki/C0_and_C1_control_codes#Modified_C0_control_code_sets))."
+                },
+                {
+                  "disabled": false,
+                  "key": "post_highlight",
+                  "value": "<string>",
+                  "description": "string to include after the highlighted sequences.\n\nIf this and `pre_highlight` are empty, highlighting is disabled.\nFor background on the default values, please see [Wikipedia](https://en.wikipedia.org/wiki/C0_and_C1_control_codes#Modified_C0_control_code_sets))."
+                },
+                {
+                  "disabled": false,
+                  "key": "cropping",
+                  "value": "<string>",
+                  "description": "How to handle cropping of long building names in `parsed_id`.\n\n- `crop` (default): crop long names (> 25 chars) with an ellipsis.\n- `full`: never crop; always show full building names."
+                },
+                {
+                  "disabled": false,
+                  "key": "parsed_id",
+                  "value": "<string>",
+                  "description": "How to format `parsed_id` for rooms.\n\n- `prefixed` (default): add common building prefixes (e.g. `MW 1801`).\n- `roomfinder`: return room codes in Roomfinder format (`archname@building_id`)."
+                }
+              ],
+              "variable": [
+                {
+                  "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                  "type": "any",
+                  "value": "{{language}}",
+                  "key": "language"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "6302a876-58f0-4298-945d-29efe7e6c5b5",
+              "name": "Search entries",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "q",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "in",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "in",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "usage",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "usage",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "near",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search_addresses",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "limit_sites",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "limit_buildings",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "limit_rooms",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "limit_pois",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "limit_all",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "pre_highlight",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "post_highlight",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "cropping",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "parsed_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                      "type": "any",
+                      "value": "{{language}}",
+                      "key": "language"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sections\": [\n    {\n      \"facet\": \"sites\",\n      \"entries\": [\n        {\n          \"id\": \"5510.03.002\",\n          \"type\": \"room\",\n          \"name\": \"5510.03.002 (\\u0019MW\\u0017 2001, Empore)\",\n          \"subtext\": \"Maschinenwesen (MW)\",\n          \"parsed_id\": \"string\",\n          \"subtext_bold\": \"3002@5510\"\n        },\n        {\n          \"id\": \"5510.03.002\",\n          \"type\": \"room\",\n          \"name\": \"5510.03.002 (\\u0019MW\\u0017 2001, Empore)\",\n          \"subtext\": \"Maschinenwesen (MW)\",\n          \"parsed_id\": \"string\",\n          \"subtext_bold\": \"3002@5510\"\n        }\n      ],\n      \"n_visible\": 4,\n      \"estimatedTotalHits\": 6\n    },\n    {\n      \"facet\": \"sites\",\n      \"entries\": [\n        {\n          \"id\": \"5510.03.002\",\n          \"type\": \"room\",\n          \"name\": \"5510.03.002 (\\u0019MW\\u0017 2001, Empore)\",\n          \"subtext\": \"Maschinenwesen (MW)\",\n          \"parsed_id\": \"string\",\n          \"subtext_bold\": \"3002@5510\"\n        },\n        {\n          \"id\": \"5510.03.002\",\n          \"type\": \"room\",\n          \"name\": \"5510.03.002 (\\u0019MW\\u0017 2001, Empore)\",\n          \"subtext\": \"Maschinenwesen (MW)\",\n          \"parsed_id\": \"string\",\n          \"subtext_bold\": \"3002@5510\"\n        }\n      ],\n      \"n_visible\": 4,\n      \"estimatedTotalHits\": 6\n    }\n  ],\n  \"time_ms\": 8\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f31445b0-16f1-4243-b2c5-3ad6e49e4844",
+              "name": "**Bad Request.** Not all fields in the body are present as defined above",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "q",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "in",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "in",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "usage",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "usage",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "near",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search_addresses",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "limit_sites",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "limit_buildings",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "limit_rooms",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "limit_pois",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "limit_all",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "pre_highlight",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "post_highlight",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "cropping",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "parsed_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                      "type": "any",
+                      "value": "{{language}}",
+                      "key": "language"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "Query deserialize error: invalid digit found in string",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "2c99a348-f9b5-4400-9084-049977f5e39e",
+              "name": "**Not found.** `q` is empty. Since searching for nothing is nonsensical, we dont support this.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "q",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "in",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "in",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "usage",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "usage",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "near",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search_addresses",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "limit_sites",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "limit_buildings",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "limit_rooms",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "limit_pois",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "limit_all",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "pre_highlight",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "post_highlight",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "cropping",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "parsed_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                      "type": "any",
+                      "value": "{{language}}",
+                      "key": "language"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "Not found",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "074009a5-f4d5-4da4-9d6b-ea3368eb349f",
+              "name": "**URI Too Long.** The uri you are trying to request is unreasonably long. Search querys dont have thousands of chars..",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "q",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "in",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "in",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "usage",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "usage",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "near",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search_addresses",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "limit_sites",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "limit_buildings",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "limit_rooms",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "limit_pois",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "limit_all",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "pre_highlight",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "post_highlight",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "cropping",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "parsed_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                      "type": "any",
+                      "value": "{{language}}",
+                      "key": "language"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Request-URI Too Long",
+              "code": 414,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "string",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "",
+      "key": "language"
+    },
+    {
+      "type": "string",
+      "value": "https://tum-dev.github.io/eat-api/{{language}}",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "049b8fa9-fb67-49d4-8cd9-3a7055c7fed1",
+    "name": "eat-api calendar locations API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Simple static API for some (student) food places in Munich.",
+      "type": "text/plain"
+    }
+  }
+}

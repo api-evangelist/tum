@@ -1,0 +1,90 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "eat-api calendar menu API",
+    "version": "2.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "menu",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get a menu for the specified canteen, year and week",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://tum-dev.github.io/eat-api/{language}/:canteen_id/:year/:week.json",
+            "params": [
+              {
+                "name": "canteen_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the canteen"
+              },
+              {
+                "name": "year",
+                "value": "",
+                "type": "path",
+                "description": "Year of the menu to get"
+              },
+              {
+                "name": "week",
+                "value": "",
+                "type": "path",
+                "description": "Week of the menu to get with two digits"
+              }
+            ]
+          },
+          "docs": "Get a menu for the specified canteen, year and week"
+        },
+        {
+          "info": {
+            "name": "To get all menus for one specific canteen",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://tum-dev.github.io/eat-api/{language}/:canteen_id/combined/combined.json",
+            "params": [
+              {
+                "name": "canteen_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the canteen"
+              }
+            ]
+          },
+          "docs": "To get all menus for one specific canteen"
+        },
+        {
+          "info": {
+            "name": "To get all menus for all canteens",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://tum-dev.github.io/eat-api/{language}/all.json"
+          },
+          "docs": "To get all menus for all canteens"
+        },
+        {
+          "info": {
+            "name": "To get all menus that are not older than one day for all canteens",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://tum-dev.github.io/eat-api/{language}/all_ref.json"
+          },
+          "docs": "Here dish_type is also normalized. All tailing digits and spaces get removed from dish_type. For example Tagesgericht 1 -> Tagesgericht and Aktionsessen 6 -> Aktionsessen. Also ignores all menus older than one day. This results in this file being usually half the size of the all.json file. This is currently deprecated, and only supported in the german language."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

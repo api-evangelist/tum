@@ -1,0 +1,211 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "eat-api calendar locations API",
+    "version": "2.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "locations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get entry-details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://tum-dev.github.io/eat-api/{language}/api/locations/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the location"
+              },
+              {
+                "name": "lang",
+                "value": "",
+                "type": "query",
+                "description": "The language you want your preview to be in. If either this or the query parameter is set to en, this will be delivered."
+              }
+            ]
+          },
+          "docs": "This returns the full data available for the entry (room/building).\n\nThis is more data, that should be supplied once a user clicks on an entry.\nPreloading this is not an issue on our end, but keep in mind bandwith constraints on your side.\nThe data can be up to 50kB (using gzip) or 200kB unzipped.\nMore about this data format is described in the NavigaTUM-data documentation"
+        },
+        {
+          "info": {
+            "name": "Get the nearby items",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://tum-dev.github.io/eat-api/{language}/api/locations/:id/nearby",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of a location"
+              }
+            ]
+          },
+          "docs": "Shows nearby POIs like public transport stations"
+        },
+        {
+          "info": {
+            "name": "Get a entry-preview",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://tum-dev.github.io/eat-api/{language}/api/locations/:id/preview",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "lang",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "This returns a 1200x630px preview for the location (room/building/..).\n\nThis is usefully for implementing custom `OpenGraph` images for detail previews."
+        },
+        {
+          "info": {
+            "name": "Get a QR code for a location",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://tum-dev.github.io/eat-api/{language}/api/locations/:id/qr-code",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This returns a QR code image (PNG) that links to the location's detail page.\nThe QR code uses TUM blue (#0065bd) as foreground color with white background and rounded corners."
+        },
+        {
+          "info": {
+            "name": "Search entries",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://tum-dev.github.io/eat-api/{language}/api/search",
+            "params": [
+              {
+                "name": "q",
+                "value": "",
+                "type": "query",
+                "description": "string you want to search for.\n\nThe amounts returned can be controlled using the `limit_*` parameters.\nUse `in`, `usage`, `type`, and `near` query parameters for filtering."
+              },
+              {
+                "name": "in",
+                "value": "",
+                "type": "query",
+                "description": "Filter by parent (building, campus, etc.).\n\nCan be repeated for multiple values (e.g. `&in=garching&in=5304`)."
+              },
+              {
+                "name": "usage",
+                "value": "",
+                "type": "query",
+                "description": "Filter by usage type (e.g. `wc`, `büro`).\n\nCan be repeated for multiple values."
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Filter by facet.\n\nCan be repeated for multiple values. Unknown values cause a `400`."
+              },
+              {
+                "name": "near",
+                "value": "",
+                "type": "query",
+                "description": "Sort results by distance to a coordinate (`lat,lon`)."
+              },
+              {
+                "name": "search_addresses",
+                "value": "",
+                "type": "query",
+                "description": "Include adresses in the saerch\n\nBe aware that Nominatim (which we use to do this search) is really slow (~100ms).\nOnly activate this when you really need it."
+              },
+              {
+                "name": "limit_sites",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of sites (campus / site / area) to return.\n\nClamped to `0`..`1000`.\nIf this is a problem for you, please open an issue."
+              },
+              {
+                "name": "limit_buildings",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of buildings to return.\n\nClamped to `0`..`1000`.\nIf this is a problem for you, please open an issue."
+              },
+              {
+                "name": "limit_rooms",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of rooms to return.\n\nClamped to `0`..`1000`.\nIf this is an problem for you, please open an issue."
+              },
+              {
+                "name": "limit_pois",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of POIs (points of interest) to return.\n\nClamped to `0`..`1000`.\nIf this is a problem for you, please open an issue."
+              },
+              {
+                "name": "limit_all",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of results to return.\n\nClamped to `1`..`1000`.\nIf this is an problem for you, please open an issue."
+              },
+              {
+                "name": "pre_highlight",
+                "value": "",
+                "type": "query",
+                "description": "string to include in front of highlighted sequences.\n\nIf this and `post_highlight` are empty, highlighting is disabled.\nFor background on the default values, please see [Wikipedia](https://en.wikipedia.org/wiki/C0_and_C1_control_codes#Modified_C0_control_code_sets))."
+              },
+              {
+                "name": "post_highlight",
+                "value": "",
+                "type": "query",
+                "description": "string to include after the highlighted sequences.\n\nIf this and `pre_highlight` are empty, highlighting is disabled.\nFor background on the default values, please see [Wikipedia](https://en.wikipedia.org/wiki/C0_and_C1_control_codes#Modified_C0_control_code_sets))."
+              },
+              {
+                "name": "cropping",
+                "value": "",
+                "type": "query",
+                "description": "How to handle cropping of long building names in `parsed_id`.\n\n- `crop` (default): crop long names (> 25 chars) with an ellipsis.\n- `full`: never crop; always show full building names."
+              },
+              {
+                "name": "parsed_id",
+                "value": "",
+                "type": "query",
+                "description": "How to format `parsed_id` for rooms.\n\n- `prefixed` (default): add common building prefixes (e.g. `MW 1801`).\n- `roomfinder`: return room codes in Roomfinder format (`archname@building_id`)."
+              }
+            ]
+          },
+          "docs": "This endpoint is designed to support search-as-you-type results.\n\nInstead of simply returning a list, the search results are returned in a way to provide a richer experience by splitting them up into sections. You might not necessarily need to implement all types of sections, or all sections features (if you just want to show a list). The order of sections is a suggested order to display them, but you may change this as you like.\n\nSome fields support highlighting the query terms and it uses \\x19"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,51 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "eat-api calendar static API",
+    "version": "2.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "static",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "To get all available canteens",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://tum-dev.github.io/eat-api/{language}/enums/canteens.json"
+          },
+          "docs": "To get all available canteens"
+        },
+        {
+          "info": {
+            "name": "To get all available languages",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://tum-dev.github.io/eat-api/{language}/enums/languages.json"
+          },
+          "docs": "To get all available languages"
+        },
+        {
+          "info": {
+            "name": "To get all available labels",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://tum-dev.github.io/eat-api/{language}/enums/labels.json"
+          },
+          "docs": "To get all available labels"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

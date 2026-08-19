@@ -1,0 +1,90 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "eat-api calendar maps API",
+    "version": "2.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "maps",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Routing requests",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://tum-dev.github.io/eat-api/{language}/api/maps/route",
+            "params": [
+              {
+                "name": "lang",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Start of the route"
+              },
+              {
+                "name": "to",
+                "value": "",
+                "type": "query",
+                "description": "Destination of the route"
+              },
+              {
+                "name": "route_costing",
+                "value": "",
+                "type": "query",
+                "description": "Transport mode the user wants to use\n\nIf not specified, the default is based on how far the destinations are apart and requested time."
+              },
+              {
+                "name": "pedestrian_type",
+                "value": "",
+                "type": "query",
+                "description": "Does the user have specific walking restrictions?"
+              },
+              {
+                "name": "ptw_type",
+                "value": "",
+                "type": "query",
+                "description": "Does the user prefer mopeds or motorcycles for powered two-wheeled (ptw)?"
+              },
+              {
+                "name": "bicycle_type",
+                "value": "",
+                "type": "query",
+                "description": "Which kind of bicycle do you ride?"
+              },
+              {
+                "name": "page_cursor",
+                "value": "",
+                "type": "query",
+                "description": "Cursor position for pagination\nOnly avaliable for some costings"
+              },
+              {
+                "name": "time",
+                "value": "",
+                "type": "query",
+                "description": "Time for the route (ISO 8601 format)\nUsed with `arrive_by` to determine if this is departure or arrival time"
+              },
+              {
+                "name": "arrive_by",
+                "value": "",
+                "type": "query",
+                "description": "Whether the time parameter represents arrival time (true) or departure time (false/not set)"
+              }
+            ]
+          },
+          "docs": "**API IS EXPERIMENTAL AND ACTIVELY SUBJECT TO CHANGE**\n\nThe user specifies using provided origin (`from`) and destination (`to`) locations and a transport mode (`route_costing`) to tune their routing between the two locations.\nThe costing is fine-tuned by the server side accordingly.\n\nInternally, this endpoint relies on\n- [Valhalla](https://github.com/valhalla/valhalla) for routing for route calculation\n- our database to resolve ids.\n\n  You will need to look the ids up via [`/api/search`](#tag/l"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

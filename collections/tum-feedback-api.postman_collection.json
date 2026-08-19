@@ -1,0 +1,979 @@
+{
+  "item": [
+    {
+      "id": "d9e7720a-9350-4170-b1e3-0ca56ff9065d",
+      "name": "feedback",
+      "description": {
+        "content": "APIs to give feedback",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "35c796c5-7286-4bde-925d-2b12d076b8e6",
+          "name": "Post feedback",
+          "request": {
+            "name": "Post feedback",
+            "description": {
+              "content": "***Do not abuse this endpoint.***\n\nThis posts the actual feedback to GitHub and returns the GitHub link.\nThis API will create issues instead of pull-requests\n=> all feedback is allowed, but [`/api/feedback/propose_edits`](#tag/feedback/operation/propose_edits) is preferred, if it can be posted there.\n\nFor this Endpoint to work, you need to generate a token via the [`/api/feedback/get_token`](#tag/feedback/operation/get_token) endpoint.\n\n# Note\n\nTokens are only used if we return a 201 Created response.\nOtherwise, they are still valid",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "feedback",
+                "feedback"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                  "type": "any",
+                  "value": "{{language}}",
+                  "key": "language"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "text/plain"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"<string>\",\n  \"subject\": \"<string>\",\n  \"body\": \"<string>\",\n  \"privacy_checked\": \"<boolean>\",\n  \"deletion_requested\": \"<boolean>\",\n  \"category\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "16367b5b-dc42-4093-bc1f-e25fcdec9e28",
+              "name": "The feedback has been **successfully posted to GitHub**. We return the link to the GitHub issue.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "feedback",
+                    "feedback"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                      "type": "any",
+                      "value": "{{language}}",
+                      "key": "language"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2Njk2MzczODEsImlhdCI6MTY2OTU5NDE4MSwibmJmIjoxNjY5NTk0MTkxLCJraWQiOjE1ODU0MTUyODk5MzI0MjU0Mzg2fQ.sN0WwXzsGhjOVaqWPe-Fl5x-gwZvh28MMUM-74MoNj4\",\n  \"subject\": \"A catchy title\",\n  \"body\": \"A clear description what happened where and how we should improve it\",\n  \"privacy_checked\": \"<boolean>\",\n  \"deletion_requested\": \"<boolean>\",\n  \"category\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "https://github.com/TUM-Dev/navigatum/issues/9",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "5e699f4a-24ce-42b2-a1e7-962fa5b58797",
+              "name": "**Bad Request.** Not all fields in the body are present as defined above",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "feedback",
+                    "feedback"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                      "type": "any",
+                      "value": "{{language}}",
+                      "key": "language"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2Njk2MzczODEsImlhdCI6MTY2OTU5NDE4MSwibmJmIjoxNjY5NTk0MTkxLCJraWQiOjE1ODU0MTUyODk5MzI0MjU0Mzg2fQ.sN0WwXzsGhjOVaqWPe-Fl5x-gwZvh28MMUM-74MoNj4\",\n  \"subject\": \"A catchy title\",\n  \"body\": \"A clear description what happened where and how we should improve it\",\n  \"privacy_checked\": \"<boolean>\",\n  \"deletion_requested\": \"<boolean>\",\n  \"category\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "c424bfe1-0e6d-4cc4-af24-d72538d3b248",
+              "name": "**Forbidden.** Causes are (delivered via the body):\n\n- `Invalid token`: You have not supplied a token generated via the `gen_token`-Endpoint.\n- `Token not old enough, please wait`: Tokens are only valid after 10s.\n- `Token expired`: Tokens are only valid for 12h.\n- `Token already used`: Tokens are non reusable/refreshable single-use items.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "feedback",
+                    "feedback"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                      "type": "any",
+                      "value": "{{language}}",
+                      "key": "language"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2Njk2MzczODEsImlhdCI6MTY2OTU5NDE4MSwibmJmIjoxNjY5NTk0MTkxLCJraWQiOjE1ODU0MTUyODk5MzI0MjU0Mzg2fQ.sN0WwXzsGhjOVaqWPe-Fl5x-gwZvh28MMUM-74MoNj4\",\n  \"subject\": \"A catchy title\",\n  \"body\": \"A clear description what happened where and how we should improve it\",\n  \"privacy_checked\": \"<boolean>\",\n  \"deletion_requested\": \"<boolean>\",\n  \"category\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "string",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "8994de67-c37b-44b4-8706-4811a672321f",
+              "name": "**Unprocessable Entity.** Subject or body missing or too short.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "feedback",
+                    "feedback"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                      "type": "any",
+                      "value": "{{language}}",
+                      "key": "language"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2Njk2MzczODEsImlhdCI6MTY2OTU5NDE4MSwibmJmIjoxNjY5NTk0MTkxLCJraWQiOjE1ODU0MTUyODk5MzI0MjU0Mzg2fQ.sN0WwXzsGhjOVaqWPe-Fl5x-gwZvh28MMUM-74MoNj4\",\n  \"subject\": \"A catchy title\",\n  \"body\": \"A clear description what happened where and how we should improve it\",\n  \"privacy_checked\": \"<boolean>\",\n  \"deletion_requested\": \"<boolean>\",\n  \"category\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "13dded4f-6d88-415f-816d-50d89d3d24cb",
+              "name": "**Unavailable for legal reasons.** Using this endpoint without accepting the privacy policy is not allowed. For us to post to GitHub, this has to be `true`",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "feedback",
+                    "feedback"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                      "type": "any",
+                      "value": "{{language}}",
+                      "key": "language"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2Njk2MzczODEsImlhdCI6MTY2OTU5NDE4MSwibmJmIjoxNjY5NTk0MTkxLCJraWQiOjE1ODU0MTUyODk5MzI0MjU0Mzg2fQ.sN0WwXzsGhjOVaqWPe-Fl5x-gwZvh28MMUM-74MoNj4\",\n  \"subject\": \"A catchy title\",\n  \"body\": \"A clear description what happened where and how we should improve it\",\n  \"privacy_checked\": \"<boolean>\",\n  \"deletion_requested\": \"<boolean>\",\n  \"category\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "code": 451,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "c338b680-6d52-488d-b17f-a26ae71957c5",
+              "name": "**Internal Server Error.** We have a problem communicating with GitHubs servers. Please try again later",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "feedback",
+                    "feedback"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                      "type": "any",
+                      "value": "{{language}}",
+                      "key": "language"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2Njk2MzczODEsImlhdCI6MTY2OTU5NDE4MSwibmJmIjoxNjY5NTk0MTkxLCJraWQiOjE1ODU0MTUyODk5MzI0MjU0Mzg2fQ.sN0WwXzsGhjOVaqWPe-Fl5x-gwZvh28MMUM-74MoNj4\",\n  \"subject\": \"A catchy title\",\n  \"body\": \"A clear description what happened where and how we should improve it\",\n  \"privacy_checked\": \"<boolean>\",\n  \"deletion_requested\": \"<boolean>\",\n  \"category\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "1ae794ea-fb2f-49a3-9402-05a66fe22e18",
+              "name": "**Service unavailable.** We have not configured a GitHub Access Token. This could be because we are experiencing technical difficulties or intentional. Please try again later.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "feedback",
+                    "feedback"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                      "type": "any",
+                      "value": "{{language}}",
+                      "key": "language"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2Njk2MzczODEsImlhdCI6MTY2OTU5NDE4MSwibmJmIjoxNjY5NTk0MTkxLCJraWQiOjE1ODU0MTUyODk5MzI0MjU0Mzg2fQ.sN0WwXzsGhjOVaqWPe-Fl5x-gwZvh28MMUM-74MoNj4\",\n  \"subject\": \"A catchy title\",\n  \"body\": \"A clear description what happened where and how we should improve it\",\n  \"privacy_checked\": \"<boolean>\",\n  \"deletion_requested\": \"<boolean>\",\n  \"category\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "46dd6419-d3a0-4c4f-a678-1377fd6423c7",
+          "name": "Get a feedback-token",
+          "request": {
+            "name": "Get a feedback-token",
+            "description": {
+              "content": "***Do not abuse this endpoint.***\n\nThis returns a JWT token usable for submitting feedback.\nYou should request a token, ***if (and only if) a user is on a feedback page***\n\nAs a rudimentary way of rate-limiting feedback, this endpoint returns a token.\nTo post feedback, you will need this token.\n\nTokens gain validity after 5s, and are invalid after 12h of being issued.\nThey are not refreshable, and are only valid for one usage.\n\n# Note:\n\nGlobal Rate-Limiting allows bursts with up to 20 requests and replenishes 50 requests per day",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "feedback",
+                "get_token"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                  "type": "any",
+                  "value": "{{language}}",
+                  "key": "language"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "367864c3-6531-48a7-a311-97a578e631a5",
+              "name": "**Created** a usable token",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "feedback",
+                    "get_token"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                      "type": "any",
+                      "value": "{{language}}",
+                      "key": "language"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"created_at\": 389,\n  \"token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2Njk2MzczODEsImlhdCI6MTY2OTU5NDE4MSwibmJmIjoxNjY5NTk0MTkxLCJraWQiOjE1ODU0MTUyODk5MzI0MjU0Mzg2fQ.sN0WwXzsGhjOVaqWPe-Fl5x-gwZvh28MMUM-74MoNj4\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ce06f21a-5feb-43a9-bc45-c19c9a34235d",
+              "name": "**Too many requests.** We are rate-limiting everyone's requests, please try again later.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "feedback",
+                    "get_token"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                      "type": "any",
+                      "value": "{{language}}",
+                      "key": "language"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "f089c738-413a-48e7-8bc7-b6f5899b5d9a",
+              "name": "**Service unavailable.** We have not configured a GitHub Access Token. This could be because we are experiencing technical difficulties or intentional. Please try again later.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "feedback",
+                    "get_token"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                      "type": "any",
+                      "value": "{{language}}",
+                      "key": "language"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "50cc9a08-3714-4033-9fb9-5c12a1c9f374",
+          "name": "Post Edit-Requests",
+          "request": {
+            "name": "Post Edit-Requests",
+            "description": {
+              "content": "***Do not abuse this endpoint.***\n\nThis posts the actual feedback to GitHub and returns the github link.\nThis API will create pull-requests instead of issues => only a subset of feedback is allowed.\nFor this Endpoint to work, you need to generate a token via the [`/api/feedback/get_token`](#tag/feedback/operation/get_token) endpoint.\n\n# Note:\n\nTokens are only used if we return a 201 Created response. Otherwise, they are still valid",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "feedback",
+                "propose_edits"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                  "type": "any",
+                  "value": "{{language}}",
+                  "key": "language"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "text/plain"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"<string>\",\n  \"additional_context\": \"<string>\",\n  \"privacy_checked\": \"<boolean>\",\n  \"additions\": {\n    \"key_0\": {\n      \"alt_name\": \"<string>\",\n      \"arch_name\": \"<string>\",\n      \"coords\": {\n        \"lat\": \"<double>\",\n        \"lon\": \"<double>\"\n      },\n      \"kind\": \"<string>\",\n      \"parent_building_id\": \"<string>\",\n      \"usage_id\": \"<integer>\",\n      \"address\": \"<null>\",\n      \"floor_level\": \"<string>\",\n      \"floor_type\": \"<string>\",\n      \"links\": [\n        {\n          \"text_de\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"text_en\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"url\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        {\n          \"text_de\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"text_en\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"url\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      ],\n      \"seats\": \"<null>\"\n    },\n    \"key_1\": {\n      \"alt_name\": \"<string>\",\n      \"arch_name\": \"<string>\",\n      \"coords\": {\n        \"lat\": \"<double>\",\n        \"lon\": \"<double>\"\n      },\n      \"kind\": \"<string>\",\n      \"parent_building_id\": \"<string>\",\n      \"usage_id\": \"<integer>\",\n      \"address\": \"<null>\",\n      \"floor_level\": \"<string>\",\n      \"floor_type\": \"<string>\",\n      \"links\": [\n        {\n          \"text_de\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"text_en\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"url\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        {\n          \"text_de\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"text_en\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"url\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      ],\n      \"seats\": \"<null>\"\n    },\n    \"key_2\": {\n      \"alt_name\": \"<string>\",\n      \"arch_name\": \"<string>\",\n      \"coords\": {\n        \"lat\": \"<double>\",\n        \"lon\": \"<double>\"\n      },\n      \"kind\": \"<string>\",\n      \"parent_building_id\": \"<string>\",\n      \"usage_id\": \"<integer>\",\n      \"address\": \"<null>\",\n      \"floor_level\": \"<string>\",\n      \"floor_type\": \"<string>\",\n      \"links\": [\n        {\n          \"text_de\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"text_en\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"url\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        {\n          \"text_de\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"text_en\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"url\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      ],\n      \"seats\": \"<null>\"\n    }\n  },\n  \"edits\": {\n    \"key_0\": {\n      \"coordinate\": \"<null>\",\n      \"image\": \"<null>\",\n      \"properties\": [\n        {\n          \"type\": \"<string>\",\n          \"name\": \"<string>\",\n          \"short_name\": \"<string>\"\n        },\n        {\n          \"type\": \"<string>\",\n          \"name\": \"<string>\",\n          \"short_name\": \"<string>\"\n        }\n      ]\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "c1835610-5c36-4593-8138-7187253991cf",
+              "name": "The edit request feedback has been **successfully posted to GitHub**. We return the link to the GitHub issue.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "feedback",
+                    "propose_edits"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                      "type": "any",
+                      "value": "{{language}}",
+                      "key": "language"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2Njk2MzczODEsImlhdCI6MTY2OTU5NDE4MSwibmJmIjoxNjY5NTk0MTkxLCJraWQiOjE1ODU0MTUyODk5MzI0MjU0Mzg2fQ.sN0WwXzsGhjOVaqWPe-Fl5x-gwZvh28MMUM-74MoNj4\",\n  \"additional_context\": \"I have a picture of the room, please add it to the roomfinder\",\n  \"privacy_checked\": \"<boolean>\",\n  \"additions\": {\n    \"key_0\": {\n      \"alt_name\": \"<string>\",\n      \"arch_name\": \"<string>\",\n      \"coords\": {\n        \"lat\": 48.26244490906312,\n        \"lon\": 48.26244490906312\n      },\n      \"kind\": \"<string>\",\n      \"parent_building_id\": \"<string>\",\n      \"usage_id\": \"<integer>\",\n      \"address\": \"<null>\",\n      \"floor_level\": \"<string>\",\n      \"floor_type\": \"<string>\",\n      \"links\": [\n        {\n          \"text_de\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"text_en\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"url\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        {\n          \"text_de\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"text_en\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"url\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      ],\n      \"seats\": \"<null>\"\n    }\n  },\n  \"edits\": {\n    \"key_0\": {\n      \"coordinate\": \"<null>\",\n      \"image\": \"<null>\",\n      \"properties\": [\n        {\n          \"type\": \"<string>\",\n          \"name\": \"<string>\",\n          \"short_name\": \"<string>\"\n        },\n        {\n          \"type\": \"<string>\",\n          \"name\": \"<string>\",\n          \"short_name\": \"<string>\"\n        }\n      ]\n    },\n    \"key_1\": {\n      \"coordinate\": \"<null>\",\n      \"image\": \"<null>\",\n      \"properties\": [\n        {\n          \"type\": \"<string>\",\n          \"name\": \"<string>\",\n          \"short_name\": \"<string>\"\n        },\n        {\n          \"type\": \"<string>\",\n          \"name\": \"<string>\",\n          \"short_name\": \"<string>\"\n        }\n      ]\n    },\n    \"key_2\": {\n      \"coordinate\": \"<null>\",\n      \"image\": \"<null>\",\n      \"properties\": [\n        {\n          \"type\": \"<string>\",\n          \"name\": \"<string>\",\n          \"short_name\": \"<string>\"\n        },\n        {\n          \"type\": \"<string>\",\n          \"name\": \"<string>\",\n          \"short_name\": \"<string>\"\n        }\n      ]\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "https://github.com/TUM-Dev/navigatum/issues/9",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "6f0fe8a4-8113-4fbd-9a85-82fb47b0e40c",
+              "name": "**Bad Request.** Not all fields in the body are present as defined above",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "feedback",
+                    "propose_edits"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                      "type": "any",
+                      "value": "{{language}}",
+                      "key": "language"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2Njk2MzczODEsImlhdCI6MTY2OTU5NDE4MSwibmJmIjoxNjY5NTk0MTkxLCJraWQiOjE1ODU0MTUyODk5MzI0MjU0Mzg2fQ.sN0WwXzsGhjOVaqWPe-Fl5x-gwZvh28MMUM-74MoNj4\",\n  \"additional_context\": \"I have a picture of the room, please add it to the roomfinder\",\n  \"privacy_checked\": \"<boolean>\",\n  \"additions\": {\n    \"key_0\": {\n      \"alt_name\": \"<string>\",\n      \"arch_name\": \"<string>\",\n      \"coords\": {\n        \"lat\": 48.26244490906312,\n        \"lon\": 48.26244490906312\n      },\n      \"kind\": \"<string>\",\n      \"parent_building_id\": \"<string>\",\n      \"usage_id\": \"<integer>\",\n      \"address\": \"<null>\",\n      \"floor_level\": \"<string>\",\n      \"floor_type\": \"<string>\",\n      \"links\": [\n        {\n          \"text_de\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"text_en\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"url\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        {\n          \"text_de\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"text_en\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"url\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      ],\n      \"seats\": \"<null>\"\n    }\n  },\n  \"edits\": {\n    \"key_0\": {\n      \"coordinate\": \"<null>\",\n      \"image\": \"<null>\",\n      \"properties\": [\n        {\n          \"type\": \"<string>\",\n          \"name\": \"<string>\",\n          \"short_name\": \"<string>\"\n        },\n        {\n          \"type\": \"<string>\",\n          \"name\": \"<string>\",\n          \"short_name\": \"<string>\"\n        }\n      ]\n    },\n    \"key_1\": {\n      \"coordinate\": \"<null>\",\n      \"image\": \"<null>\",\n      \"properties\": [\n        {\n          \"type\": \"<string>\",\n          \"name\": \"<string>\",\n          \"short_name\": \"<string>\"\n        },\n        {\n          \"type\": \"<string>\",\n          \"name\": \"<string>\",\n          \"short_name\": \"<string>\"\n        }\n      ]\n    },\n    \"key_2\": {\n      \"coordinate\": \"<null>\",\n      \"image\": \"<null>\",\n      \"properties\": [\n        {\n          \"type\": \"<string>\",\n          \"name\": \"<string>\",\n          \"short_name\": \"<string>\"\n        },\n        {\n          \"type\": \"<string>\",\n          \"name\": \"<string>\",\n          \"short_name\": \"<string>\"\n        }\n      ]\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "4c7e670d-852d-4780-a230-633fe92944d1",
+              "name": "**Forbidden.** Causes are (delivered via the body):\n\n- `Invalid token`: You have not supplied a token generated via the `gen_token`-Endpoint.\n- `Token not old enough, please wait`: Tokens are only valid after 10s.\n- `Token expired`: Tokens are only valid for 12h.\n- `Token already used`: Tokens are non reusable/refreshable single-use items.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "feedback",
+                    "propose_edits"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                      "type": "any",
+                      "value": "{{language}}",
+                      "key": "language"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2Njk2MzczODEsImlhdCI6MTY2OTU5NDE4MSwibmJmIjoxNjY5NTk0MTkxLCJraWQiOjE1ODU0MTUyODk5MzI0MjU0Mzg2fQ.sN0WwXzsGhjOVaqWPe-Fl5x-gwZvh28MMUM-74MoNj4\",\n  \"additional_context\": \"I have a picture of the room, please add it to the roomfinder\",\n  \"privacy_checked\": \"<boolean>\",\n  \"additions\": {\n    \"key_0\": {\n      \"alt_name\": \"<string>\",\n      \"arch_name\": \"<string>\",\n      \"coords\": {\n        \"lat\": 48.26244490906312,\n        \"lon\": 48.26244490906312\n      },\n      \"kind\": \"<string>\",\n      \"parent_building_id\": \"<string>\",\n      \"usage_id\": \"<integer>\",\n      \"address\": \"<null>\",\n      \"floor_level\": \"<string>\",\n      \"floor_type\": \"<string>\",\n      \"links\": [\n        {\n          \"text_de\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"text_en\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"url\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        {\n          \"text_de\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"text_en\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"url\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      ],\n      \"seats\": \"<null>\"\n    }\n  },\n  \"edits\": {\n    \"key_0\": {\n      \"coordinate\": \"<null>\",\n      \"image\": \"<null>\",\n      \"properties\": [\n        {\n          \"type\": \"<string>\",\n          \"name\": \"<string>\",\n          \"short_name\": \"<string>\"\n        },\n        {\n          \"type\": \"<string>\",\n          \"name\": \"<string>\",\n          \"short_name\": \"<string>\"\n        }\n      ]\n    },\n    \"key_1\": {\n      \"coordinate\": \"<null>\",\n      \"image\": \"<null>\",\n      \"properties\": [\n        {\n          \"type\": \"<string>\",\n          \"name\": \"<string>\",\n          \"short_name\": \"<string>\"\n        },\n        {\n          \"type\": \"<string>\",\n          \"name\": \"<string>\",\n          \"short_name\": \"<string>\"\n        }\n      ]\n    },\n    \"key_2\": {\n      \"coordinate\": \"<null>\",\n      \"image\": \"<null>\",\n      \"properties\": [\n        {\n          \"type\": \"<string>\",\n          \"name\": \"<string>\",\n          \"short_name\": \"<string>\"\n        },\n        {\n          \"type\": \"<string>\",\n          \"name\": \"<string>\",\n          \"short_name\": \"<string>\"\n        }\n      ]\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "4d6dbb65-74b6-4fda-accb-ed7a8abbfad1",
+              "name": "**Unprocessable Entity.** Subject or body missing or too short.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "feedback",
+                    "propose_edits"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                      "type": "any",
+                      "value": "{{language}}",
+                      "key": "language"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2Njk2MzczODEsImlhdCI6MTY2OTU5NDE4MSwibmJmIjoxNjY5NTk0MTkxLCJraWQiOjE1ODU0MTUyODk5MzI0MjU0Mzg2fQ.sN0WwXzsGhjOVaqWPe-Fl5x-gwZvh28MMUM-74MoNj4\",\n  \"additional_context\": \"I have a picture of the room, please add it to the roomfinder\",\n  \"privacy_checked\": \"<boolean>\",\n  \"additions\": {\n    \"key_0\": {\n      \"alt_name\": \"<string>\",\n      \"arch_name\": \"<string>\",\n      \"coords\": {\n        \"lat\": 48.26244490906312,\n        \"lon\": 48.26244490906312\n      },\n      \"kind\": \"<string>\",\n      \"parent_building_id\": \"<string>\",\n      \"usage_id\": \"<integer>\",\n      \"address\": \"<null>\",\n      \"floor_level\": \"<string>\",\n      \"floor_type\": \"<string>\",\n      \"links\": [\n        {\n          \"text_de\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"text_en\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"url\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        {\n          \"text_de\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"text_en\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"url\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      ],\n      \"seats\": \"<null>\"\n    }\n  },\n  \"edits\": {\n    \"key_0\": {\n      \"coordinate\": \"<null>\",\n      \"image\": \"<null>\",\n      \"properties\": [\n        {\n          \"type\": \"<string>\",\n          \"name\": \"<string>\",\n          \"short_name\": \"<string>\"\n        },\n        {\n          \"type\": \"<string>\",\n          \"name\": \"<string>\",\n          \"short_name\": \"<string>\"\n        }\n      ]\n    },\n    \"key_1\": {\n      \"coordinate\": \"<null>\",\n      \"image\": \"<null>\",\n      \"properties\": [\n        {\n          \"type\": \"<string>\",\n          \"name\": \"<string>\",\n          \"short_name\": \"<string>\"\n        },\n        {\n          \"type\": \"<string>\",\n          \"name\": \"<string>\",\n          \"short_name\": \"<string>\"\n        }\n      ]\n    },\n    \"key_2\": {\n      \"coordinate\": \"<null>\",\n      \"image\": \"<null>\",\n      \"properties\": [\n        {\n          \"type\": \"<string>\",\n          \"name\": \"<string>\",\n          \"short_name\": \"<string>\"\n        },\n        {\n          \"type\": \"<string>\",\n          \"name\": \"<string>\",\n          \"short_name\": \"<string>\"\n        }\n      ]\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "6ce343a7-d8bb-4312-9cd5-d11b4d5243fc",
+              "name": "**Unavailable for legal reasons.** Using this endpoint without accepting the privacy policy is not allowed. For us to post to GitHub, this has to be true",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "feedback",
+                    "propose_edits"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                      "type": "any",
+                      "value": "{{language}}",
+                      "key": "language"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2Njk2MzczODEsImlhdCI6MTY2OTU5NDE4MSwibmJmIjoxNjY5NTk0MTkxLCJraWQiOjE1ODU0MTUyODk5MzI0MjU0Mzg2fQ.sN0WwXzsGhjOVaqWPe-Fl5x-gwZvh28MMUM-74MoNj4\",\n  \"additional_context\": \"I have a picture of the room, please add it to the roomfinder\",\n  \"privacy_checked\": \"<boolean>\",\n  \"additions\": {\n    \"key_0\": {\n      \"alt_name\": \"<string>\",\n      \"arch_name\": \"<string>\",\n      \"coords\": {\n        \"lat\": 48.26244490906312,\n        \"lon\": 48.26244490906312\n      },\n      \"kind\": \"<string>\",\n      \"parent_building_id\": \"<string>\",\n      \"usage_id\": \"<integer>\",\n      \"address\": \"<null>\",\n      \"floor_level\": \"<string>\",\n      \"floor_type\": \"<string>\",\n      \"links\": [\n        {\n          \"text_de\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"text_en\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"url\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        {\n          \"text_de\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"text_en\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"url\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      ],\n      \"seats\": \"<null>\"\n    }\n  },\n  \"edits\": {\n    \"key_0\": {\n      \"coordinate\": \"<null>\",\n      \"image\": \"<null>\",\n      \"properties\": [\n        {\n          \"type\": \"<string>\",\n          \"name\": \"<string>\",\n          \"short_name\": \"<string>\"\n        },\n        {\n          \"type\": \"<string>\",\n          \"name\": \"<string>\",\n          \"short_name\": \"<string>\"\n        }\n      ]\n    },\n    \"key_1\": {\n      \"coordinate\": \"<null>\",\n      \"image\": \"<null>\",\n      \"properties\": [\n        {\n          \"type\": \"<string>\",\n          \"name\": \"<string>\",\n          \"short_name\": \"<string>\"\n        },\n        {\n          \"type\": \"<string>\",\n          \"name\": \"<string>\",\n          \"short_name\": \"<string>\"\n        }\n      ]\n    },\n    \"key_2\": {\n      \"coordinate\": \"<null>\",\n      \"image\": \"<null>\",\n      \"properties\": [\n        {\n          \"type\": \"<string>\",\n          \"name\": \"<string>\",\n          \"short_name\": \"<string>\"\n        },\n        {\n          \"type\": \"<string>\",\n          \"name\": \"<string>\",\n          \"short_name\": \"<string>\"\n        }\n      ]\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "code": 451,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "80607adf-7340-4a17-b5d5-171ef6fb3880",
+              "name": "**Internal Server Error.** We have a problem communicating with GitHubs servers. Please try again later.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "feedback",
+                    "propose_edits"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                      "type": "any",
+                      "value": "{{language}}",
+                      "key": "language"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2Njk2MzczODEsImlhdCI6MTY2OTU5NDE4MSwibmJmIjoxNjY5NTk0MTkxLCJraWQiOjE1ODU0MTUyODk5MzI0MjU0Mzg2fQ.sN0WwXzsGhjOVaqWPe-Fl5x-gwZvh28MMUM-74MoNj4\",\n  \"additional_context\": \"I have a picture of the room, please add it to the roomfinder\",\n  \"privacy_checked\": \"<boolean>\",\n  \"additions\": {\n    \"key_0\": {\n      \"alt_name\": \"<string>\",\n      \"arch_name\": \"<string>\",\n      \"coords\": {\n        \"lat\": 48.26244490906312,\n        \"lon\": 48.26244490906312\n      },\n      \"kind\": \"<string>\",\n      \"parent_building_id\": \"<string>\",\n      \"usage_id\": \"<integer>\",\n      \"address\": \"<null>\",\n      \"floor_level\": \"<string>\",\n      \"floor_type\": \"<string>\",\n      \"links\": [\n        {\n          \"text_de\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"text_en\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"url\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        {\n          \"text_de\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"text_en\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"url\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      ],\n      \"seats\": \"<null>\"\n    }\n  },\n  \"edits\": {\n    \"key_0\": {\n      \"coordinate\": \"<null>\",\n      \"image\": \"<null>\",\n      \"properties\": [\n        {\n          \"type\": \"<string>\",\n          \"name\": \"<string>\",\n          \"short_name\": \"<string>\"\n        },\n        {\n          \"type\": \"<string>\",\n          \"name\": \"<string>\",\n          \"short_name\": \"<string>\"\n        }\n      ]\n    },\n    \"key_1\": {\n      \"coordinate\": \"<null>\",\n      \"image\": \"<null>\",\n      \"properties\": [\n        {\n          \"type\": \"<string>\",\n          \"name\": \"<string>\",\n          \"short_name\": \"<string>\"\n        },\n        {\n          \"type\": \"<string>\",\n          \"name\": \"<string>\",\n          \"short_name\": \"<string>\"\n        }\n      ]\n    },\n    \"key_2\": {\n      \"coordinate\": \"<null>\",\n      \"image\": \"<null>\",\n      \"properties\": [\n        {\n          \"type\": \"<string>\",\n          \"name\": \"<string>\",\n          \"short_name\": \"<string>\"\n        },\n        {\n          \"type\": \"<string>\",\n          \"name\": \"<string>\",\n          \"short_name\": \"<string>\"\n        }\n      ]\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "e734dd3b-9955-48b6-b07b-20d09bd11c1a",
+              "name": "Service unavailable. We have not configured a GitHub Access Token. This could be because we are experiencing technical difficulties or intentional. Please try again later.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "feedback",
+                    "propose_edits"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                      "type": "any",
+                      "value": "{{language}}",
+                      "key": "language"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2Njk2MzczODEsImlhdCI6MTY2OTU5NDE4MSwibmJmIjoxNjY5NTk0MTkxLCJraWQiOjE1ODU0MTUyODk5MzI0MjU0Mzg2fQ.sN0WwXzsGhjOVaqWPe-Fl5x-gwZvh28MMUM-74MoNj4\",\n  \"additional_context\": \"I have a picture of the room, please add it to the roomfinder\",\n  \"privacy_checked\": \"<boolean>\",\n  \"additions\": {\n    \"key_0\": {\n      \"alt_name\": \"<string>\",\n      \"arch_name\": \"<string>\",\n      \"coords\": {\n        \"lat\": 48.26244490906312,\n        \"lon\": 48.26244490906312\n      },\n      \"kind\": \"<string>\",\n      \"parent_building_id\": \"<string>\",\n      \"usage_id\": \"<integer>\",\n      \"address\": \"<null>\",\n      \"floor_level\": \"<string>\",\n      \"floor_type\": \"<string>\",\n      \"links\": [\n        {\n          \"text_de\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"text_en\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"url\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        {\n          \"text_de\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"text_en\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"url\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      ],\n      \"seats\": \"<null>\"\n    }\n  },\n  \"edits\": {\n    \"key_0\": {\n      \"coordinate\": \"<null>\",\n      \"image\": \"<null>\",\n      \"properties\": [\n        {\n          \"type\": \"<string>\",\n          \"name\": \"<string>\",\n          \"short_name\": \"<string>\"\n        },\n        {\n          \"type\": \"<string>\",\n          \"name\": \"<string>\",\n          \"short_name\": \"<string>\"\n        }\n      ]\n    },\n    \"key_1\": {\n      \"coordinate\": \"<null>\",\n      \"image\": \"<null>\",\n      \"properties\": [\n        {\n          \"type\": \"<string>\",\n          \"name\": \"<string>\",\n          \"short_name\": \"<string>\"\n        },\n        {\n          \"type\": \"<string>\",\n          \"name\": \"<string>\",\n          \"short_name\": \"<string>\"\n        }\n      ]\n    },\n    \"key_2\": {\n      \"coordinate\": \"<null>\",\n      \"image\": \"<null>\",\n      \"properties\": [\n        {\n          \"type\": \"<string>\",\n          \"name\": \"<string>\",\n          \"short_name\": \"<string>\"\n        },\n        {\n          \"type\": \"<string>\",\n          \"name\": \"<string>\",\n          \"short_name\": \"<string>\"\n        }\n      ]\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "",
+      "key": "language"
+    },
+    {
+      "type": "string",
+      "value": "https://tum-dev.github.io/eat-api/{{language}}",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "626c43cf-8a0e-4e73-bda5-296014934efe",
+    "name": "eat-api calendar feedback API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Simple static API for some (student) food places in Munich.",
+      "type": "text/plain"
+    }
+  }
+}

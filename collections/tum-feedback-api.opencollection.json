@@ -1,0 +1,59 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "eat-api calendar feedback API",
+    "version": "2.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "feedback",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Post feedback",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://tum-dev.github.io/eat-api/{language}/api/feedback/feedback",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "***Do not abuse this endpoint.***\n\nThis posts the actual feedback to GitHub and returns the GitHub link.\nThis API will create issues instead of pull-requests\n=> all feedback is allowed, but [`/api/feedback/propose_edits`](#tag/feedback/operation/propose_edits) is preferred, if it can be posted there.\n\nFor this Endpoint to work, you need to generate a token via the [`/api/feedback/get_token`](#tag/feedback/operation/get_token) endpoint.\n\n# Note\n\nTokens are only used if we return a 201 Created res"
+        },
+        {
+          "info": {
+            "name": "Get a feedback-token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://tum-dev.github.io/eat-api/{language}/api/feedback/get_token"
+          },
+          "docs": "***Do not abuse this endpoint.***\n\nThis returns a JWT token usable for submitting feedback.\nYou should request a token, ***if (and only if) a user is on a feedback page***\n\nAs a rudimentary way of rate-limiting feedback, this endpoint returns a token.\nTo post feedback, you will need this token.\n\nTokens gain validity after 5s, and are invalid after 12h of being issued.\nThey are not refreshable, and are only valid for one usage.\n\n# Note:\n\nGlobal Rate-Limiting allows bursts with up to 20 requests a"
+        },
+        {
+          "info": {
+            "name": "Post Edit-Requests",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://tum-dev.github.io/eat-api/{language}/api/feedback/propose_edits",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "***Do not abuse this endpoint.***\n\nThis posts the actual feedback to GitHub and returns the github link.\nThis API will create pull-requests instead of issues => only a subset of feedback is allowed.\nFor this Endpoint to work, you need to generate a token via the [`/api/feedback/get_token`](#tag/feedback/operation/get_token) endpoint.\n\n# Note:\n\nTokens are only used if we return a 201 Created response. Otherwise, they are still valid"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

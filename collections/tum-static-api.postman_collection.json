@@ -1,0 +1,290 @@
+{
+  "item": [
+    {
+      "id": "afe96731-aaea-4880-a5ec-680f9daafe5b",
+      "name": "static",
+      "description": {
+        "content": "Static information regarding canteens, labels and languages",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "fb86fb24-e650-417b-8cba-58a864a124dc",
+          "name": "To get all available canteens",
+          "request": {
+            "name": "To get all available canteens",
+            "description": {},
+            "url": {
+              "path": [
+                "enums",
+                "canteens.json"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                  "type": "any",
+                  "value": "{{language}}",
+                  "key": "language"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "3dabfddb-e590-4b8d-a260-27d61a49bc84",
+              "name": "successful operation",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "enums",
+                    "canteens.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                      "type": "any",
+                      "value": "{{language}}",
+                      "key": "language"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"enum_name\": \"MENSA_GARCHING\",\n    \"name\": \"Mensa Garching\",\n    \"location\": {\n      \"address\": \"Boltzmannstraße 19, Garching\",\n      \"latitude\": 48.268132,\n      \"longitude\": 11.672263\n    },\n    \"canteen_id\": \"mensa-garching\",\n    \"queue_status\": \"https://mensa.liste.party/api/\",\n    \"open_hours\": {\n      \"mon\": {\n        \"start\": \"23:77\",\n        \"end\": \"07:30\"\n      },\n      \"tue\": {\n        \"start\": \"64:70\",\n        \"end\": \"35:81\"\n      },\n      \"wed\": {\n        \"start\": \"57:96\",\n        \"end\": \"88:95\"\n      },\n      \"thu\": {\n        \"start\": \"10:55\",\n        \"end\": \"76:81\"\n      },\n      \"fri\": {\n        \"start\": \"34:38\",\n        \"end\": \"86:97\"\n      }\n    }\n  },\n  {\n    \"enum_name\": \"MENSA_GARCHING\",\n    \"name\": \"Mensa Garching\",\n    \"location\": {\n      \"address\": \"Boltzmannstraße 19, Garching\",\n      \"latitude\": 48.268132,\n      \"longitude\": 11.672263\n    },\n    \"canteen_id\": \"mensa-garching\",\n    \"queue_status\": \"https://mensa.liste.party/api/\",\n    \"open_hours\": {\n      \"mon\": {\n        \"start\": \"74:82\",\n        \"end\": \"17:06\"\n      },\n      \"tue\": {\n        \"start\": \"66:71\",\n        \"end\": \"63:61\"\n      },\n      \"wed\": {\n        \"start\": \"06:22\",\n        \"end\": \"01:85\"\n      },\n      \"thu\": {\n        \"start\": \"07:41\",\n        \"end\": \"79:76\"\n      },\n      \"fri\": {\n        \"start\": \"24:11\",\n        \"end\": \"61:20\"\n      }\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9f9a9132-0000-417f-a26c-90f8b75a1257",
+          "name": "To get all available languages",
+          "request": {
+            "name": "To get all available languages",
+            "description": {},
+            "url": {
+              "path": [
+                "enums",
+                "languages.json"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                  "type": "any",
+                  "value": "{{language}}",
+                  "key": "language"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d8a365a4-4cb5-4a65-86bb-f86d81105d41",
+              "name": "successful operation",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "enums",
+                    "languages.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                      "type": "any",
+                      "value": "{{language}}",
+                      "key": "language"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"name\": \"EN\",\n    \"base_url\": \"en/\",\n    \"label\": \"English\",\n    \"flag\": \"🏴󠁧󠁢󠁥󠁮󠁧󠁿\"\n  },\n  {\n    \"name\": \"EN\",\n    \"base_url\": \"en/\",\n    \"label\": \"English\",\n    \"flag\": \"🏴󠁧󠁢󠁥󠁮󠁧󠁿\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c90508d1-3449-4b2f-8e7b-a55e9c0f1429",
+          "name": "To get all available labels",
+          "request": {
+            "name": "To get all available labels",
+            "description": {},
+            "url": {
+              "path": [
+                "enums",
+                "labels.json"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                  "type": "any",
+                  "value": "{{language}}",
+                  "key": "language"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "931c089c-af1f-45c1-b9dc-fe8e1aa77570",
+              "name": "successful operation",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "enums",
+                    "labels.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                      "type": "any",
+                      "value": "{{language}}",
+                      "key": "language"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"enum_name\": \"VEGETARIAN\",\n    \"text\": {\n      \"DE\": \"Vegetarisch\",\n      \"EN\": \"vegetarian\"\n    },\n    \"abbreviation\": \"🌽\"\n  },\n  {\n    \"enum_name\": \"VEGETARIAN\",\n    \"text\": {\n      \"DE\": \"Vegetarisch\",\n      \"EN\": \"vegetarian\"\n    },\n    \"abbreviation\": \"🌽\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "",
+      "key": "language"
+    },
+    {
+      "type": "string",
+      "value": "https://tum-dev.github.io/eat-api/{{language}}",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "c41ec8be-6954-4646-ab3b-85404783a201",
+    "name": "eat-api calendar static API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Simple static API for some (student) food places in Munich.",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,170 @@
+{
+  "item": [
+    {
+      "id": "948c2640-bb47-4e6b-a68b-faea37c4e371",
+      "name": "Status",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "603cb9a2-0e66-42bc-9414-de76b54eb129",
+          "name": "API healthcheck",
+          "request": {
+            "name": "API healthcheck",
+            "description": {
+              "content": "If this endpoint does not return 200, the API is experiencing a catastrophic outage.\n**Should never happen.**",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "status"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                  "type": "any",
+                  "value": "{{language}}",
+                  "key": "language"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "text/plain"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "24882fd4-1ccf-4571-b1ed-40e08956551e",
+              "name": "API is **healthy**",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                      "type": "any",
+                      "value": "{{language}}",
+                      "key": "language"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "healthy\nsource_code: https://github.com/TUM-Dev/navigatum/tree/{hash}",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "1b65ee7c-4fc6-483c-a8ae-933169700724",
+              "name": "API is **NOT healthy**",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                      "type": "any",
+                      "value": "{{language}}",
+                      "key": "language"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "unhealthy\nsource_code: https://github.com/TUM-Dev/navigatum/tree/{hash}",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "",
+      "key": "language"
+    },
+    {
+      "type": "string",
+      "value": "https://tum-dev.github.io/eat-api/{{language}}",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "f0c67a77-2cdc-448d-9e7d-b44d243b8a7a",
+    "name": "eat-api calendar Status API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Simple static API for some (student) food places in Munich.",
+      "type": "text/plain"
+    }
+  }
+}

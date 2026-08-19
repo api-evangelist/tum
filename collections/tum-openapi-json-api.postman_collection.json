@@ -1,0 +1,127 @@
+{
+  "item": [
+    {
+      "id": "2990bd1f-80e0-4bc9-b175-47949eb00158",
+      "name": "Openapi.json",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "f000e359-2946-4903-9225-d27c2954790f",
+          "name": "Openapi service definition",
+          "request": {
+            "name": "Openapi service definition",
+            "description": {
+              "content": "Usefull for consuming in external openapi tooling",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "openapi.json"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                  "type": "any",
+                  "value": "{{language}}",
+                  "key": "language"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b2fd81c6-8b9c-4cf4-ba9f-0a17201fa037",
+              "name": "The openapi definition",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "openapi.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                      "type": "any",
+                      "value": "{{language}}",
+                      "key": "language"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "",
+      "key": "language"
+    },
+    {
+      "type": "string",
+      "value": "https://tum-dev.github.io/eat-api/{{language}}",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "eb6adfa3-99c4-461c-a1c2-b9bdd50c5c15",
+    "name": "eat-api calendar Openapi.json API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Simple static API for some (student) food places in Munich.",
+      "type": "text/plain"
+    }
+  }
+}

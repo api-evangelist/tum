@@ -1,0 +1,301 @@
+{
+  "item": [
+    {
+      "id": "2fda4310-58a1-42d4-95b4-5e235e27a6ea",
+      "name": "calendar",
+      "description": {
+        "content": "APIs to access calendar-data",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "cae60677-d57b-4dba-8b13-00bde1964c12",
+          "name": "Retrieve Calendar Entries",
+          "request": {
+            "name": "Retrieve Calendar Entries",
+            "description": {
+              "content": "Retrieves calendar entries for specific `ids` within the requested time span.\nThe time span is defined by the `start_after` and `end_before` query parameters.\nEnsure to provide valid date-time formats for these parameters.\n\nIf successful, returns additional entries in the requested time span.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "calendar"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                  "type": "any",
+                  "value": "{{language}}",
+                  "key": "language"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ids\": [\n    \"<string>\"\n  ],\n  \"start_after\": \"<dateTime>\",\n  \"end_before\": \"<dateTime>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "c6dab93d-346e-46bb-9bb1-16f7ec9bfa39",
+              "name": "**Entries of the calendar** in the requested time span",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "calendar"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                      "type": "any",
+                      "value": "{{language}}",
+                      "key": "language"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"ids\": [\n    \"5605.EG.011\",\n    \"5510.02.001\",\n    \"5606.EG.036\",\n    \"5304\"\n  ],\n  \"start_after\": \"<dateTime>\",\n  \"end_before\": \"<dateTime>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"key_0\": {\n    \"events\": [\n      {\n        \"id\": 7731,\n        \"room_code\": \"string\",\n        \"start_at\": \"2022-11-20T22:32:08.249Z\",\n        \"end_at\": \"1950-10-15T22:22:58.994Z\",\n        \"title_de\": \"string\",\n        \"title_en\": \"string\",\n        \"entry_type\": \"exercise\",\n        \"detailed_entry_type\": \"string\",\n        \"stp_type\": \"string\"\n      },\n      {\n        \"id\": 480,\n        \"room_code\": \"string\",\n        \"start_at\": \"2001-08-19T07:46:35.971Z\",\n        \"end_at\": \"1985-09-07T15:11:42.976Z\",\n        \"title_de\": \"string\",\n        \"title_en\": \"string\",\n        \"entry_type\": \"other\",\n        \"detailed_entry_type\": \"string\",\n        \"stp_type\": \"string\"\n      }\n    ],\n    \"location\": {\n      \"key\": \"string\",\n      \"name\": \"string\",\n      \"last_calendar_scrape_at\": \"1993-04-10T00:36:15.474Z\",\n      \"type_common_name\": \"string\",\n      \"type\": \"string\",\n      \"calendar_url\": \"string\"\n    }\n  },\n  \"key_1\": {\n    \"events\": [\n      {\n        \"id\": 9265,\n        \"room_code\": \"string\",\n        \"start_at\": \"1971-02-18T11:23:59.170Z\",\n        \"end_at\": \"1974-08-31T00:47:28.792Z\",\n        \"title_de\": \"string\",\n        \"title_en\": \"string\",\n        \"entry_type\": \"barred\",\n        \"detailed_entry_type\": \"string\",\n        \"stp_type\": \"string\"\n      },\n      {\n        \"id\": 9075,\n        \"room_code\": \"string\",\n        \"start_at\": \"1960-04-26T14:44:26.414Z\",\n        \"end_at\": \"1990-01-06T16:32:58.848Z\",\n        \"title_de\": \"string\",\n        \"title_en\": \"string\",\n        \"entry_type\": \"barred\",\n        \"detailed_entry_type\": \"string\",\n        \"stp_type\": \"string\"\n      }\n    ],\n    \"location\": {\n      \"key\": \"string\",\n      \"name\": \"string\",\n      \"last_calendar_scrape_at\": \"1975-05-05T16:08:21.406Z\",\n      \"type_common_name\": \"string\",\n      \"type\": \"string\",\n      \"calendar_url\": \"string\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fc1c6ca1-a10a-4ba4-af70-c60ec2d39dd6",
+              "name": "**Bad Request.** Not all fields in the body are present as defined above",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "calendar"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                      "type": "any",
+                      "value": "{{language}}",
+                      "key": "language"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"ids\": [\n    \"5605.EG.011\",\n    \"5510.02.001\",\n    \"5606.EG.036\",\n    \"5304\"\n  ],\n  \"start_after\": \"<dateTime>\",\n  \"end_before\": \"<dateTime>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "Too many ids to query. We suspect that users don't need this. If you need this limit increased, please send us a message",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "cc9bca95-c3ae-4f8c-a283-3677d4e38c2e",
+              "name": "**Not found.** The requested location does not have a calendar",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "calendar"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                      "type": "any",
+                      "value": "{{language}}",
+                      "key": "language"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"ids\": [\n    \"5605.EG.011\",\n    \"5510.02.001\",\n    \"5606.EG.036\",\n    \"5304\"\n  ],\n  \"start_after\": \"<dateTime>\",\n  \"end_before\": \"<dateTime>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "Not found",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "99765d2b-a2f9-4a4d-b1b2-62062ddfe87f",
+              "name": "**Not Ready.** please retry later",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "calendar"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                      "type": "any",
+                      "value": "{{language}}",
+                      "key": "language"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"ids\": [\n    \"5605.EG.011\",\n    \"5510.02.001\",\n    \"5606.EG.036\",\n    \"5304\"\n  ],\n  \"start_after\": \"<dateTime>\",\n  \"end_before\": \"<dateTime>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "Waiting for first sync with TUMonline",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "",
+      "key": "language"
+    },
+    {
+      "type": "string",
+      "value": "https://tum-dev.github.io/eat-api/{{language}}",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "751e4ec3-8e04-4b0b-aa18-24a4dacc056e",
+    "name": "eat-api calendar API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Simple static API for some (student) food places in Munich.",
+      "type": "text/plain"
+    }
+  }
+}

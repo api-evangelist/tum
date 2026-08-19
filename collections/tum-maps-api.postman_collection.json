@@ -1,0 +1,343 @@
+{
+  "item": [
+    {
+      "id": "3797dde1-f9a8-49bd-b180-085673dbb082",
+      "name": "maps",
+      "description": {
+        "content": "API to access for map-data",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "eb8f5b7a-c267-48ec-bc91-65faa53dfb13",
+          "name": "Routing requests",
+          "request": {
+            "name": "Routing requests",
+            "description": {
+              "content": "**API IS EXPERIMENTAL AND ACTIVELY SUBJECT TO CHANGE**\n\nThe user specifies using provided origin (`from`) and destination (`to`) locations and a transport mode (`route_costing`) to tune their routing between the two locations.\nThe costing is fine-tuned by the server side accordingly.\n\nInternally, this endpoint relies on\n- [Valhalla](https://github.com/valhalla/valhalla) for routing for route calculation\n- our database to resolve ids.\n\n  You will need to look the ids up via [`/api/search`](#tag/locations/operation/search_handler) beforehand.\n  **Note:** [`/api/search`](#tag/locations/operation/search_handler) does support both university internal routing and external addressing.\n\n**In the future (i.e. public transit routing currently is not implemented)**, it will als rely on either\n- [OpenTripPlanner2](https://www.opentripplanner.org/) or\n- [Motis](https://github.com/motis-project/motis)",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "maps",
+                "route"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "lang",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "lat",
+                  "value": "<double>",
+                  "description": "(Required) Start of the route"
+                },
+                {
+                  "disabled": false,
+                  "key": "lon",
+                  "value": "<double>",
+                  "description": "(Required) Start of the route"
+                },
+                {
+                  "disabled": false,
+                  "key": "lat",
+                  "value": "<double>",
+                  "description": "(Required) Destination of the route"
+                },
+                {
+                  "disabled": false,
+                  "key": "lon",
+                  "value": "<double>",
+                  "description": "(Required) Destination of the route"
+                },
+                {
+                  "disabled": false,
+                  "key": "route_costing",
+                  "value": "<null>",
+                  "description": "Transport mode the user wants to use\n\nIf not specified, the default is based on how far the destinations are apart and requested time."
+                },
+                {
+                  "disabled": false,
+                  "key": "pedestrian_type",
+                  "value": "<string>",
+                  "description": "Does the user have specific walking restrictions?"
+                },
+                {
+                  "disabled": false,
+                  "key": "ptw_type",
+                  "value": "<string>",
+                  "description": "Does the user prefer mopeds or motorcycles for powered two-wheeled (ptw)?"
+                },
+                {
+                  "disabled": false,
+                  "key": "bicycle_type",
+                  "value": "<string>",
+                  "description": "Which kind of bicycle do you ride?"
+                },
+                {
+                  "disabled": false,
+                  "key": "page_cursor",
+                  "value": "<string>",
+                  "description": "Cursor position for pagination\nOnly avaliable for some costings"
+                },
+                {
+                  "disabled": false,
+                  "key": "time",
+                  "value": "<dateTime>",
+                  "description": "Time for the route (ISO 8601 format)\nUsed with `arrive_by` to determine if this is departure or arrival time"
+                },
+                {
+                  "disabled": false,
+                  "key": "arrive_by",
+                  "value": "<boolean>",
+                  "description": "Whether the time parameter represents arrival time (true) or departure time (false/not set)"
+                }
+              ],
+              "variable": [
+                {
+                  "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                  "type": "any",
+                  "value": "{{language}}",
+                  "key": "language"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f9a93ce5-e1fe-4bce-9d90-24ec8bf2af2d",
+              "name": "**Routing solution**",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "maps",
+                    "route"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "lang",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "lat",
+                      "value": "48.26244490906312"
+                    },
+                    {
+                      "key": "lon",
+                      "value": "48.26244490906312"
+                    },
+                    {
+                      "key": "lat",
+                      "value": "48.26244490906312"
+                    },
+                    {
+                      "key": "lon",
+                      "value": "48.26244490906312"
+                    },
+                    {
+                      "key": "route_costing",
+                      "value": "<null>"
+                    },
+                    {
+                      "key": "pedestrian_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "ptw_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "bicycle_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page_cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "time",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "arrive_by",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                      "type": "any",
+                      "value": "{{language}}",
+                      "key": "language"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"legs\": [\n    {\n      \"summary\": {\n        \"time_seconds\": 201.025,\n        \"length_meters\": 103.01,\n        \"has_toll\": true,\n        \"has_highway\": false,\n        \"has_ferry\": true,\n        \"min_lat\": 48.26244490906312,\n        \"min_lon\": 48.26244490906312,\n        \"max_lat\": 48.26244490906312,\n        \"max_lon\": 48.26244490906312\n      },\n      \"maneuvers\": [\n        {\n          \"type\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"instruction\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"time_seconds\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"length_meters\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"begin_shape_index\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"end_shape_index\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"travel_mode\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"arrive_instruction\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"begin_street_names\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"depart_instruction\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"ferry\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"gate\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"highway\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"rough\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"roundabout_exit_count\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"street_names\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"toll\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"transit_info\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"verbal_arrive_instruction\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"verbal_depart_instruction\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"verbal_multi_cue\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"verbal_post_transition_instruction\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"verbal_pre_transition_instruction\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"verbal_transition_alert_instruction\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        {\n          \"type\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"instruction\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"time_seconds\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"length_meters\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"begin_shape_index\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"end_shape_index\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"travel_mode\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"arrive_instruction\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"begin_street_names\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"depart_instruction\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"ferry\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"gate\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"highway\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"rough\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"roundabout_exit_count\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"street_names\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"toll\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"transit_info\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"verbal_arrive_instruction\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"verbal_depart_instruction\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"verbal_multi_cue\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"verbal_post_transition_instruction\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"verbal_pre_transition_instruction\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"verbal_transition_alert_instruction\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      ],\n      \"shape\": [\n        {\n          \"lat\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"lon\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        {\n          \"lat\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"lon\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      ]\n    }\n  ],\n  \"router\": \"valhalla\",\n  \"summary\": {\n    \"time_seconds\": 201.025,\n    \"length_meters\": 103.01,\n    \"has_toll\": true,\n    \"has_highway\": true,\n    \"has_ferry\": false,\n    \"min_lat\": 48.26244490906312,\n    \"min_lon\": 48.26244490906312,\n    \"max_lat\": 48.26244490906312,\n    \"max_lon\": 48.26244490906312\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9565994f-93e6-486b-976b-027153835886",
+              "name": "**Not found.** The requested location does not exist",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "maps",
+                    "route"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "lang",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "lat",
+                      "value": "48.26244490906312"
+                    },
+                    {
+                      "key": "lon",
+                      "value": "48.26244490906312"
+                    },
+                    {
+                      "key": "lat",
+                      "value": "48.26244490906312"
+                    },
+                    {
+                      "key": "lon",
+                      "value": "48.26244490906312"
+                    },
+                    {
+                      "key": "route_costing",
+                      "value": "<null>"
+                    },
+                    {
+                      "key": "pedestrian_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "ptw_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "bicycle_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page_cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "time",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "arrive_by",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+                      "type": "any",
+                      "value": "{{language}}",
+                      "key": "language"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "Not found",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "For localization the base path may have to be extended by the language. (This can only be one of ,en/)",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "",
+      "key": "language"
+    },
+    {
+      "type": "string",
+      "value": "https://tum-dev.github.io/eat-api/{{language}}",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "54b977c4-b3a2-4779-98bd-02142c826ed5",
+    "name": "eat-api calendar maps API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Simple static API for some (student) food places in Munich.",
+      "type": "text/plain"
+    }
+  }
+}
