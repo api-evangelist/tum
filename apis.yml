@@ -22,6 +22,18 @@ description: >-
   API eat-api is static JSON on GitHub Pages carrying Studierendenwerk data. No open data portal exists:
   data.tum.de and opendata.tum.de do not resolve.
 type: Index
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: free
   onboarding: unknown
