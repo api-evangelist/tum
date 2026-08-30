@@ -1,0 +1,103 @@
+generated: '2026-08-19'
+method: probed
+source: >-
+  Live probes of Technical University of Munich hosts on 2026-08-19, run against the Kin Score
+  `education` regime standards list (scim, lti, oneroster, ed-fi, caliper, qti, oai-pmh,
+  shibboleth, saml, orcid, datacite, crossref). Reward-only: a standard is recorded ONLY where a
+  probe returned a conformant machine-readable response. Absence below is absence of evidence,
+  not a claim of non-conformance.
+regime: education
+institution: Technical University of Munich
+conformance:
+
+- standard: oai-pmh
+  status: conformant
+  x-operator: institution
+  evidence:
+    url: https://mediatum.ub.tum.de/oai/oai.py?verb=Identify
+    status: 200
+    content_type: text/xml
+    location: /OAI-PMH/Identify
+    excerpt: >-
+      <repositoryName>mediaTUM - The Technische Universität München Media Repository</repositoryName>
+      <baseURL>https://mediatum.ub.tum.de/oai/oai</baseURL><protocolVersion>2.0</protocolVersion>
+      <adminEmail>mediatum@ub.tum.de</adminEmail><earliestDatestamp>1959-01-01T12:00:00Z</earliestDatestamp>
+  detail: >-
+    mediaTUM, TUM's institutional media and publication repository, answers OAI-PMH 2.0 on a
+    ub.tum.de host it operates itself. Verified verbs: Identify (200), ListMetadataFormats (200),
+    ListSets (200). Advertised metadata prefixes: oai_dc, epicur, xMetaDissPlus. Records run back
+    to a 1959 earliest datestamp. This is a genuinely institution-operated harvesting surface, not
+    a vendor repository platform running under TUM's name.
+  metadata_formats:
+  - prefix: oai_dc
+    schema: http://www.openarchives.org/OAI/2.0/oai_dc.xsd
+  - prefix: epicur
+    schema: http://www.persistent-identifier.de/xepicur/version1.0/xepicur.xsd
+  - prefix: xMetaDissPlus
+    schema: http://files.dnb.de/standards/xmetadissplus/xmetadissplus.xsd
+
+- standard: saml
+  status: conformant
+  x-operator: institution
+  evidence:
+    url: https://login.tum.de/idp/shibboleth
+    status: 200
+    content_type: application/xml
+    location: /EntityDescriptor/@entityID
+    excerpt: >-
+      entityID="https://tumidp.lrz.de/idp/shibboleth" ... <mdui:DisplayName xml:lang="en">Technical
+      University of Munich (TUM)</mdui:DisplayName> ... <saml1md:Scope regexp="false">tum.de</saml1md:Scope>
+  detail: >-
+    TUM publishes SAML 2.0 IdP metadata (12 KB EntityDescriptor, IDPSSODescriptor with
+    protocolSupportEnumeration urn:oasis:names:tc:SAML:2.0:protocol) at its own login.tum.de host.
+    The asserted scope is tum.de. Registered in DFN-AAI (registrationAuthority
+    https://www.aai.dfn.de, registrationInstant 2009-05-26), which bridges into eduGAIN.
+  entity_attributes:
+  - http://refeds.org/category/research-and-scholarship
+  - https://refeds.org/sirtfi
+  - https://refeds.org/sirtfi2
+
+- standard: shibboleth
+  status: conformant
+  x-operator: institution
+  evidence:
+    url: https://login.tum.de/idp/shibboleth
+    status: 200
+    content_type: application/xml
+    location: /EntityDescriptor/Extensions/shibmd:Scope
+    excerpt: >-
+      xmlns:shibmd="urn:mace:shibboleth:metadata:1.0" ... <saml1md:Scope regexp="false">tum.de</saml1md:Scope>
+  detail: >-
+    The IdP is a Shibboleth deployment: the metadata carries the urn:mace:shibboleth:metadata:1.0
+    namespace and a Shibboleth Scope element. The canonical entityID resolves to tumidp.lrz.de —
+    the Leibniz Supercomputing Centre hosts the instance on TUM's behalf — but the metadata is
+    served from TUM's own login.tum.de and asserts the tum.de scope, so the federated identity of
+    the institution is TUM's.
+
+not_found:
+- standard: scim
+  detail: No SCIM /ServiceProviderConfig or /Users discovery surface reachable on any probed TUM host.
+- standard: lti
+  detail: >-
+    Moodle at www.moodle.tum.de (200) is an LTI tool consumer by construction, but no public LTI
+    registration/configuration document was reachable without credentials. Not recorded.
+- standard: oneroster
+  detail: No IMS OneRoster endpoint found; TUM's roster of record is TUMonline (CAMPUSonline).
+- standard: ed-fi
+  detail: Ed-Fi is a US K-12/state-agency standard; not applicable to a German technical university.
+- standard: caliper
+  detail: No Caliper Analytics event store or sensor endpoint found.
+- standard: qti
+  detail: No QTI item bank or assessment export surface found on a public host.
+- standard: orcid
+  detail: >-
+    TUM participates in ORCID DE via the university library, but no machine-readable ORCID
+    integration surface (member API client, public ORCID iD field in an OAI-PMH record set)
+    was confirmed on a probed endpoint. Not recorded — reward-only.
+- standard: datacite
+  detail: >-
+    api.datacite.org/providers and /clients queries for "Munich" and "tum" returned zero rows
+    (200, meta.total 0). mediaTUM mints URN:NBN identifiers through the Deutsche Nationalbibliothek
+    (epicur / xMetaDissPlus prefixes above), not DataCite DOIs, so no DataCite conformance is claimed.
+- standard: crossref
+  detail: No Crossref member deposit surface operated by the institution was found.
