@@ -50,7 +50,7 @@ accessModel:
     Every institution-operated read surface answered unauthenticated on 2026-08-19 (api.tum.app/v1/news/sources,
     nav.tum.de/api/search, mediatum OAI-PMH, login.tum.de IdP metadata). No key issuance, no plan, no
     quota is published anywhere.
-position: Provider
+position: Producing
 access: Public
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/tum.png
 url: https://raw.githubusercontent.com/api-evangelist/tum/refs/heads/main/apis.yml
