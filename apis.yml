@@ -105,6 +105,13 @@ apis:
   - Campus
   - Navigation
   - Maps
+  - Location
+  - Search
+  - Rust
+  tags_raw:
+  - Campus
+  - Navigation
+  - Maps
   - Locations
   - Search
   - Rust
@@ -188,6 +195,13 @@ apis:
   humanURL: https://www.it.tum.de/en/
   baseURL: https://login.tum.de/idp
   tags:
+  - Identity Federation
+  - SAML
+  - Shibboleth
+  - eduGAIN
+  - DFN-AAI
+  - SSO
+  tags_raw:
   - Identity Federation
   - SAML
   - Shibboleth
