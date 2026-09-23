@@ -1,0 +1,51 @@
+generated: '2026-08-19'
+method: derived
+source: >-
+  openapi/tum-campus-backend-openapi.yml (rpcStatus / protobufAny), openapi/tum-*-openapi.yml
+  (NavigaTUM), plus live 2026-08-19 probes of the deployed endpoints. Derived from
+  institution-operated contracts only.
+x-operator: institution
+surfaces:
+
+- surface: TUM Campus App Backend API
+  base_url: https://api.tum.app/v1
+  model: google.rpc.Status
+  detail: >-
+    Every operation declares a `default` response bound to `rpcStatus` — the grpc-gateway rendering
+    of google.rpc.Status: an integer `code`, a `message` string, and a `details` array of
+    `protobufAny`. No per-status-code responses (400/401/404/429) are declared anywhere in the
+    document, so a consumer cannot tell from the contract which failures are retryable.
+  schema:
+    code: 'integer (int32) — gRPC status code, not HTTP'
+    message: string
+    details: 'array of protobufAny ({ "@type": string, ...arbitrary })'
+  observed:
+  - url: https://api.tum.app/v1/canteen/allCanteens
+    status: 501
+    body: '{"error":"method ListCanteens not implemented"}'
+    note: >-
+      DEFECT — the published contract advertises Campus_ListCanteens but the deployment returns
+      501 "method ListCanteens not implemented". The live error body is also NOT rpcStatus shape:
+      it is a bare {"error": string}. The deployed error model and the contracted error model
+      disagree.
+  - url: https://api.tum.app/v1/openapi.json
+    status: 404
+    body: '{"error":"Not Found"}'
+    note: 'Undocumented {"error": string} shape again; no rpcStatus, no problem+json.'
+
+- surface: NavigaTUM
+  base_url: https://nav.tum.de/api
+  model: per-operation HTTP responses
+  detail: >-
+    The NavigaTUM contracts declare explicit response codes per operation rather than a single
+    error envelope. Bodies are plain text or JSON depending on the endpoint; no RFC 7807
+    problem+json is used anywhere.
+
+gaps:
+- >-
+  Neither institution-operated surface publishes an RFC 7807 / RFC 9457 problem details media type.
+- >-
+  Neither publishes a stable machine-readable error code registry that a client could switch on.
+- >-
+  The Campus App backend contract declares only 200 and `default`; the operational reality includes
+  at least 404 and 501 with a different body shape than the one contracted.

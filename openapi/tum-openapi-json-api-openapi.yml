@@ -1,17 +1,29 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: eat-api calendar Openapi.json API
-  version: '2.1'
-  description: Simple static API for some (student) food places in Munich.
+  title: NavigaTUM Openapi.json API
+  description: 'Navigating around TUM with excellence – An API to search for rooms,
+
+    buildings and other places
+
+
+    NavigaTUM is a tool developed by students for students, to help you get around at TUM.'
+  termsOfService: https://nav.tum.de/en/about/privacy
+  contact:
+    name: OpenSource @ TUM e.V.
+    url: https://tum.dev/
+    email: navigatum@tum.de
+  license:
+    name: GPL v3
+    url: https://www.gnu.org/licenses/
+  version: 0.0.0
+  x-logo:
+    altText: null
+    backgroundColor: null
+    href: https://nav.tum.de
+    url: https://raw.githubusercontent.com/TUM-Dev/NavigaTUM/refs/heads/main/webclient/app/assets/logos/navigatum.svg
 servers:
-- url: https://tum-dev.github.io/eat-api/{language}
-  variables:
-    language:
-      description: For localization the base path may have to be extended by the language.
-      default: ''
-      enum:
-      - ''
-      - en/
+- url: https://nav.tum.de
+  description: production
 tags:
 - name: Openapi.json
 paths:
@@ -27,3 +39,6 @@ paths:
             application/json: {}
       tags:
       - Openapi.json
+externalDocs:
+  url: https://github.com/TUM-Dev/navigatum
+  description: Visit our GitHub Page for more in-depth documentation

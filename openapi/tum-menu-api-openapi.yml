@@ -1,6 +1,6 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: eat-api calendar menu API
+  title: eat-api Menu API
   version: '2.1'
   description: Simple static API for some (student) food places in Munich.
 servers:
@@ -13,7 +13,7 @@ servers:
       - ''
       - en/
 tags:
-- name: menu
+- name: Menu
   description: Get information about dish plans
 paths:
   /{canteen_id}/{year}/{week}.json:
@@ -51,7 +51,9 @@ paths:
         '404':
           description: no menu found for specified options
       tags:
-      - menu
+      - Menu
+      operationId: getByCanteenIdByYear{week}Json
+      x-operation-id-source: derived
   /{canteen_id}/combined/combined.json:
     get:
       summary: To get all menus for one specific canteen
@@ -72,7 +74,9 @@ paths:
         '404':
           description: no menu found for the given canteen
       tags:
-      - menu
+      - Menu
+      operationId: getByCanteenIdCombinedCombinedJson
+      x-operation-id-source: derived
   /all.json:
     get:
       summary: To get all menus for all canteens
@@ -89,7 +93,9 @@ paths:
                     items:
                       $ref: '#/components/schemas/CanteenMenu'
       tags:
-      - menu
+      - Menu
+      operationId: getAllJson
+      x-operation-id-source: derived
   /all_ref.json:
     get:
       deprecated: true
@@ -117,20 +123,11 @@ paths:
                               type: string
                               format: date
       tags:
-      - menu
+      - Menu
+      operationId: getAllRefJson
+      x-operation-id-source: derived
 components:
   schemas:
-    Day:
-      type: object
-      description: All dishes for one day
-      properties:
-        date:
-          type: string
-          format: date
-        dishes:
-          type: array
-          items:
-            $ref: '#/components/schemas/Dish'
     Prices:
       type: object
       properties:
@@ -161,32 +158,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Day'
-    Price:
-      type: object
-      properties:
-        base_price:
-          type: number
-          description: Base price of a dish
-          example: 0
-        price_per_unit:
-          type: number
-          description: Price per unit as given
-          example: 0.75
-        unit:
-          type: string
-          description: The unit used for calculating the price
-          example: 100g
-    Label:
-      properties:
-        enum_name:
-          type: string
-          example: VEGETARIAN
-    Canteen:
-      properties:
-        canteen_id:
-          type: string
-          description: Identifier for the canteen, as it has to be used for accessing data.
-          example: mensa-garching
     Dish:
       type: object
       description: Describes one dish
@@ -204,6 +175,30 @@ components:
         dish_type:
           type: string
           example: Pasta
+    Canteen:
+      type: object
+      description: Information about a canteen
+      properties:
+        enum_name:
+          type: string
+          description: Internal identifier for a canteen
+          example: MENSA_GARCHING
+        name:
+          type: string
+          description: Readable name for a canteen
+          example: Mensa Garching
+        location:
+          $ref: '#/components/schemas/Location'
+        canteen_id:
+          type: string
+          description: Identifier for the canteen, as it has to be used for accessing data.
+          example: mensa-garching
+        queue_status:
+          type: string
+          description: URL to another API, where data about the queue length of the canteen can be accessed. Is null, when not available.
+          example: https://mensa.liste.party/api/
+        open_hours:
+          $ref: '#/components/schemas/OpenHoursWeek'
     CanteenMenu:
       type: object
       description: All dishes for a specific canteen
@@ -217,3 +212,48 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Week'
+    Day:
+      type: object
+      description: All dishes for one day
+      properties:
+        date:
+          type: string
+          format: date
+        dishes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Dish'
+    Label:
+      type: object
+      description: Allergene and ingredient information
+      properties:
+        enum_name:
+          type: string
+          example: VEGETARIAN
+        text:
+          type: object
+          description: Key-value object containing readable labels. The language is given in the key, and is referred to to the name from the language.
+          additionalProperties:
+            type: string
+          example:
+            DE: Vegetarisch
+            EN: vegetarian
+        abbreviation:
+          type: string
+          description: Emoji symbol or short form of a label
+          example: 🌽
+    Price:
+      type: object
+      properties:
+        base_price:
+          type: number
+          description: Base price of a dish
+          example: 0
+        price_per_unit:
+          type: number
+          description: Price per unit as given
+          example: 0.75
+        unit:
+          type: string
+          description: The unit used for calculating the price
+          example: 100g

@@ -1,6 +1,6 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: eat-api calendar static API
+  title: eat-api Static API
   version: '2.1'
   description: Simple static API for some (student) food places in Munich.
 servers:
@@ -13,7 +13,7 @@ servers:
       - ''
       - en/
 tags:
-- name: static
+- name: Static
   description: Static information regarding canteens, labels and languages
 paths:
   /enums/canteens.json:
@@ -29,7 +29,9 @@ paths:
                 items:
                   $ref: '#/components/schemas/Canteen'
       tags:
-      - static
+      - Static
+      operationId: getEnumsCanteensJson
+      x-operation-id-source: derived
   /enums/languages.json:
     get:
       summary: To get all available languages
@@ -43,7 +45,9 @@ paths:
                 items:
                   $ref: '#/components/schemas/Language'
       tags:
-      - static
+      - Static
+      operationId: getEnumsLanguagesJson
+      x-operation-id-source: derived
   /enums/labels.json:
     get:
       summary: To get all available labels
@@ -57,9 +61,35 @@ paths:
                 items:
                   $ref: '#/components/schemas/Label'
       tags:
-      - static
+      - Static
+      operationId: getEnumsLabelsJson
+      x-operation-id-source: derived
 components:
   schemas:
+    Canteen:
+      type: object
+      description: Information about a canteen
+      properties:
+        enum_name:
+          type: string
+          description: Internal identifier for a canteen
+          example: MENSA_GARCHING
+        name:
+          type: string
+          description: Readable name for a canteen
+          example: Mensa Garching
+        location:
+          $ref: '#/components/schemas/Location'
+        canteen_id:
+          type: string
+          description: Identifier for the canteen, as it has to be used for accessing data.
+          example: mensa-garching
+        queue_status:
+          type: string
+          description: URL to another API, where data about the queue length of the canteen can be accessed. Is null, when not available.
+          example: https://mensa.liste.party/api/
+        open_hours:
+          $ref: '#/components/schemas/OpenHoursWeek'
     Location:
       type: object
       description: A location description including the readable address and coordinates
@@ -86,30 +116,6 @@ components:
           type: string
           pattern: ^\d{2}:\d{2}
           example: 840
-    Canteen:
-      type: object
-      description: Information about a canteen
-      properties:
-        enum_name:
-          type: string
-          description: Internal identifier for a canteen
-          example: MENSA_GARCHING
-        name:
-          type: string
-          description: Readable name for a canteen
-          example: Mensa Garching
-        location:
-          $ref: '#/components/schemas/Location'
-        canteen_id:
-          type: string
-          description: Identifier for the canteen, as it has to be used for accessing data.
-          example: mensa-garching
-        queue_status:
-          type: string
-          description: URL to another API, where data about the queue length of the canteen can be accessed. Is null, when not available.
-          example: https://mensa.liste.party/api/
-        open_hours:
-          $ref: '#/components/schemas/OpenHoursWeek'
     Language:
       type: object
       description: A language, that is supported by the API

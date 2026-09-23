@@ -1,28 +1,46 @@
 {
   "provider": "tum",
   "sources": [
-    "tum-calendar-api-openapi.yml",
-    "tum-feedback-api-openapi.yml",
-    "tum-locations-api-openapi.yml",
-    "tum-maps-api-openapi.yml",
-    "tum-menu-api-openapi.yml",
-    "tum-openapi-json-api-openapi.yml",
-    "tum-static-api-openapi.yml",
-    "tum-status-api-openapi.yml"
+    "_original/tum-campus-backend-openapi.yml",
+    "_original/tum-eat-api.yaml",
+    "_original/tum-navigatum.yaml"
   ],
   "outputs": [
+    "tum-campus-api-openapi.yml",
+    "tum-menu-api-openapi.yml",
+    "tum-static-api-openapi.yml",
+    "tum-openapi-json-api-openapi.yml",
+    "tum-status-api-openapi.yml",
     "tum-calendar-api-openapi.yml",
     "tum-feedback-api-openapi.yml",
     "tum-locations-api-openapi.yml",
-    "tum-maps-api-openapi.yml",
-    "tum-menu-api-openapi.yml",
-    "tum-openapi-json-api-openapi.yml",
-    "tum-static-api-openapi.yml",
-    "tum-status-api-openapi.yml"
+    "tum-maps-api-openapi.yml"
   ],
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "1 archived document(s) dropped as subsets of other archived documents",
+    "sourced from openapi/_original/ (3 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "tum-campus-backend-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
+    "tum-eat-api.yaml: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
+    "tum-navigatum.yaml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
+    "tum-navigatum.yaml: tagged paths GET /api/openapi.json -> Openapi.json",
+    "tum-navigatum.yaml: tagged paths GET /api/status -> Status",
+    "tum-navigatum.yaml: declared missing tag: Openapi.json",
+    "tum-navigatum.yaml: declared missing tag: Status",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "_original/tum-campus-backend-swagger.json: archived document superseded by a larger archived document",
+    "tum-calendar-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "tum-campus-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "tum-feedback-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "tum-locations-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "tum-maps-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "tum-menu-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "tum-openapi-json-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "tum-static-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "tum-status-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

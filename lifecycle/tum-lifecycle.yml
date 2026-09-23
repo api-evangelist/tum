@@ -1,0 +1,54 @@
+generated: '2026-08-19'
+method: probed
+source: >-
+  Live probes 2026-08-19 plus the institution-operated contracts under openapi/. Versioning and
+  change-communication posture for surfaces where TUM is the operator.
+x-operator: institution
+surfaces:
+
+- surface: TUM Campus App Backend API
+  base_url: https://api.tum.app/v1
+  versioning: uri-path
+  version_in_contract: false
+  detail: >-
+    The API is versioned in the path (/v1) but the contract itself carries
+    info.version "version not set" upstream — the grpc-gateway generator default was never
+    replaced. There is no changelog, no deprecation header, and no sunset policy published for the
+    endpoint. Change history exists only as commits in github.com/TUM-Dev/Campus-Backend.
+  deprecation_policy: none-published
+  changelog: https://github.com/TUM-Dev/Campus-Backend/commits/main
+  evidence:
+  - url: https://api.tum.app/swagger/swagger.json
+    status: 200
+
+- surface: NavigaTUM
+  base_url: https://nav.tum.de/api
+  versioning: unversioned
+  version_in_contract: true
+  detail: >-
+    No version segment in the path. The contract carries a semantic version and the running build
+    is disclosed: GET /api/status returns "healthy" plus a source_code URL pinned to the exact
+    deployed commit — a genuinely good, and rare, build-provenance practice.
+  deprecation_policy: none-published
+  changelog: https://github.com/TUM-Dev/navigatum/releases
+  evidence:
+  - url: https://nav.tum.de/api/status
+    status: 200
+    body: |
+      healthy
+      source_code: https://github.com/TUM-Dev/navigatum/tree/2f7012e3fa946f2152d4fb567900dacf55a1a466
+
+- surface: TUM Shibboleth Identity Provider
+  base_url: https://login.tum.de/idp
+  versioning: federation-metadata
+  detail: >-
+    Lifecycle is managed by DFN-AAI metadata refresh, not by the institution directly. Metadata has
+    been continuously registered since 2009-05-26.
+  evidence:
+  - url: https://login.tum.de/idp/shibboleth
+    status: 200
+
+gaps:
+- No surface publishes Deprecation or Sunset headers (RFC 8594 / RFC 9745).
+- No surface publishes a human or machine-readable API changelog outside its git history.
+- The Campus App backend ships info.version "version not set" to every consumer.
