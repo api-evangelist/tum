@@ -82,6 +82,131 @@ paths:
               example: Waiting for first sync with TUMonline
 components:
   schemas:
+    EventResponse:
+      type: object
+      required:
+      - id
+      - room_code
+      - start_at
+      - end_at
+      - title_de
+      - title_en
+      - entry_type
+      - detailed_entry_type
+      properties:
+        detailed_entry_type:
+          type: string
+          description: For some Entrys, we do have more information (what kind of a `lecture` is it? What kind of an other `entry` is it?)
+          examples:
+          - Abhaltung
+        end_at:
+          type: string
+          format: date-time
+          description: end of the entry
+          examples:
+          - 2019-01-01 00:00:00
+        entry_type:
+          $ref: '#/components/schemas/EventTypeResponse'
+          description: 'What this calendar entry means.
+
+
+            Each of these should be displayed in a different color'
+        id:
+          type: integer
+          format: int32
+          description: ID of the calendar entry used in `TUMonline` internally
+          examples:
+          - 6424
+        room_code:
+          type: string
+          description: 'Structured, globaly unique room code
+
+
+            Included to enable multi-room calendars.
+
+            Format: BUILDING.LEVEL.NUMBER'
+          examples:
+          - 5602.EG.001
+          - 5121.EG.003
+        start_at:
+          type: string
+          format: date-time
+          description: start of the entry
+          examples:
+          - 2018-01-01 00:00:00
+        stp_type:
+          type:
+          - string
+          - 'null'
+          description: Lecture-type
+          examples:
+          - Vorlesung mit Zentralübung
+        title_de:
+          type: string
+          description: German title of the Entry
+          examples:
+          - Quantenteleportation
+        title_en:
+          type: string
+          description: English title of the Entry
+          examples:
+          - Quantum teleportation
+    LocationEventsResponse:
+      type: object
+      required:
+      - events
+      - location
+      properties:
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/EventResponse'
+        location:
+          $ref: '#/components/schemas/CalendarLocationResponse'
+    Arguments:
+      type: object
+      required:
+      - ids
+      - start_after
+      - end_before
+      properties:
+        end_before:
+          type: string
+          format: date-time
+          description: The last allowed time the calendar would like to display
+          examples:
+          - '2039-01-19T03:14:07+01:00'
+          - 2042-01-07T00:00:00 UTC
+        ids:
+          type: array
+          items:
+            type: string
+          description: 'ids you want the calendars for
+
+
+            Limit of max. 10 ids is arbitraryly chosen, if you need this limit increased, please contact us'
+          example:
+          - 5605.EG.011
+          - 5510.02.001
+          - 5606.EG.036
+          - '5304'
+          maxItems: 10
+          minItems: 1
+        start_after:
+          type: string
+          format: date-time
+          description: The first allowed time the calendar would like to display
+          examples:
+          - '2039-01-19T03:14:07+01:00'
+          - 2042-01-07T00:00:00 UTC
+    EventTypeResponse:
+      type: string
+      enum:
+      - lecture
+      - exercise
+      - exam
+      - barred
+      - other
     CalendarLocationResponse:
       type: object
       required:
@@ -157,131 +282,6 @@ components:
           examples:
           - Serverraum
           - Büro
-    EventTypeResponse:
-      type: string
-      enum:
-      - lecture
-      - exercise
-      - exam
-      - barred
-      - other
-    EventResponse:
-      type: object
-      required:
-      - id
-      - room_code
-      - start_at
-      - end_at
-      - title_de
-      - title_en
-      - entry_type
-      - detailed_entry_type
-      properties:
-        detailed_entry_type:
-          type: string
-          description: For some Entrys, we do have more information (what kind of a `lecture` is it? What kind of an other `entry` is it?)
-          examples:
-          - Abhaltung
-        end_at:
-          type: string
-          format: date-time
-          description: end of the entry
-          examples:
-          - 2019-01-01 00:00:00
-        entry_type:
-          $ref: '#/components/schemas/EventTypeResponse'
-          description: 'What this calendar entry means.
-
-
-            Each of these should be displayed in a different color'
-        id:
-          type: integer
-          format: int32
-          description: ID of the calendar entry used in `TUMonline` internally
-          examples:
-          - 6424
-        room_code:
-          type: string
-          description: 'Structured, globaly unique room code
-
-
-            Included to enable multi-room calendars.
-
-            Format: BUILDING.LEVEL.NUMBER'
-          examples:
-          - 5602.EG.001
-          - 5121.EG.003
-        start_at:
-          type: string
-          format: date-time
-          description: start of the entry
-          examples:
-          - 2018-01-01 00:00:00
-        stp_type:
-          type:
-          - string
-          - 'null'
-          description: Lecture-type
-          examples:
-          - Vorlesung mit Zentralübung
-        title_de:
-          type: string
-          description: German title of the Entry
-          examples:
-          - Quantenteleportation
-        title_en:
-          type: string
-          description: English title of the Entry
-          examples:
-          - Quantum teleportation
-    Arguments:
-      type: object
-      required:
-      - ids
-      - start_after
-      - end_before
-      properties:
-        end_before:
-          type: string
-          format: date-time
-          description: The last allowed time the calendar would like to display
-          examples:
-          - '2039-01-19T03:14:07+01:00'
-          - 2042-01-07T00:00:00 UTC
-        ids:
-          type: array
-          items:
-            type: string
-          description: 'ids you want the calendars for
-
-
-            Limit of max. 10 ids is arbitraryly chosen, if you need this limit increased, please contact us'
-          example:
-          - 5605.EG.011
-          - 5510.02.001
-          - 5606.EG.036
-          - '5304'
-          maxItems: 10
-          minItems: 1
-        start_after:
-          type: string
-          format: date-time
-          description: The first allowed time the calendar would like to display
-          examples:
-          - '2039-01-19T03:14:07+01:00'
-          - 2042-01-07T00:00:00 UTC
-    LocationEventsResponse:
-      type: object
-      required:
-      - events
-      - location
-      properties:
-        events:
-          type: array
-          items:
-            $ref: '#/components/schemas/EventResponse'
-        location:
-          $ref: '#/components/schemas/CalendarLocationResponse'
 externalDocs:
   url: https://github.com/TUM-Dev/navigatum
   description: Visit our GitHub Page for more in-depth documentation

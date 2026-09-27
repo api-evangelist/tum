@@ -24,15 +24,21 @@ description: >-
 type: Index
 deliveryModel:
   model: saas
-  open_source: false
+  license_evidence:
+    not_product:
+    - tum-dev/campus-backend
+    - tum-dev/eat-api
+    - tum-dev/navigatum
+  open_source: unknown
   commercial: true
   callable_host: true
   label: Hosted service · you call their endpoint
-  confidence: high
+  confidence: low
   source:
   - openapi
   - pricing
-  generated: '2026-08-28'
+  - repository-not-product
+  generated: '2026-09-25'
   method: derived
 accessModel:
   pricing: free
@@ -65,7 +71,7 @@ tags:
 - Course Catalog
 - Identity Federation
 - Research Repository
-- Open-Source
+- Open Source
 - Student Information System
 tags_raw:
 - University
@@ -80,6 +86,7 @@ tags_raw:
 - Research Repository
 - Open Source
 - Student Information System
+- Open-Source
 created: '2026-06-03'
 modified: '2026-08-19'
 specificationVersion: '0.23'

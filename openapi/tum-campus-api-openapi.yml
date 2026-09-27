@@ -624,70 +624,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    apiSingleRatingReply:
-      type: object
-      properties:
-        points:
-          type: integer
-          format: int32
-          title: number in the range 1-5
-        image:
-          type: string
-          format: byte
-          title: Optional JPEG image in Base64
-        comment:
-          type: string
-          title: Optional comment (max 256 chars)
-        ratingTags:
-          type: array
-          items:
-            $ref: '#/components/schemas/apiRatingTagNewRequest'
-        visited:
-          type: string
-          format: date-time
-    protobufAny:
-      type: object
-      properties:
-        '@type':
-          type: string
-      additionalProperties: {}
-    apiDeleteDeviceReply:
-      type: object
-      properties:
-        deviceId:
-          type: string
-    apiGetDishRatingsReply:
-      type: object
-      properties:
-        rating:
-          type: array
-          items:
-            $ref: '#/components/schemas/apiSingleRatingReply'
-          title: a number of actual ratings
-        avg:
-          type: number
-          format: double
-          title: average rating for all dish rating tags which were used to rate this dish in this cafeteria
-        std:
-          type: number
-          format: double
-          title: std of all dish rating tags which were used to rate this dish in this cafeteria
-        min:
-          type: integer
-          format: int32
-          title: minimum of all dish rating tags which were used to rate this dish in this cafeteria
-        max:
-          type: integer
-          format: int32
-          title: maximum of all dish rating tags which were used to rate this dish in this cafeteria
-        ratingTags:
-          type: array
-          items:
-            $ref: '#/components/schemas/apiRatingTagResult'
-        nameTags:
-          type: array
-          items:
-            $ref: '#/components/schemas/apiRatingTagResult'
     apiGetCanteenHeadCountReply:
       type: object
       properties:
@@ -707,199 +643,6 @@ components:
           type: string
           format: date-time
           description: A time stamp indicating how up to date the response is. Only valid in case percent != -1.
-    apiMovie:
-      type: object
-      properties:
-        movieId:
-          type: string
-          format: int64
-          title: the id of the movie
-        date:
-          type: string
-          format: date-time
-          title: the date of the movie
-        created:
-          type: string
-          format: date-time
-          title: when the movie was created in OUR database
-        title:
-          type: string
-          title: title of the movie if available, empty otherwise
-        location:
-          type: string
-          title: Where the movie is shown
-        releaseYear:
-          type: string
-          title: release year of the movie if available, empty otherwise
-        runtime:
-          type: string
-          title: runtime of the movie if available, empty otherwise
-        genre:
-          type: string
-          title: genre of the movie if available, empty otherwise
-        director:
-          type: string
-          title: director of the movie as by omdb(/tu-film), empty otherwise
-        actors:
-          type: string
-          title: actors of the movie as by omdb(/tu-film), empty otherwise
-        imdbRating:
-          type: string
-          title: imdb rating for the movie if available, empty otherwise
-        description:
-          type: string
-          title: short description of the movie including limited html tags (only <b>, <i>)
-        trailerUrl:
-          type: string
-          title: Where to find a trailer for this movie
-        additionalInformationUrl:
-          type: string
-          title: Where to find additional information about this movie
-        coverId:
-          type: string
-          format: int64
-          title: the id of the cover image
-        coverUrl:
-          type: string
-          title: Where to find a cover image for this movie
-    apiListCanteenRatingsReply:
-      type: object
-      properties:
-        rating:
-          type: array
-          items:
-            $ref: '#/components/schemas/apiSingleRatingReply'
-        avg:
-          type: number
-          format: double
-        std:
-          type: number
-          format: double
-        min:
-          type: integer
-          format: int32
-        max:
-          type: integer
-          format: int32
-        ratingTags:
-          type: array
-          items:
-            $ref: '#/components/schemas/apiRatingTagResult'
-    apiCreateDeviceReply:
-      type: object
-      properties:
-        deviceId:
-          type: string
-    apiTagsOverview:
-      type: object
-      properties:
-        tagId:
-          type: integer
-          format: int32
-        de:
-          type: string
-        en:
-          type: string
-    apiNewsAlert:
-      type: object
-      properties:
-        imageUrl:
-          type: string
-        link:
-          type: string
-        created:
-          type: string
-          format: date-time
-        from:
-          type: string
-          format: date-time
-        to:
-          type: string
-          format: date-time
-    apiCreateDishRatingRequest:
-      type: object
-      properties:
-        points:
-          type: integer
-          format: int32
-          title: number in the range 1-5
-        canteenId:
-          type: string
-          title: Mandatory Name of the dish (EAT-API naming scheme "MENSA_GARCHING") Must be available in the given cafeteria
-        dish:
-          type: string
-          title: 'Mandatory Name of the dish (EAT-API naming scheme)
-
-            Must be available in the given cafeteria'
-        image:
-          type: string
-          format: byte
-          title: Optional JPEG image in Base64
-        ratingTags:
-          type: array
-          items:
-            $ref: '#/components/schemas/apiRatingTag'
-          title: Optional list of tag ratings add as many tags with a rating (1-5) of the list of dishRatingTags
-        comment:
-          type: string
-          title: Optional comment (max 256 chars)
-    apiListMoviesReply:
-      type: object
-      properties:
-        movies:
-          type: array
-          items:
-            $ref: '#/components/schemas/apiMovie'
-    apiCanteen:
-      type: object
-      properties:
-        id:
-          type: string
-        address:
-          type: string
-        longitude:
-          type: number
-          format: double
-        latitude:
-          type: number
-          format: double
-    apiCreateCanteenRatingReply:
-      type: object
-    apiRatingTagResult:
-      type: object
-      properties:
-        tagId:
-          type: integer
-          format: int32
-        avg:
-          type: number
-          format: double
-        std:
-          type: number
-          format: double
-        min:
-          type: integer
-          format: int32
-        max:
-          type: integer
-          format: int32
-    apiNewsSource:
-      type: object
-      properties:
-        source:
-          type: string
-        title:
-          type: string
-        iconUrl:
-          type: string
-          title: where the icon can be found
-    apiListStudentClubReply:
-      type: object
-      properties:
-        collections:
-          type: array
-          items:
-            $ref: '#/components/schemas/apiStudentClubCollection'
     rpcStatus:
       type: object
       properties:
@@ -912,33 +655,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/protobufAny'
-    apiDeviceType:
-      type: string
-      enum:
-      - IOS
-      - ANDROID
-      - WINDOWS
-      default: IOS
-    apiGetUpdateNoteReply:
-      type: object
-      properties:
-        message:
-          type: string
-        versionName:
-          type: string
-    apiCreateFeedbackReply:
-      type: object
-    apiRatingTagNewRequest:
-      type: object
-      properties:
-        tagId:
-          type: integer
-          format: int32
-        points:
-          type: integer
-          format: int32
-    apiCreateDishRatingReply:
-      type: object
     apiListCanteenRatingsRequest:
       type: object
       properties:
@@ -957,30 +673,15 @@ components:
           type: integer
           format: int32
           title: Optional Parameter defines how many ratings are queried. If all ratings should be queried, enter "-1"
-    apiStudentClub:
+    apiListStudentClubReply:
       type: object
       properties:
-        name:
-          type: string
-          title: The name of the club
-        description:
-          type: string
-          title: How the club describes itsself
-        linkUrl:
-          type: string
-          title: Where the clubs main internet presence is
-        coverUrl:
-          type: string
-          title: Where to find a image for this club
-    apiCreateDeviceRequest:
+        collections:
+          type: array
+          items:
+            $ref: '#/components/schemas/apiStudentClubCollection'
+    apiCreateCanteenRatingReply:
       type: object
-      properties:
-        deviceId:
-          type: string
-        publicKey:
-          type: string
-        deviceType:
-          $ref: '#/components/schemas/apiDeviceType'
     apiCreateCanteenRatingRequest:
       type: object
       properties:
@@ -1001,6 +702,15 @@ components:
         comment:
           type: string
           title: Optional comment (max 256 chars)
+    apiRatingTag:
+      type: object
+      properties:
+        tagId:
+          type: string
+          format: int64
+        points:
+          type: number
+          format: double
     apiGetDishRatingsRequest:
       type: object
       properties:
@@ -1056,6 +766,204 @@ components:
           type: string
           format: date-time
           title: the date of the news item
+    apiRatingTagResult:
+      type: object
+      properties:
+        tagId:
+          type: integer
+          format: int32
+        avg:
+          type: number
+          format: double
+        std:
+          type: number
+          format: double
+        min:
+          type: integer
+          format: int32
+        max:
+          type: integer
+          format: int32
+    apiCreateDeviceRequest:
+      type: object
+      properties:
+        deviceId:
+          type: string
+        publicKey:
+          type: string
+        deviceType:
+          $ref: '#/components/schemas/apiDeviceType'
+    apiCreateDeviceReply:
+      type: object
+      properties:
+        deviceId:
+          type: string
+    apiCreateDishRatingReply:
+      type: object
+    apiSingleRatingReply:
+      type: object
+      properties:
+        points:
+          type: integer
+          format: int32
+          title: number in the range 1-5
+        image:
+          type: string
+          format: byte
+          title: Optional JPEG image in Base64
+        comment:
+          type: string
+          title: Optional comment (max 256 chars)
+        ratingTags:
+          type: array
+          items:
+            $ref: '#/components/schemas/apiRatingTagNewRequest'
+        visited:
+          type: string
+          format: date-time
+    apiMovie:
+      type: object
+      properties:
+        movieId:
+          type: string
+          format: int64
+          title: the id of the movie
+        date:
+          type: string
+          format: date-time
+          title: the date of the movie
+        created:
+          type: string
+          format: date-time
+          title: when the movie was created in OUR database
+        title:
+          type: string
+          title: title of the movie if available, empty otherwise
+        location:
+          type: string
+          title: Where the movie is shown
+        releaseYear:
+          type: string
+          title: release year of the movie if available, empty otherwise
+        runtime:
+          type: string
+          title: runtime of the movie if available, empty otherwise
+        genre:
+          type: string
+          title: genre of the movie if available, empty otherwise
+        director:
+          type: string
+          title: director of the movie as by omdb(/tu-film), empty otherwise
+        actors:
+          type: string
+          title: actors of the movie as by omdb(/tu-film), empty otherwise
+        imdbRating:
+          type: string
+          title: imdb rating for the movie if available, empty otherwise
+        description:
+          type: string
+          title: short description of the movie including limited html tags (only <b>, <i>)
+        trailerUrl:
+          type: string
+          title: Where to find a trailer for this movie
+        additionalInformationUrl:
+          type: string
+          title: Where to find additional information about this movie
+        coverId:
+          type: string
+          format: int64
+          title: the id of the cover image
+        coverUrl:
+          type: string
+          title: Where to find a cover image for this movie
+    apiDeviceType:
+      type: string
+      enum:
+      - IOS
+      - ANDROID
+      - WINDOWS
+      default: IOS
+    protobufAny:
+      type: object
+      properties:
+        '@type':
+          type: string
+      additionalProperties: {}
+    apiListCanteenRatingsReply:
+      type: object
+      properties:
+        rating:
+          type: array
+          items:
+            $ref: '#/components/schemas/apiSingleRatingReply'
+        avg:
+          type: number
+          format: double
+        std:
+          type: number
+          format: double
+        min:
+          type: integer
+          format: int32
+        max:
+          type: integer
+          format: int32
+        ratingTags:
+          type: array
+          items:
+            $ref: '#/components/schemas/apiRatingTagResult'
+    apiNewsAlert:
+      type: object
+      properties:
+        imageUrl:
+          type: string
+        link:
+          type: string
+        created:
+          type: string
+          format: date-time
+        from:
+          type: string
+          format: date-time
+        to:
+          type: string
+          format: date-time
+    apiStudentClub:
+      type: object
+      properties:
+        name:
+          type: string
+          title: The name of the club
+        description:
+          type: string
+          title: How the club describes itsself
+        linkUrl:
+          type: string
+          title: Where the clubs main internet presence is
+        coverUrl:
+          type: string
+          title: Where to find a image for this club
+    apiCreateFeedbackReply:
+      type: object
+    apiTagsOverview:
+      type: object
+      properties:
+        tagId:
+          type: integer
+          format: int32
+        de:
+          type: string
+        en:
+          type: string
+    apiRatingTagNewRequest:
+      type: object
+      properties:
+        tagId:
+          type: integer
+          format: int32
+        points:
+          type: integer
+          format: int32
     apiStudentClubCollection:
       type: object
       properties:
@@ -1073,13 +981,105 @@ components:
           title: 'id of the collection.
 
             Might not be stable over time because of scraping'
-    apiRatingTag:
+    apiGetUpdateNoteReply:
       type: object
       properties:
-        tagId:
+        message:
           type: string
-          format: int64
+        versionName:
+          type: string
+    apiCreateDishRatingRequest:
+      type: object
+      properties:
         points:
+          type: integer
+          format: int32
+          title: number in the range 1-5
+        canteenId:
+          type: string
+          title: Mandatory Name of the dish (EAT-API naming scheme "MENSA_GARCHING") Must be available in the given cafeteria
+        dish:
+          type: string
+          title: 'Mandatory Name of the dish (EAT-API naming scheme)
+
+            Must be available in the given cafeteria'
+        image:
+          type: string
+          format: byte
+          title: Optional JPEG image in Base64
+        ratingTags:
+          type: array
+          items:
+            $ref: '#/components/schemas/apiRatingTag'
+          title: Optional list of tag ratings add as many tags with a rating (1-5) of the list of dishRatingTags
+        comment:
+          type: string
+          title: Optional comment (max 256 chars)
+    apiNewsSource:
+      type: object
+      properties:
+        source:
+          type: string
+        title:
+          type: string
+        iconUrl:
+          type: string
+          title: where the icon can be found
+    apiListMoviesReply:
+      type: object
+      properties:
+        movies:
+          type: array
+          items:
+            $ref: '#/components/schemas/apiMovie'
+    apiDeleteDeviceReply:
+      type: object
+      properties:
+        deviceId:
+          type: string
+    apiGetDishRatingsReply:
+      type: object
+      properties:
+        rating:
+          type: array
+          items:
+            $ref: '#/components/schemas/apiSingleRatingReply'
+          title: a number of actual ratings
+        avg:
+          type: number
+          format: double
+          title: average rating for all dish rating tags which were used to rate this dish in this cafeteria
+        std:
+          type: number
+          format: double
+          title: std of all dish rating tags which were used to rate this dish in this cafeteria
+        min:
+          type: integer
+          format: int32
+          title: minimum of all dish rating tags which were used to rate this dish in this cafeteria
+        max:
+          type: integer
+          format: int32
+          title: maximum of all dish rating tags which were used to rate this dish in this cafeteria
+        ratingTags:
+          type: array
+          items:
+            $ref: '#/components/schemas/apiRatingTagResult'
+        nameTags:
+          type: array
+          items:
+            $ref: '#/components/schemas/apiRatingTagResult'
+    apiCanteen:
+      type: object
+      properties:
+        id:
+          type: string
+        address:
+          type: string
+        longitude:
+          type: number
+          format: double
+        latitude:
           type: number
           format: double
 x-operator: institution

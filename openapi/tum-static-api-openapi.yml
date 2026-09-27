@@ -66,30 +66,26 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    Canteen:
+    Language:
       type: object
-      description: Information about a canteen
+      description: A language, that is supported by the API
       properties:
-        enum_name:
-          type: string
-          description: Internal identifier for a canteen
-          example: MENSA_GARCHING
         name:
           type: string
-          description: Readable name for a canteen
-          example: Mensa Garching
-        location:
-          $ref: '#/components/schemas/Location'
-        canteen_id:
+          description: Identifier of the language
+          example: EN
+        base_url:
           type: string
-          description: Identifier for the canteen, as it has to be used for accessing data.
-          example: mensa-garching
-        queue_status:
+          description: Additional base path that is appended to the base url, in order to access data for this language. Due to backwards compatibility resons the base_url for german is an empty string.
+          example: en/
+        label:
           type: string
-          description: URL to another API, where data about the queue length of the canteen can be accessed. Is null, when not available.
-          example: https://mensa.liste.party/api/
-        open_hours:
-          $ref: '#/components/schemas/OpenHoursWeek'
+          description: Readable name of the language in the given language
+          example: English
+        flag:
+          type: string
+          description: Emoji flag symbol for the language
+          example: 🏴󠁧󠁢󠁥󠁮󠁧󠁿
     Location:
       type: object
       description: A location description including the readable address and coordinates
@@ -116,40 +112,6 @@ components:
           type: string
           pattern: ^\d{2}:\d{2}
           example: 840
-    Language:
-      type: object
-      description: A language, that is supported by the API
-      properties:
-        name:
-          type: string
-          description: Identifier of the language
-          example: EN
-        base_url:
-          type: string
-          description: Additional base path that is appended to the base url, in order to access data for this language. Due to backwards compatibility resons the base_url for german is an empty string.
-          example: en/
-        label:
-          type: string
-          description: Readable name of the language in the given language
-          example: English
-        flag:
-          type: string
-          description: Emoji flag symbol for the language
-          example: 🏴󠁧󠁢󠁥󠁮󠁧󠁿
-    OpenHoursWeek:
-      type: object
-      description: Specifies the opening hours for a whole working week (mon-fri)
-      properties:
-        mon:
-          $ref: '#/components/schemas/OpenHoursDay'
-        tue:
-          $ref: '#/components/schemas/OpenHoursDay'
-        wed:
-          $ref: '#/components/schemas/OpenHoursDay'
-        thu:
-          $ref: '#/components/schemas/OpenHoursDay'
-        fri:
-          $ref: '#/components/schemas/OpenHoursDay'
     Label:
       type: object
       description: Allergene and ingredient information
@@ -169,3 +131,41 @@ components:
           type: string
           description: Emoji symbol or short form of a label
           example: 🌽
+    OpenHoursWeek:
+      type: object
+      description: Specifies the opening hours for a whole working week (mon-fri)
+      properties:
+        mon:
+          $ref: '#/components/schemas/OpenHoursDay'
+        tue:
+          $ref: '#/components/schemas/OpenHoursDay'
+        wed:
+          $ref: '#/components/schemas/OpenHoursDay'
+        thu:
+          $ref: '#/components/schemas/OpenHoursDay'
+        fri:
+          $ref: '#/components/schemas/OpenHoursDay'
+    Canteen:
+      type: object
+      description: Information about a canteen
+      properties:
+        enum_name:
+          type: string
+          description: Internal identifier for a canteen
+          example: MENSA_GARCHING
+        name:
+          type: string
+          description: Readable name for a canteen
+          example: Mensa Garching
+        location:
+          $ref: '#/components/schemas/Location'
+        canteen_id:
+          type: string
+          description: Identifier for the canteen, as it has to be used for accessing data.
+          example: mensa-garching
+        queue_status:
+          type: string
+          description: URL to another API, where data about the queue length of the canteen can be accessed. Is null, when not available.
+          example: https://mensa.liste.party/api/
+        open_hours:
+          $ref: '#/components/schemas/OpenHoursWeek'
