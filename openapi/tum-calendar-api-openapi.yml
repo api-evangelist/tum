@@ -82,6 +82,62 @@ paths:
               example: Waiting for first sync with TUMonline
 components:
   schemas:
+    Arguments:
+      type: object
+      required:
+      - ids
+      - start_after
+      - end_before
+      properties:
+        end_before:
+          type: string
+          format: date-time
+          description: The last allowed time the calendar would like to display
+          examples:
+          - '2039-01-19T03:14:07+01:00'
+          - 2042-01-07T00:00:00 UTC
+        ids:
+          type: array
+          items:
+            type: string
+          description: 'ids you want the calendars for
+
+
+            Limit of max. 10 ids is arbitraryly chosen, if you need this limit increased, please contact us'
+          example:
+          - 5605.EG.011
+          - 5510.02.001
+          - 5606.EG.036
+          - '5304'
+          maxItems: 10
+          minItems: 1
+        start_after:
+          type: string
+          format: date-time
+          description: The first allowed time the calendar would like to display
+          examples:
+          - '2039-01-19T03:14:07+01:00'
+          - 2042-01-07T00:00:00 UTC
+    LocationEventsResponse:
+      type: object
+      required:
+      - events
+      - location
+      properties:
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/EventResponse'
+        location:
+          $ref: '#/components/schemas/CalendarLocationResponse'
+    EventTypeResponse:
+      type: string
+      enum:
+      - lecture
+      - exercise
+      - exam
+      - barred
+      - other
     EventResponse:
       type: object
       required:
@@ -151,62 +207,6 @@ components:
           description: English title of the Entry
           examples:
           - Quantum teleportation
-    LocationEventsResponse:
-      type: object
-      required:
-      - events
-      - location
-      properties:
-        events:
-          type: array
-          items:
-            $ref: '#/components/schemas/EventResponse'
-        location:
-          $ref: '#/components/schemas/CalendarLocationResponse'
-    Arguments:
-      type: object
-      required:
-      - ids
-      - start_after
-      - end_before
-      properties:
-        end_before:
-          type: string
-          format: date-time
-          description: The last allowed time the calendar would like to display
-          examples:
-          - '2039-01-19T03:14:07+01:00'
-          - 2042-01-07T00:00:00 UTC
-        ids:
-          type: array
-          items:
-            type: string
-          description: 'ids you want the calendars for
-
-
-            Limit of max. 10 ids is arbitraryly chosen, if you need this limit increased, please contact us'
-          example:
-          - 5605.EG.011
-          - 5510.02.001
-          - 5606.EG.036
-          - '5304'
-          maxItems: 10
-          minItems: 1
-        start_after:
-          type: string
-          format: date-time
-          description: The first allowed time the calendar would like to display
-          examples:
-          - '2039-01-19T03:14:07+01:00'
-          - 2042-01-07T00:00:00 UTC
-    EventTypeResponse:
-      type: string
-      enum:
-      - lecture
-      - exercise
-      - exam
-      - barred
-      - other
     CalendarLocationResponse:
       type: object
       required:

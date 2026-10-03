@@ -624,148 +624,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    apiGetCanteenHeadCountReply:
-      type: object
-      properties:
-        count:
-          type: integer
-          format: int64
-          description: The absolut count of humans in the canteen. Only valid in case percent != -1.
-        maxCount:
-          type: integer
-          format: int64
-          description: The maximum nunmber of humans in the canteen for the percent to be 100.00. Only valid in case percent != -1.
-        percent:
-          type: number
-          format: float
-          description: Current capacity utilization of the canteen clamped to 0 and 100 or -1 in case no data is available.
-        timestamp:
-          type: string
-          format: date-time
-          description: A time stamp indicating how up to date the response is. Only valid in case percent != -1.
-    rpcStatus:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/protobufAny'
-    apiListCanteenRatingsRequest:
-      type: object
-      properties:
-        canteenId:
-          type: string
-          title: canteenId Mandatory Name of the canteen (EAT-API naming scheme "MENSA_GARCHING")
-        from:
-          type: string
-          format: date-time
-          title: Optional Parameter to define an interval for the ratings (Lower bound)
-        to:
-          type: string
-          format: date-time
-          title: Optional Parameter to define an interval for the ratings (Upper bound)
-        limit:
-          type: integer
-          format: int32
-          title: Optional Parameter defines how many ratings are queried. If all ratings should be queried, enter "-1"
-    apiListStudentClubReply:
-      type: object
-      properties:
-        collections:
-          type: array
-          items:
-            $ref: '#/components/schemas/apiStudentClubCollection'
-    apiCreateCanteenRatingReply:
-      type: object
-    apiCreateCanteenRatingRequest:
-      type: object
-      properties:
-        points:
-          type: integer
-          format: int32
-          title: number in the range 1-5
-        canteenId:
-          type: string
-        image:
-          type: string
-          format: byte
-        ratingTags:
-          type: array
-          items:
-            $ref: '#/components/schemas/apiRatingTag'
-          title: Optional list of tag ratings add as many tags with a rating (1-5) of the list of canteenRatingTags
-        comment:
-          type: string
-          title: Optional comment (max 256 chars)
-    apiRatingTag:
-      type: object
-      properties:
-        tagId:
-          type: string
-          format: int64
-        points:
-          type: number
-          format: double
-    apiGetDishRatingsRequest:
-      type: object
-      properties:
-        canteenId:
-          type: string
-          title: Mandatory Name of the canteen (EAT-API naming scheme "MENSA_GARCHING")
-        dish:
-          type: string
-          title: 'Mandatory Name of the dish (EAT-API naming scheme)
-
-            Must be available in the given cafeteria'
-        from:
-          type: string
-          format: date-time
-          title: Optional Parameter to define an interval for the ratings (Lower bound)
-        to:
-          type: string
-          format: date-time
-          title: Optional Parameter to define an interval for the ratings (Upper bound)
-        limit:
-          type: integer
-          format: int32
-          title: Optional Parameter defines how many ratings are queried. If all ratings should be queried, enter "-1"
-    apiNews:
-      type: object
-      properties:
-        id:
-          type: string
-          format: int64
-        title:
-          type: string
-        text:
-          type: string
-        link:
-          type: string
-        imageUrl:
-          type: string
-          title: where a news thumbnail is stored. empty string means no image is available
-        sourceId:
-          type: string
-          title: the id of the news source
-        sourceIconUrl:
-          type: string
-          title: where the icon can be found
-        sourceTitle:
-          type: string
-          title: human readable title of the news source
-        created:
-          type: string
-          format: date-time
-          title: when the news item was created in OUR database
-        date:
-          type: string
-          format: date-time
-          title: the date of the news item
     apiRatingTagResult:
       type: object
       properties:
@@ -793,34 +651,21 @@ components:
           type: string
         deviceType:
           $ref: '#/components/schemas/apiDeviceType'
-    apiCreateDeviceReply:
+    apiStudentClub:
       type: object
       properties:
-        deviceId:
+        name:
           type: string
-    apiCreateDishRatingReply:
-      type: object
-    apiSingleRatingReply:
-      type: object
-      properties:
-        points:
-          type: integer
-          format: int32
-          title: number in the range 1-5
-        image:
+          title: The name of the club
+        description:
           type: string
-          format: byte
-          title: Optional JPEG image in Base64
-        comment:
+          title: How the club describes itsself
+        linkUrl:
           type: string
-          title: Optional comment (max 256 chars)
-        ratingTags:
-          type: array
-          items:
-            $ref: '#/components/schemas/apiRatingTagNewRequest'
-        visited:
+          title: Where the clubs main internet presence is
+        coverUrl:
           type: string
-          format: date-time
+          title: Where to find a image for this club
     apiMovie:
       type: object
       properties:
@@ -876,167 +721,15 @@ components:
         coverUrl:
           type: string
           title: Where to find a cover image for this movie
-    apiDeviceType:
-      type: string
-      enum:
-      - IOS
-      - ANDROID
-      - WINDOWS
-      default: IOS
-    protobufAny:
-      type: object
-      properties:
-        '@type':
-          type: string
-      additionalProperties: {}
-    apiListCanteenRatingsReply:
-      type: object
-      properties:
-        rating:
-          type: array
-          items:
-            $ref: '#/components/schemas/apiSingleRatingReply'
-        avg:
-          type: number
-          format: double
-        std:
-          type: number
-          format: double
-        min:
-          type: integer
-          format: int32
-        max:
-          type: integer
-          format: int32
-        ratingTags:
-          type: array
-          items:
-            $ref: '#/components/schemas/apiRatingTagResult'
-    apiNewsAlert:
-      type: object
-      properties:
-        imageUrl:
-          type: string
-        link:
-          type: string
-        created:
-          type: string
-          format: date-time
-        from:
-          type: string
-          format: date-time
-        to:
-          type: string
-          format: date-time
-    apiStudentClub:
-      type: object
-      properties:
-        name:
-          type: string
-          title: The name of the club
-        description:
-          type: string
-          title: How the club describes itsself
-        linkUrl:
-          type: string
-          title: Where the clubs main internet presence is
-        coverUrl:
-          type: string
-          title: Where to find a image for this club
-    apiCreateFeedbackReply:
-      type: object
-    apiTagsOverview:
-      type: object
-      properties:
-        tagId:
-          type: integer
-          format: int32
-        de:
-          type: string
-        en:
-          type: string
-    apiRatingTagNewRequest:
-      type: object
-      properties:
-        tagId:
-          type: integer
-          format: int32
-        points:
-          type: integer
-          format: int32
-    apiStudentClubCollection:
-      type: object
-      properties:
-        title:
-          type: string
-        description:
-          type: string
-        clubs:
-          type: array
-          items:
-            $ref: '#/components/schemas/apiStudentClub'
-        unstableCollectionId:
-          type: string
-          format: uint64
-          title: 'id of the collection.
-
-            Might not be stable over time because of scraping'
-    apiGetUpdateNoteReply:
-      type: object
-      properties:
-        message:
-          type: string
-        versionName:
-          type: string
-    apiCreateDishRatingRequest:
-      type: object
-      properties:
-        points:
-          type: integer
-          format: int32
-          title: number in the range 1-5
-        canteenId:
-          type: string
-          title: Mandatory Name of the dish (EAT-API naming scheme "MENSA_GARCHING") Must be available in the given cafeteria
-        dish:
-          type: string
-          title: 'Mandatory Name of the dish (EAT-API naming scheme)
-
-            Must be available in the given cafeteria'
-        image:
-          type: string
-          format: byte
-          title: Optional JPEG image in Base64
-        ratingTags:
-          type: array
-          items:
-            $ref: '#/components/schemas/apiRatingTag'
-          title: Optional list of tag ratings add as many tags with a rating (1-5) of the list of dishRatingTags
-        comment:
-          type: string
-          title: Optional comment (max 256 chars)
-    apiNewsSource:
-      type: object
-      properties:
-        source:
-          type: string
-        title:
-          type: string
-        iconUrl:
-          type: string
-          title: where the icon can be found
-    apiListMoviesReply:
-      type: object
-      properties:
-        movies:
-          type: array
-          items:
-            $ref: '#/components/schemas/apiMovie'
-    apiDeleteDeviceReply:
+    apiCreateDeviceReply:
       type: object
       properties:
         deviceId:
           type: string
+    apiCreateCanteenRatingReply:
+      type: object
+    apiCreateFeedbackReply:
+      type: object
     apiGetDishRatingsReply:
       type: object
       properties:
@@ -1082,6 +775,313 @@ components:
         latitude:
           type: number
           format: double
+    apiRatingTagNewRequest:
+      type: object
+      properties:
+        tagId:
+          type: integer
+          format: int32
+        points:
+          type: integer
+          format: int32
+    apiListCanteenRatingsReply:
+      type: object
+      properties:
+        rating:
+          type: array
+          items:
+            $ref: '#/components/schemas/apiSingleRatingReply'
+        avg:
+          type: number
+          format: double
+        std:
+          type: number
+          format: double
+        min:
+          type: integer
+          format: int32
+        max:
+          type: integer
+          format: int32
+        ratingTags:
+          type: array
+          items:
+            $ref: '#/components/schemas/apiRatingTagResult'
+    apiListCanteenRatingsRequest:
+      type: object
+      properties:
+        canteenId:
+          type: string
+          title: canteenId Mandatory Name of the canteen (EAT-API naming scheme "MENSA_GARCHING")
+        from:
+          type: string
+          format: date-time
+          title: Optional Parameter to define an interval for the ratings (Lower bound)
+        to:
+          type: string
+          format: date-time
+          title: Optional Parameter to define an interval for the ratings (Upper bound)
+        limit:
+          type: integer
+          format: int32
+          title: Optional Parameter defines how many ratings are queried. If all ratings should be queried, enter "-1"
+    apiNews:
+      type: object
+      properties:
+        id:
+          type: string
+          format: int64
+        title:
+          type: string
+        text:
+          type: string
+        link:
+          type: string
+        imageUrl:
+          type: string
+          title: where a news thumbnail is stored. empty string means no image is available
+        sourceId:
+          type: string
+          title: the id of the news source
+        sourceIconUrl:
+          type: string
+          title: where the icon can be found
+        sourceTitle:
+          type: string
+          title: human readable title of the news source
+        created:
+          type: string
+          format: date-time
+          title: when the news item was created in OUR database
+        date:
+          type: string
+          format: date-time
+          title: the date of the news item
+    apiStudentClubCollection:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        clubs:
+          type: array
+          items:
+            $ref: '#/components/schemas/apiStudentClub'
+        unstableCollectionId:
+          type: string
+          format: uint64
+          title: 'id of the collection.
+
+            Might not be stable over time because of scraping'
+    apiCreateDishRatingReply:
+      type: object
+    apiNewsAlert:
+      type: object
+      properties:
+        imageUrl:
+          type: string
+        link:
+          type: string
+        created:
+          type: string
+          format: date-time
+        from:
+          type: string
+          format: date-time
+        to:
+          type: string
+          format: date-time
+    protobufAny:
+      type: object
+      properties:
+        '@type':
+          type: string
+      additionalProperties: {}
+    apiListStudentClubReply:
+      type: object
+      properties:
+        collections:
+          type: array
+          items:
+            $ref: '#/components/schemas/apiStudentClubCollection'
+    apiDeviceType:
+      type: string
+      enum:
+      - IOS
+      - ANDROID
+      - WINDOWS
+      default: IOS
+    apiSingleRatingReply:
+      type: object
+      properties:
+        points:
+          type: integer
+          format: int32
+          title: number in the range 1-5
+        image:
+          type: string
+          format: byte
+          title: Optional JPEG image in Base64
+        comment:
+          type: string
+          title: Optional comment (max 256 chars)
+        ratingTags:
+          type: array
+          items:
+            $ref: '#/components/schemas/apiRatingTagNewRequest'
+        visited:
+          type: string
+          format: date-time
+    apiNewsSource:
+      type: object
+      properties:
+        source:
+          type: string
+        title:
+          type: string
+        iconUrl:
+          type: string
+          title: where the icon can be found
+    apiGetCanteenHeadCountReply:
+      type: object
+      properties:
+        count:
+          type: integer
+          format: int64
+          description: The absolut count of humans in the canteen. Only valid in case percent != -1.
+        maxCount:
+          type: integer
+          format: int64
+          description: The maximum nunmber of humans in the canteen for the percent to be 100.00. Only valid in case percent != -1.
+        percent:
+          type: number
+          format: float
+          description: Current capacity utilization of the canteen clamped to 0 and 100 or -1 in case no data is available.
+        timestamp:
+          type: string
+          format: date-time
+          description: A time stamp indicating how up to date the response is. Only valid in case percent != -1.
+    apiCreateDishRatingRequest:
+      type: object
+      properties:
+        points:
+          type: integer
+          format: int32
+          title: number in the range 1-5
+        canteenId:
+          type: string
+          title: Mandatory Name of the dish (EAT-API naming scheme "MENSA_GARCHING") Must be available in the given cafeteria
+        dish:
+          type: string
+          title: 'Mandatory Name of the dish (EAT-API naming scheme)
+
+            Must be available in the given cafeteria'
+        image:
+          type: string
+          format: byte
+          title: Optional JPEG image in Base64
+        ratingTags:
+          type: array
+          items:
+            $ref: '#/components/schemas/apiRatingTag'
+          title: Optional list of tag ratings add as many tags with a rating (1-5) of the list of dishRatingTags
+        comment:
+          type: string
+          title: Optional comment (max 256 chars)
+    apiTagsOverview:
+      type: object
+      properties:
+        tagId:
+          type: integer
+          format: int32
+        de:
+          type: string
+        en:
+          type: string
+    apiCreateCanteenRatingRequest:
+      type: object
+      properties:
+        points:
+          type: integer
+          format: int32
+          title: number in the range 1-5
+        canteenId:
+          type: string
+        image:
+          type: string
+          format: byte
+        ratingTags:
+          type: array
+          items:
+            $ref: '#/components/schemas/apiRatingTag'
+          title: Optional list of tag ratings add as many tags with a rating (1-5) of the list of canteenRatingTags
+        comment:
+          type: string
+          title: Optional comment (max 256 chars)
+    apiListMoviesReply:
+      type: object
+      properties:
+        movies:
+          type: array
+          items:
+            $ref: '#/components/schemas/apiMovie'
+    apiRatingTag:
+      type: object
+      properties:
+        tagId:
+          type: string
+          format: int64
+        points:
+          type: number
+          format: double
+    apiDeleteDeviceReply:
+      type: object
+      properties:
+        deviceId:
+          type: string
+    rpcStatus:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/protobufAny'
+    apiGetDishRatingsRequest:
+      type: object
+      properties:
+        canteenId:
+          type: string
+          title: Mandatory Name of the canteen (EAT-API naming scheme "MENSA_GARCHING")
+        dish:
+          type: string
+          title: 'Mandatory Name of the dish (EAT-API naming scheme)
+
+            Must be available in the given cafeteria'
+        from:
+          type: string
+          format: date-time
+          title: Optional Parameter to define an interval for the ratings (Lower bound)
+        to:
+          type: string
+          format: date-time
+          title: Optional Parameter to define an interval for the ratings (Upper bound)
+        limit:
+          type: integer
+          format: int32
+          title: Optional Parameter defines how many ratings are queried. If all ratings should be queried, enter "-1"
+    apiGetUpdateNoteReply:
+      type: object
+      properties:
+        message:
+          type: string
+        versionName:
+          type: string
 x-operator: institution
 x-operator-note: 'api.tum.app is the TUM-branded registrable domain serving the official TUM Campus App. The service is built and operated by Open Source @ TUM e.V. (TUM-Dev), a TUM-affiliated association promoted by TUM IT, and the app is listed as a TUM mobile app on it.tum.de. No vendor platform is involved: the contract, the code and the deployment are all TUM-side.'
 x-provenance:
