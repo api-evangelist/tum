@@ -128,92 +128,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    Day:
-      type: object
-      description: All dishes for one day
-      properties:
-        date:
-          type: string
-          format: date
-        dishes:
-          type: array
-          items:
-            $ref: '#/components/schemas/Dish'
-    Price:
-      type: object
-      properties:
-        base_price:
-          type: number
-          description: Base price of a dish
-          example: 0
-        price_per_unit:
-          type: number
-          description: Price per unit as given
-          example: 0.75
-        unit:
-          type: string
-          description: The unit used for calculating the price
-          example: 100g
-    Week:
-      type: object
-      description: All dishes for all days during one week
-      properties:
-        number:
-          type: integer
-          description: Week number
-          example: 2
-        year:
-          type: integer
-          example: 2022
-        days:
-          type: array
-          items:
-            $ref: '#/components/schemas/Day'
-    Prices:
-      type: object
-      properties:
-        students:
-          allOf:
-          - $ref: '#/components/schemas/Price'
-          - description: Price that students pay
-        staff:
-          allOf:
-          - $ref: '#/components/schemas/Price'
-          - description: Price that staff pays
-        guests:
-          allOf:
-          - $ref: '#/components/schemas/Price'
-          - description: Price that guests pay
-    CanteenMenu:
-      type: object
-      description: All dishes for a specific canteen
-      properties:
-        version:
-          type: string
-          example: '2.1'
-        canteen_id:
-          $ref: '#/components/schemas/Canteen/properties/canteen_id'
-        weeks:
-          type: array
-          items:
-            $ref: '#/components/schemas/Week'
-    Dish:
-      type: object
-      description: Describes one dish
-      properties:
-        name:
-          type: string
-          description: Title of the dish
-          example: Pasta all'arrabiata
-        prices:
-          $ref: '#/components/schemas/Prices'
-        labels:
-          type: array
-          items:
-            $ref: '#/components/schemas/Label/properties/enum_name'
-        dish_type:
-          type: string
-          example: Pasta
     Label:
       type: object
       description: Allergene and ingredient information
@@ -233,6 +147,49 @@ components:
           type: string
           description: Emoji symbol or short form of a label
           example: 🌽
+    CanteenMenu:
+      type: object
+      description: All dishes for a specific canteen
+      properties:
+        version:
+          type: string
+          example: '2.1'
+        canteen_id:
+          $ref: '#/components/schemas/Canteen/properties/canteen_id'
+        weeks:
+          type: array
+          items:
+            $ref: '#/components/schemas/Week'
+    Week:
+      type: object
+      description: All dishes for all days during one week
+      properties:
+        number:
+          type: integer
+          description: Week number
+          example: 2
+        year:
+          type: integer
+          example: 2022
+        days:
+          type: array
+          items:
+            $ref: '#/components/schemas/Day'
+    Price:
+      type: object
+      properties:
+        base_price:
+          type: number
+          description: Base price of a dish
+          example: 0
+        price_per_unit:
+          type: number
+          description: Price per unit as given
+          example: 0.75
+        unit:
+          type: string
+          description: The unit used for calculating the price
+          example: 100g
     Canteen:
       type: object
       description: Information about a canteen
@@ -257,3 +214,46 @@ components:
           example: https://mensa.liste.party/api/
         open_hours:
           $ref: '#/components/schemas/OpenHoursWeek'
+    Dish:
+      type: object
+      description: Describes one dish
+      properties:
+        name:
+          type: string
+          description: Title of the dish
+          example: Pasta all'arrabiata
+        prices:
+          $ref: '#/components/schemas/Prices'
+        labels:
+          type: array
+          items:
+            $ref: '#/components/schemas/Label/properties/enum_name'
+        dish_type:
+          type: string
+          example: Pasta
+    Prices:
+      type: object
+      properties:
+        students:
+          allOf:
+          - $ref: '#/components/schemas/Price'
+          - description: Price that students pay
+        staff:
+          allOf:
+          - $ref: '#/components/schemas/Price'
+          - description: Price that staff pays
+        guests:
+          allOf:
+          - $ref: '#/components/schemas/Price'
+          - description: Price that guests pay
+    Day:
+      type: object
+      description: All dishes for one day
+      properties:
+        date:
+          type: string
+          format: date
+        dishes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Dish'

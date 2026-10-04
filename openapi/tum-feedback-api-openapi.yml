@@ -190,92 +190,6 @@ paths:
           description: Service unavailable. We have not configured a GitHub Access Token. This could be because we are experiencing technical difficulties or intentional. Please try again later.
 components:
   schemas:
-    LimitedHashMap_String_Addition:
-      type: object
-      additionalProperties:
-        oneOf:
-        - allOf:
-          - $ref: '#/components/schemas/NewRoom'
-          - type: object
-            required:
-            - kind
-            properties:
-              kind:
-                type: string
-                enum:
-                - room
-        - allOf:
-          - $ref: '#/components/schemas/NewBuilding'
-          - type: object
-            required:
-            - kind
-            properties:
-              kind:
-                type: string
-                enum:
-                - building
-        - allOf:
-          - $ref: '#/components/schemas/NewPoi'
-          - type: object
-            required:
-            - kind
-            properties:
-              kind:
-                type: string
-                enum:
-                - poi
-      propertyNames:
-        type: string
-    Image:
-      type: object
-      required:
-      - content
-      - metadata
-      properties:
-        content:
-          type: string
-          description: The image encoded as base64
-          contentEncoding: base64
-        metadata:
-          $ref: '#/components/schemas/ImageMetadata'
-    NewPoi:
-      type: object
-      required:
-      - parent
-      - name
-      - usage_name
-      - coords
-      properties:
-        comment:
-          oneOf:
-          - type: 'null'
-          - $ref: '#/components/schemas/TranslatableStr'
-        coords:
-          $ref: '#/components/schemas/Coordinate'
-        generic_props:
-          type: array
-          items:
-            $ref: '#/components/schemas/GenericProp'
-        links:
-          type: array
-          items:
-            $ref: '#/components/schemas/PoiLink'
-        name:
-          type: string
-        parent:
-          type: string
-        usage_name:
-          type: string
-    GenericProp:
-      type: object
-      required:
-      - name
-      - text
-      properties:
-        name:
-          $ref: '#/components/schemas/TranslatableStr'
-        text:
-          type: string
     Seats:
       type: object
       properties:
@@ -297,126 +211,19 @@ components:
           - 'null'
           format: int32
           minimum: 0
-    NewBuilding:
+    RoomLink:
       type: object
       required:
-      - parent_id
-      - node_kind
-      - building_prefixes
-      - name
-      - coords
+      - text_de
+      - text_en
+      - url
       properties:
-        building_prefixes:
-          type: array
-          items:
-            type: string
-        coords:
-          $ref: '#/components/schemas/Coordinate'
-        internal_id:
-          type:
-          - string
-          - 'null'
-        name:
+        text_de:
           type: string
-        node_kind:
-          $ref: '#/components/schemas/BuildingKind'
-        parent_id:
+        text_en:
           type: string
-        short_name:
-          type:
-          - string
-          - 'null'
-        visible_id:
-          type:
-          - string
-          - 'null'
-    TranslatableStr:
-      type: object
-      required:
-      - de
-      - en
-      properties:
-        de:
+        url:
           type: string
-        en:
-          type: string
-    EditRequest:
-      type: object
-      required:
-      - token
-      - additional_context
-      - privacy_checked
-      properties:
-        additional_context:
-          type: string
-          description: 'Additional context for the edit.
-
-
-            Will be displayed in the discription field of the PR'
-          example: I have a picture of the room, please add it to the roomfinder
-        additions:
-          $ref: '#/components/schemas/LimitedHashMap_String_Addition'
-          description: New rooms/buildings/POIs to add. Keyed by the new entry's ID. Validated server-side.
-        edits:
-          $ref: '#/components/schemas/LimitedHashMap_String_Edit'
-          description: The edits to be made to the room. The keys are the ID of the props to be edited, the values are the proposed Edits.
-        privacy_checked:
-          type: boolean
-          description: 'Whether the user has checked the privacy-checkbox.
-
-
-            We are posting the feedback publicly on GitHub (not a EU-Company).
-
-            **You MUST also include such a checkmark.**'
-        token:
-          type: string
-          description: The JWT token, that can be used to generate feedback
-          example: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2Njk2MzczODEsImlhdCI6MTY2OTU5NDE4MSwibmJmIjoxNjY5NTk0MTkxLCJraWQiOjE1ODU0MTUyODk5MzI0MjU0Mzg2fQ.sN0WwXzsGhjOVaqWPe-Fl5x-gwZvh28MMUM-74MoNj4
-    ImageMetadata:
-      type: object
-      required:
-      - author
-      - license
-      properties:
-        author:
-          type: string
-          description: Who created the image
-        license:
-          $ref: '#/components/schemas/Property'
-          description: The license under which the image is distributed
-        offsets:
-          oneOf:
-          - type: 'null'
-          - $ref: '#/components/schemas/Offsets'
-            description: Advanced metadata to control how the image is displayed
-    RoomAddress:
-      type: object
-      required:
-      - place
-      - street
-      - zip_code
-      properties:
-        place:
-          type: string
-        street:
-          type: string
-        zip_code:
-          type: string
-    TokenResponse:
-      type: object
-      required:
-      - created_at
-      - token
-      properties:
-        created_at:
-          type: integer
-          format: int64
-          description: Unix timestamp of when the token was created
-          example: '1629564181'
-        token:
-          type: string
-          description: The JWT token, that can be used to generate feedback
-          example: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2Njk2MzczODEsImlhdCI6MTY2OTU5NDE4MSwibmJmIjoxNjY5NTk0MTkxLCJraWQiOjE1ODU0MTUyODk5MzI0MjU0Mzg2fQ.sN0WwXzsGhjOVaqWPe-Fl5x-gwZvh28MMUM-74MoNj4
     PostFeedbackRequest:
       type: object
       required:
@@ -469,12 +276,19 @@ components:
           type: string
           description: The JWT token, that can be used to generate feedback
           example: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2Njk2MzczODEsImlhdCI6MTY2OTU5NDE4MSwibmJmIjoxNjY5NTk0MTkxLCJraWQiOjE1ODU0MTUyODk5MzI0MjU0Mzg2fQ.sN0WwXzsGhjOVaqWPe-Fl5x-gwZvh28MMUM-74MoNj4
-    BuildingKind:
-      type: string
-      enum:
-      - building
-      - joined_building
-      - area
+    RoomAddress:
+      type: object
+      required:
+      - place
+      - street
+      - zip_code
+      properties:
+        place:
+          type: string
+        street:
+          type: string
+        zip_code:
+          type: string
     LimitedHashMap_String_Edit:
       type: object
       additionalProperties:
@@ -496,32 +310,6 @@ components:
               $ref: '#/components/schemas/PropertyEdit'
       propertyNames:
         type: string
-    FeedbackCategory:
-      type: string
-      enum:
-      - bug
-      - feature
-      - search
-      - navigation
-      - entry
-      - general
-      - other
-    Coordinate:
-      type: object
-      required:
-      - lat
-      - lon
-      properties:
-        lat:
-          type: number
-          format: double
-          description: Latitude
-          example: 48.26244490906312
-        lon:
-          type: number
-          format: double
-          description: Longitude
-          example: 48.26244490906312
     Property:
       type: object
       required:
@@ -533,60 +321,62 @@ components:
           type:
           - string
           - 'null'
-    RoomLink:
+    LimitedHashMap_String_Addition:
+      type: object
+      additionalProperties:
+        oneOf:
+        - allOf:
+          - $ref: '#/components/schemas/NewRoom'
+          - type: object
+            required:
+            - kind
+            properties:
+              kind:
+                type: string
+                enum:
+                - room
+        - allOf:
+          - $ref: '#/components/schemas/NewBuilding'
+          - type: object
+            required:
+            - kind
+            properties:
+              kind:
+                type: string
+                enum:
+                - building
+        - allOf:
+          - $ref: '#/components/schemas/NewPoi'
+          - type: object
+            required:
+            - kind
+            properties:
+              kind:
+                type: string
+                enum:
+                - poi
+      propertyNames:
+        type: string
+    PoiLink:
       type: object
       required:
-      - text_de
-      - text_en
+      - text
       - url
       properties:
-        text_de:
-          type: string
-        text_en:
-          type: string
+        text:
+          $ref: '#/components/schemas/TranslatableStr'
         url:
           type: string
-    NewRoom:
+    GenericProp:
       type: object
       required:
-      - parent_building_id
-      - alt_name
-      - arch_name
-      - usage_id
-      - coords
+      - name
+      - text
       properties:
-        address:
-          oneOf:
-          - type: 'null'
-          - $ref: '#/components/schemas/RoomAddress'
-        alt_name:
+        name:
+          $ref: '#/components/schemas/TranslatableStr'
+        text:
           type: string
-        arch_name:
-          type: string
-        coords:
-          $ref: '#/components/schemas/Coordinate'
-        floor_level:
-          type:
-          - string
-          - 'null'
-        floor_type:
-          type:
-          - string
-          - 'null'
-        links:
-          type: array
-          items:
-            $ref: '#/components/schemas/RoomLink'
-        parent_building_id:
-          type: string
-        seats:
-          oneOf:
-          - type: 'null'
-          - $ref: '#/components/schemas/Seats'
-        usage_id:
-          type: integer
-          format: int32
-          minimum: 0
     PropertyEdit:
       oneOf:
       - type: object
@@ -644,15 +434,75 @@ components:
             - link
           url:
             type: string
-    PoiLink:
+    FeedbackCategory:
+      type: string
+      enum:
+      - bug
+      - feature
+      - search
+      - navigation
+      - entry
+      - general
+      - other
+    EditRequest:
       type: object
       required:
-      - text
-      - url
+      - token
+      - additional_context
+      - privacy_checked
       properties:
-        text:
-          $ref: '#/components/schemas/TranslatableStr'
-        url:
+        additional_context:
+          type: string
+          description: 'Additional context for the edit.
+
+
+            Will be displayed in the discription field of the PR'
+          example: I have a picture of the room, please add it to the roomfinder
+        additions:
+          $ref: '#/components/schemas/LimitedHashMap_String_Addition'
+          description: New rooms/buildings/POIs to add. Keyed by the new entry's ID. Validated server-side.
+        edits:
+          $ref: '#/components/schemas/LimitedHashMap_String_Edit'
+          description: The edits to be made to the room. The keys are the ID of the props to be edited, the values are the proposed Edits.
+        privacy_checked:
+          type: boolean
+          description: 'Whether the user has checked the privacy-checkbox.
+
+
+            We are posting the feedback publicly on GitHub (not a EU-Company).
+
+            **You MUST also include such a checkmark.**'
+        token:
+          type: string
+          description: The JWT token, that can be used to generate feedback
+          example: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2Njk2MzczODEsImlhdCI6MTY2OTU5NDE4MSwibmJmIjoxNjY5NTk0MTkxLCJraWQiOjE1ODU0MTUyODk5MzI0MjU0Mzg2fQ.sN0WwXzsGhjOVaqWPe-Fl5x-gwZvh28MMUM-74MoNj4
+    NewPoi:
+      type: object
+      required:
+      - parent
+      - name
+      - usage_name
+      - coords
+      properties:
+        comment:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/TranslatableStr'
+        coords:
+          $ref: '#/components/schemas/Coordinate'
+        generic_props:
+          type: array
+          items:
+            $ref: '#/components/schemas/GenericProp'
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/PoiLink'
+        name:
+          type: string
+        parent:
+          type: string
+        usage_name:
           type: string
     Offsets:
       type: object
@@ -667,6 +517,156 @@ components:
           - integer
           - 'null'
           format: int32
+    BuildingKind:
+      type: string
+      enum:
+      - building
+      - joined_building
+      - area
+    Image:
+      type: object
+      required:
+      - content
+      - metadata
+      properties:
+        content:
+          type: string
+          description: The image encoded as base64
+          contentEncoding: base64
+        metadata:
+          $ref: '#/components/schemas/ImageMetadata'
+    TranslatableStr:
+      type: object
+      required:
+      - de
+      - en
+      properties:
+        de:
+          type: string
+        en:
+          type: string
+    Coordinate:
+      type: object
+      required:
+      - lat
+      - lon
+      properties:
+        lat:
+          type: number
+          format: double
+          description: Latitude
+          example: 48.26244490906312
+        lon:
+          type: number
+          format: double
+          description: Longitude
+          example: 48.26244490906312
+    ImageMetadata:
+      type: object
+      required:
+      - author
+      - license
+      properties:
+        author:
+          type: string
+          description: Who created the image
+        license:
+          $ref: '#/components/schemas/Property'
+          description: The license under which the image is distributed
+        offsets:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/Offsets'
+            description: Advanced metadata to control how the image is displayed
+    NewBuilding:
+      type: object
+      required:
+      - parent_id
+      - node_kind
+      - building_prefixes
+      - name
+      - coords
+      properties:
+        building_prefixes:
+          type: array
+          items:
+            type: string
+        coords:
+          $ref: '#/components/schemas/Coordinate'
+        internal_id:
+          type:
+          - string
+          - 'null'
+        name:
+          type: string
+        node_kind:
+          $ref: '#/components/schemas/BuildingKind'
+        parent_id:
+          type: string
+        short_name:
+          type:
+          - string
+          - 'null'
+        visible_id:
+          type:
+          - string
+          - 'null'
+    NewRoom:
+      type: object
+      required:
+      - parent_building_id
+      - alt_name
+      - arch_name
+      - usage_id
+      - coords
+      properties:
+        address:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/RoomAddress'
+        alt_name:
+          type: string
+        arch_name:
+          type: string
+        coords:
+          $ref: '#/components/schemas/Coordinate'
+        floor_level:
+          type:
+          - string
+          - 'null'
+        floor_type:
+          type:
+          - string
+          - 'null'
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoomLink'
+        parent_building_id:
+          type: string
+        seats:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/Seats'
+        usage_id:
+          type: integer
+          format: int32
+          minimum: 0
+    TokenResponse:
+      type: object
+      required:
+      - created_at
+      - token
+      properties:
+        created_at:
+          type: integer
+          format: int64
+          description: Unix timestamp of when the token was created
+          example: '1629564181'
+        token:
+          type: string
+          description: The JWT token, that can be used to generate feedback
+          example: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2Njk2MzczODEsImlhdCI6MTY2OTU5NDE4MSwibmJmIjoxNjY5NTk0MTkxLCJraWQiOjE1ODU0MTUyODk5MzI0MjU0Mzg2fQ.sN0WwXzsGhjOVaqWPe-Fl5x-gwZvh28MMUM-74MoNj4
 externalDocs:
   url: https://github.com/TUM-Dev/navigatum
   description: Visit our GitHub Page for more in-depth documentation

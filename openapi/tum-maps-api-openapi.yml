@@ -190,23 +190,102 @@ paths:
               example: Not found
 components:
   schemas:
-    DirectionResponse:
+    RentalFormFactorResponse:
       type: string
       enum:
-      - depart
-      - hard_left
-      - left
-      - slightly_left
-      - continue
-      - slightly_right
-      - right
-      - hard_right
-      - circle_clockwise
-      - circle_counterclockwise
-      - stairs
-      - elevator
-      - uturn_left
-      - uturn_right
+      - bicycle
+      - cargo_bicycle
+      - car
+      - moped
+      - scooter_standing
+      - scooter_seated
+      - other
+    SummaryResponse:
+      type: object
+      required:
+      - time_seconds
+      - length_meters
+      - has_toll
+      - has_highway
+      - has_ferry
+      - min_lat
+      - min_lon
+      - max_lat
+      - max_lon
+      properties:
+        has_ferry:
+          type: boolean
+          description: if the path uses one or more ferry segments
+        has_highway:
+          type: boolean
+          description: If the path uses one or more highway segments
+        has_toll:
+          type: boolean
+          description: If the path uses one or more toll segments
+        length_meters:
+          type: number
+          format: double
+          description: Distance traveled in meters
+          example: 103.01
+        max_lat:
+          type: number
+          format: double
+          description: Maximum latitude of the sections bounding box
+          example: 48.26244490906312
+        max_lon:
+          type: number
+          format: double
+          description: Maximum longitude of the sections bounding box
+          example: 48.26244490906312
+        min_lat:
+          type: number
+          format: double
+          description: Minimum latitude of the sections bounding box
+          example: 48.26244490906312
+        min_lon:
+          type: number
+          format: double
+          description: Minimum longitude of the sections bounding box
+          example: 48.26244490906312
+        time_seconds:
+          type: number
+          format: double
+          description: Estimated elapsed time in seconds
+          example: 201.025
+    AlertCauseResponse:
+      type: string
+      enum:
+      - unknown_cause
+      - other_cause
+      - technical_problem
+      - strike
+      - demonstration
+      - accident
+      - holiday
+      - weather
+      - maintenance
+      - construction
+      - police_activity
+      - medical_emergency
+    ValhallaRoutingResponse:
+      type: object
+      required:
+      - legs
+      - summary
+      properties:
+        legs:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValhallaLegResponse'
+          description: 'A trip contains one (or more) legs.
+
+
+            A leg is created when routing stops, which currently only happens at the ends (`from`, `to`).'
+          maxItems: 1
+          minItems: 1
+        summary:
+          $ref: '#/components/schemas/SummaryResponse'
+          description: Trip summary
     PlaceResponse:
       type: object
       required:
@@ -285,6 +364,263 @@ components:
           oneOf:
           - type: 'null'
           - $ref: '#/components/schemas/VertexTypeResponse'
+    MotisRoutingResponse:
+      type: object
+      required:
+      - direct
+      - itineraries
+      - next_page_cursor
+      - previous_page_cursor
+      properties:
+        direct:
+          type: array
+          items:
+            $ref: '#/components/schemas/ItineraryResponse'
+          description: "Direct trips by `WALK`, `BIKE`, `CAR`, etc. without time-dependency.\n\n The starting time (`arriveBy=false`) / arrival time\n (`arriveBy=true`) is always the queried `time` parameter (set to\n \"now\" if not set). But all `direct` connections are meant\n to be independent of absolute times."
+        itineraries:
+          type: array
+          items:
+            $ref: '#/components/schemas/ItineraryResponse'
+          description: list of itineraries
+        next_page_cursor:
+          type: string
+          description: "Use the cursor to get the next page of results.\n\nInsert the cursor\n into the request and post it to get the next page.\n The next page is a set of itineraries departing AFTER the last\n itinerary in this result."
+        previous_page_cursor:
+          type: string
+          description: "Use the cursor to get the previous page of results. Insert the\n cursor into the request and post it to get the previous page.\n The previous page is a set of itineraries departing BEFORE the first\n itinerary in the result for a depart after search. When using the\n default sort order the previous set of itineraries is inserted\n before the current result."
+    DirectionResponse:
+      type: string
+      enum:
+      - depart
+      - hard_left
+      - left
+      - slightly_left
+      - continue
+      - slightly_right
+      - right
+      - hard_right
+      - circle_clockwise
+      - circle_counterclockwise
+      - stairs
+      - elevator
+      - uturn_left
+      - uturn_right
+    AlertEffectResponse:
+      type: string
+      enum:
+      - no_service
+      - reduced_service
+      - significant_delays
+      - detour
+      - additional_service
+      - modified_service
+      - other_effect
+      - unknown_effect
+      - stop_moved
+      - no_effect
+      - accessibility_issue
+    TransitStopResponse:
+      type: object
+      required:
+      - type
+      - name
+      - arrival_date_time
+      - departure_date_time
+      - is_parent_stop
+      - assumed_schedule
+      - lat
+      - lon
+      properties:
+        arrival_date_time:
+          type: string
+          format: date-time
+          description: Arrival date and time
+        assumed_schedule:
+          type: boolean
+          description: '`true` if the times are based on an assumed schedule because the actual schedule is not known'
+        departure_date_time:
+          type: string
+          format: date-time
+          description: Departure date and time
+        is_parent_stop:
+          type: boolean
+          description: '`true` if this stop is a marked as a parent stop'
+        lat:
+          type: number
+          format: double
+          description: Latitude of the transit stop in degrees
+          example: 48.26244490906312
+        lon:
+          type: number
+          format: double
+          description: Longitude of the transit stop in degrees
+          example: 48.26244490906312
+        name:
+          type: string
+          description: Name of the stop or station
+          examples:
+          - 14 St - Union Sq
+        type:
+          $ref: '#/components/schemas/TransitStopTypeResponse'
+    ManeuverTypeResponse:
+      type: string
+      enum:
+      - none
+      - start
+      - start_right
+      - start_left
+      - destination
+      - destination_right
+      - destination_left
+      - becomes
+      - continue
+      - slight_right
+      - right
+      - sharp_right
+      - uturn_right
+      - uturn_left
+      - sharp_left
+      - left
+      - slight_left
+      - ramp_straight
+      - ramp_right
+      - ramp_left
+      - exit_right
+      - exit_left
+      - stay_straight
+      - stay_right
+      - stay_left
+      - merge
+      - roundabout_enter
+      - roundabout_exit
+      - ferry_enter
+      - ferry_exit
+      - transit
+      - transit_transfer
+      - transit_remain_on
+      - transit_connection_start
+      - transit_connection_transfer
+      - transit_connection_destination
+      - post_transit_connection_destination
+      - merge_right
+      - merge_left
+      - elevator_enter
+      - steps_enter
+      - escalator_enter
+      - building_enter
+      - building_exit
+    RentalResponse:
+      type: object
+      required:
+      - system_id
+      properties:
+        form_factor:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/RentalFormFactorResponse'
+        from_station_name:
+          type:
+          - string
+          - 'null'
+          description: "Name of the station where the vehicle is picked up (empty for free\n floating vehicles)"
+        rental_uri_android:
+          type:
+          - string
+          - 'null'
+          description: "Rental URI for Android (deep link to the specific station or\n vehicle)"
+        rental_uri_ios:
+          type:
+          - string
+          - 'null'
+          description: Rental URI for iOS (deep link to the specific station or vehicle)
+        rental_uri_web:
+          type:
+          - string
+          - 'null'
+          description: Rental URI for web (deep link to the specific station or vehicle)
+        station_name:
+          type:
+          - string
+          - 'null'
+          description: Name of the station
+        system_id:
+          type: string
+          description: Vehicle share system ID
+        system_name:
+          type:
+          - string
+          - 'null'
+          description: Vehicle share system name
+        to_station_name:
+          type:
+          - string
+          - 'null'
+          description: "Name of the station where the vehicle is returned (empty for free\n floating vehicles)"
+        url:
+          type:
+          - string
+          - 'null'
+          description: URL of the vehicle share system
+    VertexTypeResponse:
+      type: string
+      enum:
+      - normal
+      - bikeshare
+      - transit
+    AlertResponse:
+      type: object
+      required:
+      - description_text
+      - header_text
+      properties:
+        cause:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/AlertCauseResponse'
+        cause_detail:
+          type:
+          - string
+          - 'null'
+          description: "Description of the cause of the alert that allows for\n agency-specific language; more specific than the Cause."
+        description_text:
+          type: string
+          description: "Description for the alert.\nThis plain-text string will be formatted as the body of the alert\n (or shown on an explicit \"expand\" request by the user).\n The information in the description should add to the information of\n the header."
+        effect:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/AlertEffectResponse'
+        effect_detail:
+          type:
+          - string
+          - 'null'
+          description: "Description of the effect of the alert that allows for\n agency-specific language; more specific than the Effect."
+        header_text:
+          type: string
+          description: "Header for the alert. This plain-text string will be highlighted,\n for example in boldface."
+        image_alternative_text:
+          type:
+          - string
+          - 'null'
+          description: "Text describing the appearance of the linked image in the image\n field (e.g., in case the image can't be displayed or the\n user can't see the image for accessibility reasons). See the\n HTML spec for alt image text."
+        image_media_type:
+          type:
+          - string
+          - 'null'
+          description: "IANA media type as to specify the type of image to be displayed. The\n type must start with \"image/\""
+        image_url:
+          type:
+          - string
+          - 'null'
+          description: String containing an URL linking to an image.
+        severity_level:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/AlertSeverityLevelResponse'
+        url:
+          type:
+          - string
+          - 'null'
+          description: The URL which provides additional information about the alert.
     ModeResponse:
       type: string
       enum:
@@ -314,23 +650,64 @@ components:
       - funicular
       - areal_lift
       - other
-    ValhallaLegResponse:
+    TravelModeResponse:
+      type: string
+      enum:
+      - drive
+      - pedestrian
+      - bicycle
+      - public_transit
+    ItineraryResponse:
       type: object
       required:
-      - summary
-      - maneuvers
-      - shape
+      - duration
+      - end_time
+      - legs
+      - start_time
+      - transfer_count
       properties:
-        maneuvers:
+        duration:
+          type: integer
+          format: int64
+          description: journey duration in seconds
+        end_time:
+          type: string
+          format: date-time
+          description: journey arrival time
+        legs:
           type: array
           items:
-            $ref: '#/components/schemas/ManeuverResponse'
-        shape:
-          type: array
-          items:
-            $ref: '#/components/schemas/Coordinate'
-        summary:
-          $ref: '#/components/schemas/SummaryResponse'
+            $ref: '#/components/schemas/MotisLegResponse'
+          description: Journey legs
+        start_time:
+          type: string
+          format: date-time
+          description: journey departure time
+        transfer_count:
+          type: integer
+          format: int64
+          description: The number of transfers this trip has.
+    TransitStopTypeResponse:
+      type: string
+      enum:
+      - stop
+      - station
+    Coordinate:
+      type: object
+      required:
+      - lat
+      - lon
+      properties:
+        lat:
+          type: number
+          format: double
+          description: Latitude
+          example: 48.26244490906312
+        lon:
+          type: number
+          format: double
+          description: Longitude
+          example: 48.26244490906312
     ManeuverResponse:
       type: object
       required:
@@ -501,58 +878,23 @@ components:
             The transition alert instruction will prepare the user for the forthcoming transition'
           examples:
           - Turn right onto North Prince Street
-    ItineraryResponse:
+    ValhallaLegResponse:
       type: object
       required:
-      - duration
-      - end_time
-      - legs
-      - start_time
-      - transfer_count
+      - summary
+      - maneuvers
+      - shape
       properties:
-        duration:
-          type: integer
-          format: int64
-          description: journey duration in seconds
-        end_time:
-          type: string
-          format: date-time
-          description: journey arrival time
-        legs:
+        maneuvers:
           type: array
           items:
-            $ref: '#/components/schemas/MotisLegResponse'
-          description: Journey legs
-        start_time:
-          type: string
-          format: date-time
-          description: journey departure time
-        transfer_count:
-          type: integer
-          format: int64
-          description: The number of transfers this trip has.
-    RoutingResponse:
-      oneOf:
-      - allOf:
-        - $ref: '#/components/schemas/ValhallaRoutingResponse'
-        - type: object
-          required:
-          - router
-          properties:
-            router:
-              type: string
-              enum:
-              - valhalla
-      - allOf:
-        - $ref: '#/components/schemas/MotisRoutingResponse'
-        - type: object
-          required:
-          - router
-          properties:
-            router:
-              type: string
-              enum:
-              - motis
+            $ref: '#/components/schemas/ManeuverResponse'
+        shape:
+          type: array
+          items:
+            $ref: '#/components/schemas/Coordinate'
+        summary:
+          $ref: '#/components/schemas/SummaryResponse'
     StepInstructionResponse:
       type: object
       required:
@@ -630,283 +972,6 @@ components:
           - boolean
           - 'null'
           description: "Indicates that a fee must be paid by general traffic to use a road,\n road bridge or road tunnel."
-    SummaryResponse:
-      type: object
-      required:
-      - time_seconds
-      - length_meters
-      - has_toll
-      - has_highway
-      - has_ferry
-      - min_lat
-      - min_lon
-      - max_lat
-      - max_lon
-      properties:
-        has_ferry:
-          type: boolean
-          description: if the path uses one or more ferry segments
-        has_highway:
-          type: boolean
-          description: If the path uses one or more highway segments
-        has_toll:
-          type: boolean
-          description: If the path uses one or more toll segments
-        length_meters:
-          type: number
-          format: double
-          description: Distance traveled in meters
-          example: 103.01
-        max_lat:
-          type: number
-          format: double
-          description: Maximum latitude of the sections bounding box
-          example: 48.26244490906312
-        max_lon:
-          type: number
-          format: double
-          description: Maximum longitude of the sections bounding box
-          example: 48.26244490906312
-        min_lat:
-          type: number
-          format: double
-          description: Minimum latitude of the sections bounding box
-          example: 48.26244490906312
-        min_lon:
-          type: number
-          format: double
-          description: Minimum longitude of the sections bounding box
-          example: 48.26244490906312
-        time_seconds:
-          type: number
-          format: double
-          description: Estimated elapsed time in seconds
-          example: 201.025
-    ValhallaRoutingResponse:
-      type: object
-      required:
-      - legs
-      - summary
-      properties:
-        legs:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValhallaLegResponse'
-          description: 'A trip contains one (or more) legs.
-
-
-            A leg is created when routing stops, which currently only happens at the ends (`from`, `to`).'
-          maxItems: 1
-          minItems: 1
-        summary:
-          $ref: '#/components/schemas/SummaryResponse'
-          description: Trip summary
-    AlertCauseResponse:
-      type: string
-      enum:
-      - unknown_cause
-      - other_cause
-      - technical_problem
-      - strike
-      - demonstration
-      - accident
-      - holiday
-      - weather
-      - maintenance
-      - construction
-      - police_activity
-      - medical_emergency
-    TransitStopTypeResponse:
-      type: string
-      enum:
-      - stop
-      - station
-    ManeuverTypeResponse:
-      type: string
-      enum:
-      - none
-      - start
-      - start_right
-      - start_left
-      - destination
-      - destination_right
-      - destination_left
-      - becomes
-      - continue
-      - slight_right
-      - right
-      - sharp_right
-      - uturn_right
-      - uturn_left
-      - sharp_left
-      - left
-      - slight_left
-      - ramp_straight
-      - ramp_right
-      - ramp_left
-      - exit_right
-      - exit_left
-      - stay_straight
-      - stay_right
-      - stay_left
-      - merge
-      - roundabout_enter
-      - roundabout_exit
-      - ferry_enter
-      - ferry_exit
-      - transit
-      - transit_transfer
-      - transit_remain_on
-      - transit_connection_start
-      - transit_connection_transfer
-      - transit_connection_destination
-      - post_transit_connection_destination
-      - merge_right
-      - merge_left
-      - elevator_enter
-      - steps_enter
-      - escalator_enter
-      - building_enter
-      - building_exit
-    TravelModeResponse:
-      type: string
-      enum:
-      - drive
-      - pedestrian
-      - bicycle
-      - public_transit
-    TransitStopResponse:
-      type: object
-      required:
-      - type
-      - name
-      - arrival_date_time
-      - departure_date_time
-      - is_parent_stop
-      - assumed_schedule
-      - lat
-      - lon
-      properties:
-        arrival_date_time:
-          type: string
-          format: date-time
-          description: Arrival date and time
-        assumed_schedule:
-          type: boolean
-          description: '`true` if the times are based on an assumed schedule because the actual schedule is not known'
-        departure_date_time:
-          type: string
-          format: date-time
-          description: Departure date and time
-        is_parent_stop:
-          type: boolean
-          description: '`true` if this stop is a marked as a parent stop'
-        lat:
-          type: number
-          format: double
-          description: Latitude of the transit stop in degrees
-          example: 48.26244490906312
-        lon:
-          type: number
-          format: double
-          description: Longitude of the transit stop in degrees
-          example: 48.26244490906312
-        name:
-          type: string
-          description: Name of the stop or station
-          examples:
-          - 14 St - Union Sq
-        type:
-          $ref: '#/components/schemas/TransitStopTypeResponse'
-    RentalFormFactorResponse:
-      type: string
-      enum:
-      - bicycle
-      - cargo_bicycle
-      - car
-      - moped
-      - scooter_standing
-      - scooter_seated
-      - other
-    VertexTypeResponse:
-      type: string
-      enum:
-      - normal
-      - bikeshare
-      - transit
-    AlertSeverityLevelResponse:
-      type: string
-      enum:
-      - unknown
-      - info
-      - warning
-      - severe
-    AlertEffectResponse:
-      type: string
-      enum:
-      - no_service
-      - reduced_service
-      - significant_delays
-      - detour
-      - additional_service
-      - modified_service
-      - other_effect
-      - unknown_effect
-      - stop_moved
-      - no_effect
-      - accessibility_issue
-    RentalResponse:
-      type: object
-      required:
-      - system_id
-      properties:
-        form_factor:
-          oneOf:
-          - type: 'null'
-          - $ref: '#/components/schemas/RentalFormFactorResponse'
-        from_station_name:
-          type:
-          - string
-          - 'null'
-          description: "Name of the station where the vehicle is picked up (empty for free\n floating vehicles)"
-        rental_uri_android:
-          type:
-          - string
-          - 'null'
-          description: "Rental URI for Android (deep link to the specific station or\n vehicle)"
-        rental_uri_ios:
-          type:
-          - string
-          - 'null'
-          description: Rental URI for iOS (deep link to the specific station or vehicle)
-        rental_uri_web:
-          type:
-          - string
-          - 'null'
-          description: Rental URI for web (deep link to the specific station or vehicle)
-        station_name:
-          type:
-          - string
-          - 'null'
-          description: Name of the station
-        system_id:
-          type: string
-          description: Vehicle share system ID
-        system_name:
-          type:
-          - string
-          - 'null'
-          description: Vehicle share system name
-        to_station_name:
-          type:
-          - string
-          - 'null'
-          description: "Name of the station where the vehicle is returned (empty for free\n floating vehicles)"
-        url:
-          type:
-          - string
-          - 'null'
-          description: URL of the vehicle share system
     TransitInfoResponse:
       type: object
       required:
@@ -1011,22 +1076,13 @@ components:
           items:
             $ref: '#/components/schemas/TransitStopResponse'
           description: A list of the stops/stations associated with a specific transit route
-    Coordinate:
-      type: object
-      required:
-      - lat
-      - lon
-      properties:
-        lat:
-          type: number
-          format: double
-          description: Latitude
-          example: 48.26244490906312
-        lon:
-          type: number
-          format: double
-          description: Longitude
-          example: 48.26244490906312
+    AlertSeverityLevelResponse:
+      type: string
+      enum:
+      - unknown
+      - info
+      - warning
+      - severe
     MotisLegResponse:
       type: object
       required:
@@ -1202,84 +1258,28 @@ components:
           - string
           - 'null'
           description: Identifies a trip
-    MotisRoutingResponse:
-      type: object
-      required:
-      - direct
-      - itineraries
-      - next_page_cursor
-      - previous_page_cursor
-      properties:
-        direct:
-          type: array
-          items:
-            $ref: '#/components/schemas/ItineraryResponse'
-          description: "Direct trips by `WALK`, `BIKE`, `CAR`, etc. without time-dependency.\n\n The starting time (`arriveBy=false`) / arrival time\n (`arriveBy=true`) is always the queried `time` parameter (set to\n \"now\" if not set). But all `direct` connections are meant\n to be independent of absolute times."
-        itineraries:
-          type: array
-          items:
-            $ref: '#/components/schemas/ItineraryResponse'
-          description: list of itineraries
-        next_page_cursor:
-          type: string
-          description: "Use the cursor to get the next page of results.\n\nInsert the cursor\n into the request and post it to get the next page.\n The next page is a set of itineraries departing AFTER the last\n itinerary in this result."
-        previous_page_cursor:
-          type: string
-          description: "Use the cursor to get the previous page of results. Insert the\n cursor into the request and post it to get the previous page.\n The previous page is a set of itineraries departing BEFORE the first\n itinerary in the result for a depart after search. When using the\n default sort order the previous set of itineraries is inserted\n before the current result."
-    AlertResponse:
-      type: object
-      required:
-      - description_text
-      - header_text
-      properties:
-        cause:
-          oneOf:
-          - type: 'null'
-          - $ref: '#/components/schemas/AlertCauseResponse'
-        cause_detail:
-          type:
-          - string
-          - 'null'
-          description: "Description of the cause of the alert that allows for\n agency-specific language; more specific than the Cause."
-        description_text:
-          type: string
-          description: "Description for the alert.\nThis plain-text string will be formatted as the body of the alert\n (or shown on an explicit \"expand\" request by the user).\n The information in the description should add to the information of\n the header."
-        effect:
-          oneOf:
-          - type: 'null'
-          - $ref: '#/components/schemas/AlertEffectResponse'
-        effect_detail:
-          type:
-          - string
-          - 'null'
-          description: "Description of the effect of the alert that allows for\n agency-specific language; more specific than the Effect."
-        header_text:
-          type: string
-          description: "Header for the alert. This plain-text string will be highlighted,\n for example in boldface."
-        image_alternative_text:
-          type:
-          - string
-          - 'null'
-          description: "Text describing the appearance of the linked image in the image\n field (e.g., in case the image can't be displayed or the\n user can't see the image for accessibility reasons). See the\n HTML spec for alt image text."
-        image_media_type:
-          type:
-          - string
-          - 'null'
-          description: "IANA media type as to specify the type of image to be displayed. The\n type must start with \"image/\""
-        image_url:
-          type:
-          - string
-          - 'null'
-          description: String containing an URL linking to an image.
-        severity_level:
-          oneOf:
-          - type: 'null'
-          - $ref: '#/components/schemas/AlertSeverityLevelResponse'
-        url:
-          type:
-          - string
-          - 'null'
-          description: The URL which provides additional information about the alert.
+    RoutingResponse:
+      oneOf:
+      - allOf:
+        - $ref: '#/components/schemas/ValhallaRoutingResponse'
+        - type: object
+          required:
+          - router
+          properties:
+            router:
+              type: string
+              enum:
+              - valhalla
+      - allOf:
+        - $ref: '#/components/schemas/MotisRoutingResponse'
+        - type: object
+          required:
+          - router
+          properties:
+            router:
+              type: string
+              enum:
+              - motis
 externalDocs:
   url: https://github.com/TUM-Dev/navigatum
   description: Visit our GitHub Page for more in-depth documentation

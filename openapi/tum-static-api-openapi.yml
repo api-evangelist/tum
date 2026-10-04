@@ -66,6 +66,52 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    Language:
+      type: object
+      description: A language, that is supported by the API
+      properties:
+        name:
+          type: string
+          description: Identifier of the language
+          example: EN
+        base_url:
+          type: string
+          description: Additional base path that is appended to the base url, in order to access data for this language. Due to backwards compatibility resons the base_url for german is an empty string.
+          example: en/
+        label:
+          type: string
+          description: Readable name of the language in the given language
+          example: English
+        flag:
+          type: string
+          description: Emoji flag symbol for the language
+          example: 🏴󠁧󠁢󠁥󠁮󠁧󠁿
+    Location:
+      type: object
+      description: A location description including the readable address and coordinates
+      properties:
+        address:
+          type: string
+          description: Readable address consisting of street, house number and city
+          example: Boltzmannstraße 19, Garching
+        latitude:
+          type: number
+          example: 48.268132
+        longitude:
+          type: number
+          example: 11.672263
+    OpenHoursDay:
+      type: object
+      description: Specifies, a time range for opening hours. The times always have the format
+      properties:
+        start:
+          type: string
+          pattern: ^\d{2}:\d{2}
+          example: 660
+        end:
+          type: string
+          pattern: ^\d{2}:\d{2}
+          example: 840
     Canteen:
       type: object
       description: Information about a canteen
@@ -90,40 +136,6 @@ components:
           example: https://mensa.liste.party/api/
         open_hours:
           $ref: '#/components/schemas/OpenHoursWeek'
-    Location:
-      type: object
-      description: A location description including the readable address and coordinates
-      properties:
-        address:
-          type: string
-          description: Readable address consisting of street, house number and city
-          example: Boltzmannstraße 19, Garching
-        latitude:
-          type: number
-          example: 48.268132
-        longitude:
-          type: number
-          example: 11.672263
-    Language:
-      type: object
-      description: A language, that is supported by the API
-      properties:
-        name:
-          type: string
-          description: Identifier of the language
-          example: EN
-        base_url:
-          type: string
-          description: Additional base path that is appended to the base url, in order to access data for this language. Due to backwards compatibility resons the base_url for german is an empty string.
-          example: en/
-        label:
-          type: string
-          description: Readable name of the language in the given language
-          example: English
-        flag:
-          type: string
-          description: Emoji flag symbol for the language
-          example: 🏴󠁧󠁢󠁥󠁮󠁧󠁿
     Label:
       type: object
       description: Allergene and ingredient information
@@ -157,15 +169,3 @@ components:
           $ref: '#/components/schemas/OpenHoursDay'
         fri:
           $ref: '#/components/schemas/OpenHoursDay'
-    OpenHoursDay:
-      type: object
-      description: Specifies, a time range for opening hours. The times always have the format
-      properties:
-        start:
-          type: string
-          pattern: ^\d{2}:\d{2}
-          example: 660
-        end:
-          type: string
-          pattern: ^\d{2}:\d{2}
-          example: 840

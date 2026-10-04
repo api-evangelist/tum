@@ -420,40 +420,447 @@ paths:
                 type: string
 components:
   schemas:
-    SearchResponse:
+    PossibleURLRefResponse:
       type: object
-      description: Returned search results by this
+      description: A link with a localized link text and url
       required:
-      - sections
-      - time_ms
+      - text
       properties:
-        sections:
-          type: array
-          items:
-            $ref: '#/components/schemas/ResultsSection'
-        time_ms:
+        text:
+          type: string
+        url:
+          type:
+          - string
+          - 'null'
+    URLRefResponse:
+      type: object
+      description: A link with a localized link text and url
+      required:
+      - text
+      properties:
+        text:
+          type: string
+        url:
+          type:
+          - string
+          - 'null'
+    ExtraComputedPropResponse:
+      type: object
+      required:
+      - body
+      properties:
+        body:
+          type: string
+          examples:
+          - 'for exams: 102 in tight, 71 in wide, 49 in corona'
+        footer:
+          type:
+          - string
+          - 'null'
+          examples:
+          - data based on a Survey of chimneysweeps
+        header:
+          type:
+          - string
+          - 'null'
+          examples:
+          - Genauere Angaben
+    ResultFacet:
+      type: string
+      enum:
+      - sites
+      - buildings
+      - rooms
+      - pois
+      - addresses
+    RankingFactorsResponse:
+      type: object
+      required:
+      - rank_combined
+      - rank_type
+      - rank_usage
+      properties:
+        rank_boost:
+          type:
+          - integer
+          - 'null'
+          format: int32
+          minimum: 0
+        rank_combined:
           type: integer
           format: int32
-          description: 'Time the search took in the server side, not including network delay
-
-
-            Maximum as timeout.
-
-            other timeouts (browser, your client) may be smaller.
-
-            Expected average is `10`..`50` for uncached, regular requests.'
-          example: 8
           minimum: 0
-    NearbyLocationsResponse:
+        rank_custom:
+          type:
+          - integer
+          - 'null'
+          format: int32
+          minimum: 0
+        rank_type:
+          type: integer
+          format: int32
+          minimum: 0
+        rank_usage:
+          type: integer
+          format: int32
+          minimum: 0
+    OverlayMapsResponse:
       type: object
       required:
-      - public_transport
+      - available
       properties:
-        public_transport:
+        available:
           type: array
           items:
-            $ref: '#/components/schemas/TransportationResponse'
-          maxItems: 50
+            $ref: '#/components/schemas/OverlayMapEntryResponse'
+        default:
+          type:
+          - integer
+          - 'null'
+          format: int32
+          description: 'The floor-id of the map, that should be shown as a default.
+
+            null means:
+
+            - We suggest, you don''t show a map by default.
+
+            - This is only the case for buildings or other such entities and not for rooms, if we know where they are and a map exists'
+          example: 0
+    LocationTypeResponse:
+      type: string
+      enum:
+      - room
+      - building
+      - joined_building
+      - area
+      - site
+      - campus
+      - poi
+      - other
+    FloorResponse:
+      type: object
+      required:
+      - id
+      - short_name
+      - name
+      - tumonline
+      - type
+      properties:
+        id:
+          type: integer
+          format: int32
+          description: 'Virtual ID for sorting
+
+
+            `0` represents the ground floor.
+
+            Numbers above/below represent where they are relative to the ground floor
+
+
+            **WARNING**:
+
+            This ID is not guaranteed to be stable.
+
+            Not across buildings, nor within a building.'
+          examples:
+          - -1
+          - 0
+          - 1
+          - 2
+          - 3
+        name:
+          type: string
+          description: Longer name of the floor
+          examples:
+          - 1st basement floor
+          - Ground floor
+          - 1st mezzanine, above ground floor
+        short_name:
+          type: string
+          description: Short name of the floor
+          examples:
+          - '-1'
+          - '0'
+          - Z1
+        tumonline:
+          type: string
+          description: How `TUMonline` names the floor
+          examples:
+          - U1
+          - EG
+          - Z1
+        type:
+          $ref: '#/components/schemas/FloorType'
+          description: Type of floor
+    RoomsOverviewResponse:
+      type: object
+      required:
+      - usages
+      properties:
+        usages:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoomsOverviewUsageResponse'
+    PropsResponse:
+      type: object
+      description: Data for the info-card table
+      required:
+      - computed
+      properties:
+        calendar_url:
+          type:
+          - string
+          - 'null'
+          description: Link to the calendar of the room
+          examples:
+          - https://campus.tum.de/tumonline/tvKalender.wSicht?cOrg=19691&cRes=12543&cReadonly=J
+          - https://campus.tum.de/tumonline/tvKalender.wSicht?cOrg=19691&cRes=12559&cReadonly=J
+        comment:
+          type: string
+          description: 'A comment to show to an entry.
+
+
+            It is used in the rare cases, where some aspect about the room/.. or its translation are misleading.'
+        computed:
+          type: array
+          items:
+            $ref: '#/components/schemas/ComputedPropResponse'
+        floors:
+          type: array
+          items:
+            $ref: '#/components/schemas/FloorResponse'
+          description: 'A sorted (lowest floor first) list of floors
+
+
+            For buildings, this may contain multiple floors while rooms usually only have one floor.'
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/PossibleURLRefResponse'
+        operator:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/OperatorResponse'
+            description: The operator of the room
+    TransportationResponse:
+      type: object
+      required:
+      - id
+      - name
+      - lat
+      - lon
+      - distance_meters
+      properties:
+        distance_meters:
+          type: number
+          format: double
+          exclusiveMaximum: 1000
+          exclusiveMinimum: 0
+        id:
+          type: string
+          description: The globally unique and somewhat stable id of the station from the transport agency
+          example: de:09184:2073:0:1
+        lat:
+          type: number
+          format: double
+          description: Latitude
+          example: 48.26244490906312
+        lon:
+          type: number
+          format: double
+          description: Longitude
+          example: 48.26244490906312
+        name:
+          type: string
+          description: How the station was named by the operator
+          example: Garching, Boltzmannstraße
+        parent_id:
+          type:
+          - string
+          - 'null'
+          description: The globally unique and somewhat stable id of the station from the transport agency
+          example: de:09184:2073
+        parent_name:
+          type:
+          - string
+          - 'null'
+          description: How the station was named by the operator
+          example: Boltzmannstraße
+    ResultEntry:
+      type: object
+      required:
+      - id
+      - type
+      - name
+      - subtext
+      properties:
+        id:
+          type: string
+          description: The id of the location
+          example: 5510.03.002
+        name:
+          type: string
+          description: 'Subtext to show below the search result.
+
+
+            Usually contains the context of where this rooms is located in.
+
+            Currently not highlighted.'
+          example: 5510.03.002 (MW 2001, Empore)
+        parsed_id:
+          type:
+          - string
+          - 'null'
+          description: 'This is an optional feature, that is only supported for some rooms.
+
+
+            It might be displayed instead or before the name, to show that a different room id format has matched, that was probably used.
+
+            See the image below for an example.
+
+            It will be cropped to a maximum length to not take too much space in UIs.
+
+            Supports highlighting.'
+        subtext:
+          type: string
+          description: 'Subtext to show below the search result.
+
+
+            Usually contains the context of where this rooms is located in.
+
+            Currently not highlighted.'
+          example: Maschinenwesen (MW)
+        subtext_bold:
+          type:
+          - string
+          - 'null'
+          description: 'Subtext to show below the search (by default in bold and after the non-bold subtext).
+
+
+            Usually contains the arch-id of the room, which is another common room id format, and supports highlighting.'
+          example: 3002@5510
+        type:
+          type: string
+          description: the type of the site/building
+          example: room
+    ComputedPropResponse:
+      type: object
+      required:
+      - name
+      - text
+      properties:
+        extra:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/ExtraComputedPropResponse'
+        name:
+          type: string
+          examples:
+          - Raumkennung
+        text:
+          type: string
+          examples:
+          - 5602.EG.001
+    RoomsOverviewUsageResponse:
+      type: object
+      required:
+      - name
+      - count
+      - children
+      properties:
+        children:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoomsOverviewUsageChildResponse'
+        count:
+          type: integer
+          format: int32
+          minimum: 0
+        name:
+          type: string
+    RoomfinderMapResponse:
+      type: object
+      required:
+      - default
+      - available
+      properties:
+        available:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoomfinderMapEntryResponse'
+        default:
+          type: string
+          description: The id of the map, that should be shown as a default
+          examples:
+          - rf142
+    OperatorResponse:
+      type: object
+      description: Operator of a location
+      required:
+      - id
+      - url
+      - code
+      - name
+      properties:
+        code:
+          type: string
+          description: designation code of the operator
+          examples:
+          - TUS7000
+        id:
+          type: integer
+          format: int32
+          description: ID of the operator
+          examples:
+          - 51901
+          minimum: 0
+        name:
+          type: string
+          description: "The full name of the operator (localized). Null for organisations that\n are no longer active (e.g. id=38698), but where the operator has not been\nupdated in `TUMonline`."
+          examples:
+          - TUM School of Social Sciences and Technology
+        url:
+          type: string
+          description: Link to the operator
+          examples:
+          - https://campus.tum.de/tumonline/webnav.navigate_to?corg=51901
+    CoordinateAccuracyResponse:
+      type: string
+      enum:
+      - building
+    SourceResponse:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+          description: Name of the provider
+          example: NavigaTUM
+        url:
+          type:
+          - string
+          - 'null'
+          description: Url of the provider
+          example: https://nav.tum.de
+    SourcesResponse:
+      type: object
+      description: Where we got our data from, should be displayed at the bottom of any page containing this data
+      required:
+      - base
+      properties:
+        base:
+          type: array
+          items:
+            $ref: '#/components/schemas/SourceResponse'
+          description: What is the basis of the data we have
+        patched:
+          type:
+          - boolean
+          - 'null'
+          description: 'Was this entry patched by us? (e.g. to fix a typo in the name/...)
+
+            If so, we should not display the source, as it is not the original source.'
     LocationDetailsResponse:
       type: object
       required:
@@ -575,184 +982,15 @@ components:
           description: The type of the entry in a human-readable form
           examples:
           - Büro
-    RoomsOverviewUsageChildResponse:
-      type: object
-      required:
-      - id
-      - name
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-    ComputedPropResponse:
-      type: object
-      required:
-      - name
-      - text
-      properties:
-        extra:
-          oneOf:
-          - type: 'null'
-          - $ref: '#/components/schemas/ExtraComputedPropResponse'
-        name:
-          type: string
-          examples:
-          - Raumkennung
-        text:
-          type: string
-          examples:
-          - 5602.EG.001
-    ImageInfoResponse:
-      type: object
-      description: The information you need to request Images from the `/cdn/{size}/{id}_{counter}.webp` endpoint
-      required:
-      - name
-      - author
-      - license
-      properties:
-        author:
-          $ref: '#/components/schemas/URLRefResponse'
-        license:
-          $ref: '#/components/schemas/PossibleURLRefResponse'
-        name:
-          type: string
-          description: 'The name of the image file.
-
-            consists of {`building_id`}_{`image_id}.webp`, where `image_id` is a counter starting at 0'
-          examples:
-          - mi_0.webp
-    ResultsSection:
-      type: object
-      required:
-      - facet
-      - entries
-      - n_visible
-      - estimatedTotalHits
-      properties:
-        entries:
-          type: array
-          items:
-            $ref: '#/components/schemas/ResultEntry'
-        estimatedTotalHits:
-          type: integer
-          description: The estimated (not exact) number of hits for that query
-          example: 6
-          minimum: 0
-        facet:
-          $ref: '#/components/schemas/ResultFacet'
-          description: These indicate the type of item this represents
-        n_visible:
-          type: integer
-          description: 'A recommendation how many of the entries should be displayed by default.
-
-
-            The number is usually from `0`..`5`.
-
-            More results might be displayed when clicking "expand".'
-          example: 4
-          minimum: 0
-    CoordinateResponse:
-      type: object
-      required:
-      - lat
-      - lon
-      - source
-      properties:
-        accuracy:
-          oneOf:
-          - type: 'null'
-          - $ref: '#/components/schemas/CoordinateAccuracyResponse'
-            description: 'How accurate the coordinate is.
-
-              Only present, if it is limited to a degree (e.g. we only know the building)'
-        lat:
-          type: number
-          format: double
-          description: Latitude
-          example: 48.26244490906312
-        lon:
-          type: number
-          format: double
-          description: Longitude
-          example: 48.26244490906312
-        source:
-          $ref: '#/components/schemas/CoordinateSourceResponse'
-          description: Source of the Coordinates
-    TransportationResponse:
-      type: object
-      required:
-      - id
-      - name
-      - lat
-      - lon
-      - distance_meters
-      properties:
-        distance_meters:
-          type: number
-          format: double
-          exclusiveMaximum: 1000
-          exclusiveMinimum: 0
-        id:
-          type: string
-          description: The globally unique and somewhat stable id of the station from the transport agency
-          example: de:09184:2073:0:1
-        lat:
-          type: number
-          format: double
-          description: Latitude
-          example: 48.26244490906312
-        lon:
-          type: number
-          format: double
-          description: Longitude
-          example: 48.26244490906312
-        name:
-          type: string
-          description: How the station was named by the operator
-          example: Garching, Boltzmannstraße
-        parent_id:
-          type:
-          - string
-          - 'null'
-          description: The globally unique and somewhat stable id of the station from the transport agency
-          example: de:09184:2073
-        parent_name:
-          type:
-          - string
-          - 'null'
-          description: How the station was named by the operator
-          example: Boltzmannstraße
-    MapsResponse:
-      type: object
-      required:
-      - default
-      properties:
-        default:
-          $ref: '#/components/schemas/DefaultMapsResponse'
-          description: type of the Map that should be shown by default
-        overlays:
-          oneOf:
-          - type: 'null'
-          - $ref: '#/components/schemas/OverlayMapsResponse'
-            description: '`None` would mean no overlay maps are displayed by default.
-
-              For rooms, you should add a warning that no floor map is available for this room'
-        roomfinder:
-          oneOf:
-          - type: 'null'
-          - $ref: '#/components/schemas/RoomfinderMapResponse'
-    LocationTypeResponse:
+    FloorType:
       type: string
       enum:
-      - room
-      - building
-      - joined_building
-      - area
-      - site
-      - campus
-      - poi
-      - other
+      - roof
+      - upper
+      - semi_upper
+      - ground
+      - semi_basement
+      - basement
     BuildingsOverviewItemResponse:
       type: object
       required:
@@ -774,52 +1012,41 @@ components:
           - string
           - 'null'
           description: The thumbnail for the building
-    FacetFilter:
+    CoordinateSourceResponse:
       type: string
-      description: 'Allowlisted values for the `?type=` query parameter.
-
-
-        Modeled as an enum so `serde` rejects unknown values with a 400 instead of
-
-        silently dropping them, and so the `OpenAPI` schema advertises the exact set
-
-        of accepted values.'
       enum:
-      - site
-      - building
-      - room
-      - poi
-    OperatorResponse:
+      - navigatum
+      - roomfinder
+      - inferred
+    RoomsOverviewUsageChildResponse:
       type: object
-      description: Operator of a location
       required:
       - id
-      - url
-      - code
       - name
       properties:
-        code:
-          type: string
-          description: designation code of the operator
-          examples:
-          - TUS7000
         id:
-          type: integer
-          format: int32
-          description: ID of the operator
-          examples:
-          - 51901
-          minimum: 0
+          type: string
         name:
           type: string
-          description: "The full name of the operator (localized). Null for organisations that\n are no longer active (e.g. id=38698), but where the operator has not been\nupdated in `TUMonline`."
-          examples:
-          - TUM School of Social Sciences and Technology
-        url:
-          type: string
-          description: Link to the operator
-          examples:
-          - https://campus.tum.de/tumonline/webnav.navigate_to?corg=51901
+    MapsResponse:
+      type: object
+      required:
+      - default
+      properties:
+        default:
+          $ref: '#/components/schemas/DefaultMapsResponse'
+          description: type of the Map that should be shown by default
+        overlays:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/OverlayMapsResponse'
+            description: '`None` would mean no overlay maps are displayed by default.
+
+              For rooms, you should add a warning that no floor map is available for this room'
+        roomfinder:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/RoomfinderMapResponse'
     RoomfinderMapEntryResponse:
       type: object
       required:
@@ -864,144 +1091,89 @@ components:
           type: integer
           format: int32
           description: y Position on map image
-    BuildingsOverviewResponse:
-      type: object
-      required:
-      - entries
-      - n_visible
-      properties:
-        entries:
-          type: array
-          items:
-            $ref: '#/components/schemas/BuildingsOverviewItemResponse'
-        n_visible:
-          type: integer
-          format: int32
-          minimum: 0
-    ResultFacet:
-      type: string
-      enum:
-      - sites
-      - buildings
-      - rooms
-      - pois
-      - addresses
-    PossibleURLRefResponse:
-      type: object
-      description: A link with a localized link text and url
-      required:
-      - text
-      properties:
-        text:
-          type: string
-        url:
-          type:
-          - string
-          - 'null'
-    FeaturedOverviewResponse:
-      type: object
-      required:
-      - entries
-      properties:
-        entries:
-          type: array
-          items:
-            $ref: '#/components/schemas/FeaturedOverviewItemResponse'
-    SourcesResponse:
-      type: object
-      description: Where we got our data from, should be displayed at the bottom of any page containing this data
-      required:
-      - base
-      properties:
-        base:
-          type: array
-          items:
-            $ref: '#/components/schemas/SourceResponse'
-          description: What is the basis of the data we have
-        patched:
-          type:
-          - boolean
-          - 'null'
-          description: 'Was this entry patched by us? (e.g. to fix a typo in the name/...)
-
-            If so, we should not display the source, as it is not the original source.'
-    ResultEntry:
+    FeaturedOverviewItemResponse:
       type: object
       required:
       - id
-      - type
       - name
       - subtext
+      - image_url
       properties:
         id:
           type: string
-          description: The id of the location
-          example: 5510.03.002
+          description: The id of the entry
+        image_url:
+          type: string
+          description: The thumbnail for the building
         name:
           type: string
-          description: 'Subtext to show below the search result.
-
-
-            Usually contains the context of where this rooms is located in.
-
-            Currently not highlighted.'
-          example: 5510.03.002 (MW 2001, Empore)
-        parsed_id:
-          type:
-          - string
-          - 'null'
-          description: 'This is an optional feature, that is only supported for some rooms.
-
-
-            It might be displayed instead or before the name, to show that a different room id format has matched, that was probably used.
-
-            See the image below for an example.
-
-            It will be cropped to a maximum length to not take too much space in UIs.
-
-            Supports highlighting.'
+          description: Human display name
         subtext:
           type: string
-          description: 'Subtext to show below the search result.
+          description: What should be displayed below this Building
+    FacetFilter:
+      type: string
+      description: 'Allowlisted values for the `?type=` query parameter.
 
 
-            Usually contains the context of where this rooms is located in.
+        Modeled as an enum so `serde` rejects unknown values with a 400 instead of
 
-            Currently not highlighted.'
-          example: Maschinenwesen (MW)
-        subtext_bold:
-          type:
-          - string
-          - 'null'
-          description: 'Subtext to show below the search (by default in bold and after the non-bold subtext).
+        silently dropping them, and so the `OpenAPI` schema advertises the exact set
 
-
-            Usually contains the arch-id of the room, which is another common room id format, and supports highlighting.'
-          example: 3002@5510
-        type:
-          type: string
-          description: the type of the site/building
-          example: room
-    RoomfinderMapResponse:
+        of accepted values.'
+      enum:
+      - site
+      - building
+      - room
+      - poi
+    SearchResponse:
       type: object
+      description: Returned search results by this
       required:
-      - default
-      - available
+      - sections
+      - time_ms
       properties:
-        available:
+        sections:
           type: array
           items:
-            $ref: '#/components/schemas/RoomfinderMapEntryResponse'
-        default:
-          type: string
-          description: The id of the map, that should be shown as a default
-          examples:
-          - rf142
+            $ref: '#/components/schemas/ResultsSection'
+        time_ms:
+          type: integer
+          format: int32
+          description: 'Time the search took in the server side, not including network delay
+
+
+            Maximum as timeout.
+
+            other timeouts (browser, your client) may be smaller.
+
+            Expected average is `10`..`50` for uncached, regular requests.'
+          example: 8
+          minimum: 0
     DefaultMapsResponse:
       type: string
       enum:
       - interactive
       - roomfinder
+    ImageInfoResponse:
+      type: object
+      description: The information you need to request Images from the `/cdn/{size}/{id}_{counter}.webp` endpoint
+      required:
+      - name
+      - author
+      - license
+      properties:
+        author:
+          $ref: '#/components/schemas/URLRefResponse'
+        license:
+          $ref: '#/components/schemas/PossibleURLRefResponse'
+        name:
+          type: string
+          description: 'The name of the image file.
+
+            consists of {`building_id`}_{`image_id}.webp`, where `image_id` is a counter starting at 0'
+          examples:
+          - mi_0.webp
     OverlayMapEntryResponse:
       type: object
       required:
@@ -1060,237 +1232,6 @@ components:
           type: string
           description: human-readable name of the map
           example: MI Gebäude (EG)
-    SourceResponse:
-      type: object
-      required:
-      - name
-      properties:
-        name:
-          type: string
-          description: Name of the provider
-          example: NavigaTUM
-        url:
-          type:
-          - string
-          - 'null'
-          description: Url of the provider
-          example: https://nav.tum.de
-    FloorResponse:
-      type: object
-      required:
-      - id
-      - short_name
-      - name
-      - tumonline
-      - type
-      properties:
-        id:
-          type: integer
-          format: int32
-          description: 'Virtual ID for sorting
-
-
-            `0` represents the ground floor.
-
-            Numbers above/below represent where they are relative to the ground floor
-
-
-            **WARNING**:
-
-            This ID is not guaranteed to be stable.
-
-            Not across buildings, nor within a building.'
-          examples:
-          - -1
-          - 0
-          - 1
-          - 2
-          - 3
-        name:
-          type: string
-          description: Longer name of the floor
-          examples:
-          - 1st basement floor
-          - Ground floor
-          - 1st mezzanine, above ground floor
-        short_name:
-          type: string
-          description: Short name of the floor
-          examples:
-          - '-1'
-          - '0'
-          - Z1
-        tumonline:
-          type: string
-          description: How `TUMonline` names the floor
-          examples:
-          - U1
-          - EG
-          - Z1
-        type:
-          $ref: '#/components/schemas/FloorType'
-          description: Type of floor
-    PropsResponse:
-      type: object
-      description: Data for the info-card table
-      required:
-      - computed
-      properties:
-        calendar_url:
-          type:
-          - string
-          - 'null'
-          description: Link to the calendar of the room
-          examples:
-          - https://campus.tum.de/tumonline/tvKalender.wSicht?cOrg=19691&cRes=12543&cReadonly=J
-          - https://campus.tum.de/tumonline/tvKalender.wSicht?cOrg=19691&cRes=12559&cReadonly=J
-        comment:
-          type: string
-          description: 'A comment to show to an entry.
-
-
-            It is used in the rare cases, where some aspect about the room/.. or its translation are misleading.'
-        computed:
-          type: array
-          items:
-            $ref: '#/components/schemas/ComputedPropResponse'
-        floors:
-          type: array
-          items:
-            $ref: '#/components/schemas/FloorResponse'
-          description: 'A sorted (lowest floor first) list of floors
-
-
-            For buildings, this may contain multiple floors while rooms usually only have one floor.'
-        links:
-          type: array
-          items:
-            $ref: '#/components/schemas/PossibleURLRefResponse'
-        operator:
-          oneOf:
-          - type: 'null'
-          - $ref: '#/components/schemas/OperatorResponse'
-            description: The operator of the room
-    OverlayMapsResponse:
-      type: object
-      required:
-      - available
-      properties:
-        available:
-          type: array
-          items:
-            $ref: '#/components/schemas/OverlayMapEntryResponse'
-        default:
-          type:
-          - integer
-          - 'null'
-          format: int32
-          description: 'The floor-id of the map, that should be shown as a default.
-
-            null means:
-
-            - We suggest, you don''t show a map by default.
-
-            - This is only the case for buildings or other such entities and not for rooms, if we know where they are and a map exists'
-          example: 0
-    CoordinateAccuracyResponse:
-      type: string
-      enum:
-      - building
-    CoordinateSourceResponse:
-      type: string
-      enum:
-      - navigatum
-      - roomfinder
-      - inferred
-    FloorType:
-      type: string
-      enum:
-      - roof
-      - upper
-      - semi_upper
-      - ground
-      - semi_basement
-      - basement
-    FeaturedOverviewItemResponse:
-      type: object
-      required:
-      - id
-      - name
-      - subtext
-      - image_url
-      properties:
-        id:
-          type: string
-          description: The id of the entry
-        image_url:
-          type: string
-          description: The thumbnail for the building
-        name:
-          type: string
-          description: Human display name
-        subtext:
-          type: string
-          description: What should be displayed below this Building
-    URLRefResponse:
-      type: object
-      description: A link with a localized link text and url
-      required:
-      - text
-      properties:
-        text:
-          type: string
-        url:
-          type:
-          - string
-          - 'null'
-    RoomsOverviewResponse:
-      type: object
-      required:
-      - usages
-      properties:
-        usages:
-          type: array
-          items:
-            $ref: '#/components/schemas/RoomsOverviewUsageResponse'
-    ExtraComputedPropResponse:
-      type: object
-      required:
-      - body
-      properties:
-        body:
-          type: string
-          examples:
-          - 'for exams: 102 in tight, 71 in wide, 49 in corona'
-        footer:
-          type:
-          - string
-          - 'null'
-          examples:
-          - data based on a Survey of chimneysweeps
-        header:
-          type:
-          - string
-          - 'null'
-          examples:
-          - Genauere Angaben
-    RoomsOverviewUsageResponse:
-      type: object
-      required:
-      - name
-      - count
-      - children
-      properties:
-        children:
-          type: array
-          items:
-            $ref: '#/components/schemas/RoomsOverviewUsageChildResponse'
-        count:
-          type: integer
-          format: int32
-          minimum: 0
-        name:
-          type: string
     SectionsResponse:
       type: object
       properties:
@@ -1306,37 +1247,96 @@ components:
           oneOf:
           - type: 'null'
           - $ref: '#/components/schemas/RoomsOverviewResponse'
-    RankingFactorsResponse:
+    ResultsSection:
       type: object
       required:
-      - rank_combined
-      - rank_type
-      - rank_usage
+      - facet
+      - entries
+      - n_visible
+      - estimatedTotalHits
       properties:
-        rank_boost:
-          type:
-          - integer
-          - 'null'
-          format: int32
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResultEntry'
+        estimatedTotalHits:
+          type: integer
+          description: The estimated (not exact) number of hits for that query
+          example: 6
           minimum: 0
-        rank_combined:
+        facet:
+          $ref: '#/components/schemas/ResultFacet'
+          description: These indicate the type of item this represents
+        n_visible:
+          type: integer
+          description: 'A recommendation how many of the entries should be displayed by default.
+
+
+            The number is usually from `0`..`5`.
+
+            More results might be displayed when clicking "expand".'
+          example: 4
+          minimum: 0
+    CoordinateResponse:
+      type: object
+      required:
+      - lat
+      - lon
+      - source
+      properties:
+        accuracy:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/CoordinateAccuracyResponse'
+            description: 'How accurate the coordinate is.
+
+              Only present, if it is limited to a degree (e.g. we only know the building)'
+        lat:
+          type: number
+          format: double
+          description: Latitude
+          example: 48.26244490906312
+        lon:
+          type: number
+          format: double
+          description: Longitude
+          example: 48.26244490906312
+        source:
+          $ref: '#/components/schemas/CoordinateSourceResponse'
+          description: Source of the Coordinates
+    BuildingsOverviewResponse:
+      type: object
+      required:
+      - entries
+      - n_visible
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/BuildingsOverviewItemResponse'
+        n_visible:
           type: integer
           format: int32
           minimum: 0
-        rank_custom:
-          type:
-          - integer
-          - 'null'
-          format: int32
-          minimum: 0
-        rank_type:
-          type: integer
-          format: int32
-          minimum: 0
-        rank_usage:
-          type: integer
-          format: int32
-          minimum: 0
+    FeaturedOverviewResponse:
+      type: object
+      required:
+      - entries
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/FeaturedOverviewItemResponse'
+    NearbyLocationsResponse:
+      type: object
+      required:
+      - public_transport
+      properties:
+        public_transport:
+          type: array
+          items:
+            $ref: '#/components/schemas/TransportationResponse'
+          maxItems: 50
 externalDocs:
   url: https://github.com/TUM-Dev/navigatum
   description: Visit our GitHub Page for more in-depth documentation
