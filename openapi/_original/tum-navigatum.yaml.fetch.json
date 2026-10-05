@@ -1,0 +1,12 @@
+{
+ "url": "https://nav.tum.de/api/openapi.json",
+ "requested_url": "https://nav.tum.de/api/openapi.json",
+ "status": 200,
+ "content_type": "application/json",
+ "bytes": 103052,
+ "sha256": "52fc2c545564a66a67b64ba5436e7da3da6d087512e3135929567d4c48267c98",
+ "fetched_at": "2026-10-04",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "equivalent",
+ "note": "Re-fetched from the provider by verify-openapi-sources.py; the provider's current document describes the same operations (Jaccard 0.923), but the bytes differ, so the archive is an earlier or reformatted copy."
+}
