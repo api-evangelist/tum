@@ -1,86 +1,65 @@
-generated: '2026-07-15'
+generated: '2026-09-23'
 method: generated
-source: openapi/tum-eat-api.yaml, openapi/tum-navigatum.yaml
+source: openapi/tum-calendar-api-openapi.yml, openapi/tum-campus-api-openapi.yml, openapi/tum-feedback-api-openapi.yml,
+  openapi/tum-locations-api-openapi.yml, openapi/tum-maps-api-openapi.yml, openapi/tum-menu-api-openapi.yml,
+  openapi/tum-openapi-json-api-openapi.yml, openapi/tum-static-api-openapi.yml, openapi/tum-status-api-openapi.yml
 description: Recommended x-agentic-access execution contracts, classified heuristically from
   the OpenAPI. A governance starting point for exposing this API to AI agents — review and bind
   audience per deployment. See research/curity/agentic-governance/.
 summary:
-  operations: 19
+  operations: 38
   by_action_class:
-    connected: 15
-    acting: 4
+    connected: 28
+    acting: 10
   by_consequence:
-    read: 15
-    write: 3
+    read: 28
+    write: 9
     physical: 1
   human_in_the_loop_required: 0
 operations:
-- path: /{canteen_id}/{year}/{week}.json
-  method: get
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /{canteen_id}/combined/combined.json
-  method: get
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /all.json
-  method: get
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /all_ref.json
-  method: get
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /enums/canteens.json
-  method: get
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /enums/languages.json
-  method: get
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /enums/labels.json
-  method: get
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
 - path: /api/calendar
   method: post
   operationId: calendar_handler
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /canteen/allCanteens
+  method: get
+  operationId: Campus_ListCanteens
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /canteen/headCount/{canteenId}
+  method: get
+  operationId: Campus_GetCanteenHeadCount
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /canteen/rating/allRatingTags
+  method: get
+  operationId: Campus_ListAvailableCanteenTags
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /canteen/rating/get
+  method: post
+  operationId: Campus_ListCanteenRatings
   x-agentic-access:
     action-class: acting
     consequence: write
@@ -94,6 +73,192 @@ operations:
       - abnormal
       - high-value
     audit: required
+- path: /canteen/rating/new
+  method: post
+  operationId: Campus_CreateCanteenRating
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /device
+  method: post
+  operationId: Campus_CreateDevice
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /device/{deviceId}
+  method: delete
+  operationId: Campus_DeleteDevice
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /dish/rating/allDishTags
+  method: get
+  operationId: Campus_ListNameTags
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /dish/rating/allRatingTags
+  method: get
+  operationId: Campus_ListAvailableDishTags
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /dish/rating/get
+  method: post
+  operationId: Campus_GetDishRatings
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /dish/rating/new
+  method: post
+  operationId: Campus_CreateDishRating
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /dishes
+  method: get
+  operationId: Campus_ListDishes
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /feedback
+  method: post
+  operationId: Campus_CreateFeedback
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /movies/{lastId}
+  method: get
+  operationId: Campus_ListMovies
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /news
+  method: get
+  operationId: Campus_ListNews
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /news/alerts
+  method: get
+  operationId: Campus_ListNewsAlerts
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /news/sources
+  method: get
+  operationId: Campus_ListNewsSources
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /student_clubs
+  method: get
+  operationId: Campus_ListStudentClub
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /updatenote/{version}
+  method: get
+  operationId: Campus_GetUpdateNote
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
 - path: /api/feedback/feedback
   method: post
   operationId: send_feedback
@@ -184,9 +349,59 @@ operations:
     token:
       max-ttl: 3600
     audit: none
+- path: /api/search
+  method: get
+  operationId: search_handler
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
 - path: /api/maps/route
   method: get
   operationId: route_handler
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /{canteen_id}/{year}/{week}.json
+  method: get
+  operationId: getByCanteenIdByYear{week}Json
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /{canteen_id}/combined/combined.json
+  method: get
+  operationId: getByCanteenIdCombinedCombinedJson
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /all.json
+  method: get
+  operationId: getAllJson
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /all_ref.json
+  method: get
+  operationId: getAllRefJson
   x-agentic-access:
     action-class: connected
     consequence: read
@@ -204,9 +419,29 @@ operations:
     token:
       max-ttl: 3600
     audit: none
-- path: /api/search
+- path: /enums/canteens.json
   method: get
-  operationId: search_handler
+  operationId: getEnumsCanteensJson
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /enums/languages.json
+  method: get
+  operationId: getEnumsLanguagesJson
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /enums/labels.json
+  method: get
+  operationId: getEnumsLabelsJson
   x-agentic-access:
     action-class: connected
     consequence: read
