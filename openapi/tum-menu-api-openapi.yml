@@ -128,38 +128,56 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    Label:
+    Canteen:
       type: object
-      description: Allergene and ingredient information
+      description: Information about a canteen
       properties:
         enum_name:
           type: string
-          example: VEGETARIAN
-        text:
-          type: object
-          description: Key-value object containing readable labels. The language is given in the key, and is referred to to the name from the language.
-          additionalProperties:
-            type: string
-          example:
-            DE: Vegetarisch
-            EN: vegetarian
-        abbreviation:
+          description: Internal identifier for a canteen
+          example: MENSA_GARCHING
+        name:
           type: string
-          description: Emoji symbol or short form of a label
-          example: 🌽
-    CanteenMenu:
-      type: object
-      description: All dishes for a specific canteen
-      properties:
-        version:
-          type: string
-          example: '2.1'
+          description: Readable name for a canteen
+          example: Mensa Garching
+        location:
+          $ref: '#/components/schemas/Location'
         canteen_id:
-          $ref: '#/components/schemas/Canteen/properties/canteen_id'
-        weeks:
+          type: string
+          description: Identifier for the canteen, as it has to be used for accessing data.
+          example: mensa-garching
+        queue_status:
+          type: string
+          description: URL to another API, where data about the queue length of the canteen can be accessed. Is null, when not available.
+          example: https://mensa.liste.party/api/
+        open_hours:
+          $ref: '#/components/schemas/OpenHoursWeek'
+    Prices:
+      type: object
+      properties:
+        students:
+          allOf:
+          - $ref: '#/components/schemas/Price'
+          - description: Price that students pay
+        staff:
+          allOf:
+          - $ref: '#/components/schemas/Price'
+          - description: Price that staff pays
+        guests:
+          allOf:
+          - $ref: '#/components/schemas/Price'
+          - description: Price that guests pay
+    Day:
+      type: object
+      description: All dishes for one day
+      properties:
+        date:
+          type: string
+          format: date
+        dishes:
           type: array
           items:
-            $ref: '#/components/schemas/Week'
+            $ref: '#/components/schemas/Dish'
     Week:
       type: object
       description: All dishes for all days during one week
@@ -190,30 +208,38 @@ components:
           type: string
           description: The unit used for calculating the price
           example: 100g
-    Canteen:
+    CanteenMenu:
       type: object
-      description: Information about a canteen
+      description: All dishes for a specific canteen
+      properties:
+        version:
+          type: string
+          example: '2.1'
+        canteen_id:
+          $ref: '#/components/schemas/Canteen/properties/canteen_id'
+        weeks:
+          type: array
+          items:
+            $ref: '#/components/schemas/Week'
+    Label:
+      type: object
+      description: Allergene and ingredient information
       properties:
         enum_name:
           type: string
-          description: Internal identifier for a canteen
-          example: MENSA_GARCHING
-        name:
+          example: VEGETARIAN
+        text:
+          type: object
+          description: Key-value object containing readable labels. The language is given in the key, and is referred to to the name from the language.
+          additionalProperties:
+            type: string
+          example:
+            DE: Vegetarisch
+            EN: vegetarian
+        abbreviation:
           type: string
-          description: Readable name for a canteen
-          example: Mensa Garching
-        location:
-          $ref: '#/components/schemas/Location'
-        canteen_id:
-          type: string
-          description: Identifier for the canteen, as it has to be used for accessing data.
-          example: mensa-garching
-        queue_status:
-          type: string
-          description: URL to another API, where data about the queue length of the canteen can be accessed. Is null, when not available.
-          example: https://mensa.liste.party/api/
-        open_hours:
-          $ref: '#/components/schemas/OpenHoursWeek'
+          description: Emoji symbol or short form of a label
+          example: 🌽
     Dish:
       type: object
       description: Describes one dish
@@ -231,29 +257,3 @@ components:
         dish_type:
           type: string
           example: Pasta
-    Prices:
-      type: object
-      properties:
-        students:
-          allOf:
-          - $ref: '#/components/schemas/Price'
-          - description: Price that students pay
-        staff:
-          allOf:
-          - $ref: '#/components/schemas/Price'
-          - description: Price that staff pays
-        guests:
-          allOf:
-          - $ref: '#/components/schemas/Price'
-          - description: Price that guests pay
-    Day:
-      type: object
-      description: All dishes for one day
-      properties:
-        date:
-          type: string
-          format: date
-        dishes:
-          type: array
-          items:
-            $ref: '#/components/schemas/Dish'
